@@ -1,0 +1,29 @@
+.related-albums-block {
+  // background-color: rgba($c--white, .25);
+}
+
+h4.related-album-header {
+  margin: 0 0 1em;
+}
+
+ul.related-albums {
+  list-style: none;
+}
+
+li.related-album {
+  display: block;
+  padding: 0;
+  margin: 0 0 1em;
+}
+
+h5.related-album-title {
+
+}
+
+ul.related-album-songs {
+  list-style: none;
+}
+
+li.related-album-song {
+  font-size: .85em;
+}

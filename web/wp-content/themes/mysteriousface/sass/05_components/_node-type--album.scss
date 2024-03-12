@@ -1,0 +1,17 @@
+body.page-node-type-album {
+  .song.layout.wrapper {
+    h1 {
+      margin-bottom: 0;
+    }
+    nav {
+      a {
+        font-weight:bold;
+        font-size: 1.25em;
+        text-decoration: none;
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+}

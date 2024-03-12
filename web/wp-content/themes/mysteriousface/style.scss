@@ -1,0 +1,41 @@
+/*!
+Theme Name: Mysterious Face
+Theme URI: http://mysteriousface.com/
+Author: Richard Gilbert
+Author URI: http://mysteriousface.com/
+Description: Custom theme for Mysterious Face & Paul Marcus Music.
+Version: 1.0.0
+Tested up to: 5.9
+Requires PHP: 7.4
+License: GNU General Public License v2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: mysteriousface
+Tags: custom-background, custom-logo, custom-menu, featured-images, threaded-comments, translation-ready
+
+This theme, like WordPress, is licensed under the GPL.
+
+This theme is based on Underscores https://underscores.me/, (C) 2012-2020 Automattic, Inc.
+This theme is distributed under the terms of the GNU GPL v2 or later.
+
+Normalizing styles have been helped along thanks to the fine work of
+Nicolas Gallagher and Jonathan Neal https://necolas.github.io/normalize.css/
+*/
+
+// All config partials -- config, functions, mixins, etc.
+@import '01_config/config';
+
+// All base partials.
+@import '02_base/base';
+
+// High level layout-specific partials.
+@import '03_layout/layout';
+
+// Lower level (but still general) elements (such as blocks & menus).
+@import '04_elements/**/*.scss';
+
+// Sass specific to individual components.
+@import '05_components/**/*.scss';
+
+body {
+    background-color: pink;
+}

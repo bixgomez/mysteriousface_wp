@@ -1,0 +1,59 @@
+.layout--song {
+  grid-template-areas:
+  "player heading aside"
+  "player body aside"
+  "player lyrics aside";
+
+  grid-template-columns: 25% 1fr max-content;
+
+  &.no-player {
+    grid-template-areas:
+    "heading aside"
+    "body aside"
+    "lyrics aside";
+
+    grid-template-columns: 1fr max-content;
+  }
+}
+
+.lyrics {
+  grid-area: lyrics;
+}
+
+.player {
+  grid-area: player;
+}
+
+aside {
+  grid-area: aside;
+}
+
+@include breakpoint($sm-down) {
+
+  .layout--song {
+    display: flex;
+    flex-direction: column;
+
+    .heading {
+      order: 1;
+    }
+
+    .player {
+      order: 2;
+      display: none;
+    }
+
+    .body {
+      order: 3;
+    }
+
+    .lyrics {
+      order: 4;
+    }
+
+    aside {
+      order: 5;
+    }
+  }
+
+}

@@ -1,0 +1,30 @@
+.song.layout.wrapper {
+
+  .node-title {
+    margin-bottom: .125em;
+    line-height: 1;
+  }
+
+  .song-authors {
+    margin-bottom: 0;
+  }
+
+  .song-personnel {
+    background-color: $debug-color--1;
+    color: white;
+    padding: 1em;
+    margin-bottom: 0;
+  }
+
+  nav {
+
+    a {
+      font-weight:bold;
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}

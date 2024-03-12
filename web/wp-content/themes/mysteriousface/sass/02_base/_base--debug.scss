@@ -1,0 +1,5 @@
+$debug-color--base: #000;
+
+$debug-color--1: lighten($debug-color--base, 25%);
+$debug-color--2: lighten($debug-color--base, 50%);
+$debug-color--3: lighten($debug-color--base, 75%);

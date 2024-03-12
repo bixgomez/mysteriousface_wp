@@ -1,0 +1,67 @@
+.menu-platforms-container {
+
+  .menu-item {
+    float: none;
+    height: 2rem;
+    margin-top: 0;
+
+    @media (min-width: $md-up) {
+      height: 1.75vw;
+      margin-top: .8vw;
+    }
+
+    line-height: 1;
+    width: 100%;
+    white-space: nowrap;
+
+    a {
+      display: block;
+      text-decoration: none;
+      font-size: 1.25em;
+      line-height: 1;
+      padding: 0 0 0 1.5em;
+
+      background-image: url(./images/social-icons/logo_itunes.png);
+      background-repeat: no-repeat;
+      background-size: 1.125em;
+
+      @media (min-width: $md-up) {
+        width: auto;
+        height: 1.75vw;
+        margin-right: .5vw;
+      }
+
+      @media (min-width: $md-up) {
+        font-size: 1.5vw;
+      }
+    }
+
+    &.bandcamp a {
+      background-image: url(./images/social-icons/logo_bandcamp.png);
+    }
+
+    &.spotify a {
+      background-image: url(./images/social-icons/logo_spotify.png);
+    }
+
+    &.youtube a {
+      background-image: url(./images/social-icons/logo_youtube.png);
+    }
+
+    &.itunes a {
+      background-image: url(./images/social-icons/logo_itunes.png);
+    }
+
+    &.google {
+      display: none;
+    }
+
+    &.google a {
+      background-image: url(./images/social-icons/logo_google.png);
+    }
+
+    &.amazon a {
+      background-image: url(./images/social-icons/logo_amazon.png);
+    }
+  }
+}
