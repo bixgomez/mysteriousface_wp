@@ -617,18 +617,20 @@ class Replace
             return $pre;
         }
 
-        //Check if find and replace needs be skipped for the current table
-        $skipped_tables = apply_filters('wpmdb_skip_search_replace_tables', []);
-        if (in_array($this->table, $skipped_tables, true)) {
-            return $data;
-        }
-
         //If the intent is find_replace we need to prefix the tables with the temp prefix and wp base table prefix.
         global $wpdb;
         $table_prefix = $wpdb->base_prefix;
         if ( 'find_replace' === $this->get_intent() ) {
 
             $table_prefix = $this->properties->temp_prefix . $table_prefix;
+        }
+
+        //Check if find and replace needs be skipped for the current table
+        $skipped_tables = apply_filters('wpmdb_skip_search_replace_tables', ['eum_logs']);
+        foreach ($skipped_tables as $skipped_table) {
+            if ($this->table === $table_prefix . $skipped_table) {
+                return $data;
+            }
         }
 
         if ($this->should_do_reference_check($table_prefix) && is_serialized( $data ) && preg_match('/r\:\d+;/i', $data)) {
@@ -666,19 +668,14 @@ class Replace
             if (is_string($data) && ($unserialized = Util::unserialize($data, __METHOD__)) !== false) {
                 // PHP currently has a bug that doesn't allow you to clone the DateInterval / DatePeriod classes.
                 // We skip them here as they probably won't need data to be replaced anyway
-                if ('object' == gettype($unserialized)) {
-                    if ($unserialized instanceof \DateInterval || $unserialized instanceof \DatePeriod) {
-                        return $data;
-                    }
-                    if ($unserialized instanceof \__PHP_Incomplete_Class && defined('WP_DEBUG_LOG') && WP_DEBUG_LOG) {
-                        $objectName = array();
-                        preg_match('/O:\d+:\"([^\"]+)\"/', $data, $objectName);
-                        $objectName = $objectName[1] ? $objectName[1] : $data;
-                        $error      = sprintf(__("WP Migrate - Failed to instantiate object for replacement. If the serialized object's class is defined by a plugin, you should enable that plugin for migration requests. \nClass Name: %s", 'wp-migrate-db'), $objectName);
-                        error_log($error);
-
-                        return $data;
-                    }
+                if (
+                    'object' == gettype($unserialized) && 
+                    (
+                        $unserialized instanceof \DateInterval ||
+                        $unserialized instanceof \DatePeriod
+                    )
+                ) {
+                    return $data;
                 }
                 $data = $this->recursive_unserialize_replace($unserialized, true, true, $successive_filter);
             } elseif (is_array($data)) {
@@ -689,7 +686,8 @@ class Replace
 
                 $data = $_tmp;
                 unset($_tmp);
-            } elseif (is_object($data)) { // Submitted by Tina Matter
+            //is_object does not return true for __PHP_Incomplete_Class until 7.2 using gettype instead
+            } elseif ('object' == gettype($data)) { // Submitted by Tina Matter
                 if ($this->is_object_cloneable($data)) {
                     $_tmp = clone $data;
                     foreach ($data as $key => $value) {
@@ -772,6 +770,9 @@ class Replace
             return true;
         }
         if ( $table_prefix . 'duplicator_packages' === $this->get_table()  && 'package' === $this->get_column() ) {
+            return  true;
+        }
+        if ( $table_prefix . 'aiowps_audit_log' === $this->get_table()  && 'stacktrace' === $this->get_column() ) {
             return  true;
         }
         return false;
@@ -865,7 +866,7 @@ class Replace
     {
         $prefix         = in_array($this->intent, ['find_replace', 'import']) ? '_mig_' . $prefix : $prefix;
         $default_tables = [
-            "${prefix}posts",
+            "{$prefix}posts",
         ];
 
         // Account for multisite subsites.
