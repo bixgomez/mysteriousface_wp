@@ -1,0 +1,43 @@
+# Ignore all "Local by Flywheel" stuff.
+/conf
+/logs
+
+# Ignore personal resources.
+/__resources
+/.idea
+/.ddev
+
+# Standard WordPress ignores.
+/web/.htaccess
+/web/license.txt
+/web/readme.html
+/web/sitemap.xml
+/web/sitemap.xml.gz
+/web/*.log
+/web/wp-config.php
+/web/wp-content/advanced-cache.php
+/web/wp-content/backup-db/
+/web/wp-content/backups/
+/web/wp-content/blogs.dir/
+/web/wp-content/cache/
+/web/wp-content/upgrade/
+/web/wp-content/uploads/
+/web/wp-content/mu-plugins/
+/web/wp-content/endurance-page-cache/
+/web/wp-content/wp-cache-config.php
+/web/wp-content/plugins/hello.php
+
+# ignore specific themes
+/web/wp-content/themes/twenty*/
+
+# ignore node dependency directories
+node_modules/
+
+# ignore log files and databases
+*.log
+*.sql
+*.sqlite
+*.sql.gz
+
+# Project-specific ignores.
+/web/images/
