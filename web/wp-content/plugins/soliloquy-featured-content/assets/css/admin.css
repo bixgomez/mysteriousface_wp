@@ -1,0 +1,19 @@
+/* ==========================================================================
+   Featured Content Styles
+   ========================================================================== */
+
+#soliloquy-fc .chosen-container {
+    min-width: 350px;
+    max-width: 100%;
+}
+
+#soliloquy-fc th select,
+#soliloquy-fc th .chosen-container {
+    min-width: 210px;
+    width: 210px;
+    max-width: 100%;
+}
+
+#soliloquy-fc .chosen-container .search-field input {
+    height: 27px;
+}
