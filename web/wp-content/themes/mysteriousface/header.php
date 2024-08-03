@@ -40,6 +40,11 @@
                     array(
                         'theme_location' => 'menu-2',
                         'menu_id' => 'social-media-menu',
+                        'container' => 'nav', // Use 'div' or 'nav' as needed
+                        'container_class' => 'social-media-container', // Add a custom class to the container
+                        'items_wrap' => '<ul id="%1$s" class="%2$s">%3$s</ul>', // Modify the wrapping element for the menu items
+                        'menu_class' => 'social-media-items', 
+                        'walker' => new Social_Media_Walker()
                     )
                 );
                 ?>
