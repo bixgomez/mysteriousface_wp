@@ -200,41 +200,57 @@ class Social_Media_Walker extends Walker_Nav_Menu {
     
 	// Start level (before the <ul> part)
 	function start_lvl(&$output, $depth = 0, $args = array()) {
-			$indent = str_repeat("\t", $depth);
-			$output .= "\n$indent<ul class=\"sub-menu\">\n";
+		$indent = str_repeat("\t", $depth);
+		$output .= "\n$indent<ul class=\"sub-menu\">\n";
 	}
 
 	// End level (after the </ul> part)
 	function end_lvl(&$output, $depth = 0, $args = array()) {
-			$indent = str_repeat("\t", $depth);
-			$output .= "$indent</ul>\n";
+		$indent = str_repeat("\t", $depth);
+		$output .= "$indent</ul>\n";
 	}
 
 	// Start element (before each <li> part)
 	function start_el(&$output, $item, $depth = 0, $args = array(), $id = 0) {
-			$indent = ($depth) ? str_repeat("\t", $depth) : '';
-			$classes = empty($item->classes) ? array() : (array) $item->classes;
-			$class_names = join(' ', apply_filters('nav_menu_css_class', array_filter($classes), $item, $args));
-			$class_names = ' class="' . esc_attr($class_names) . '"';
-			
-			$output .= $indent . '<li' . $class_names .'>';
+		$indent = ($depth) ? str_repeat("\t", $depth) : '';
 
-			$attributes  = !empty($item->attr_title) ? ' title="'  . esc_attr($item->attr_title) .'"' : '';
-			$attributes .= !empty($item->target)     ? ' target="' . esc_attr($item->target) .'"' : '';
-			$attributes .= !empty($item->xfn)        ? ' rel="'    . esc_attr($item->xfn) .'"' : '';
-			$attributes .= !empty($item->url)        ? ' href="'   . esc_attr($item->url) .'"' : '';
+		// Get custom ACF fields
+		$custom_class = get_field('menu_item_class', $item);
+		$custom_image = get_field('menu_item_image', $item);
 
-			$item_output = $args->before;
-			$item_output .= '<a'. $attributes .'>';
-			$item_output .= $args->link_before . apply_filters('the_title', $item->title, $item->ID) . $args->link_after;
-			$item_output .= '</a>';
-			$item_output .= $args->after;
+		// Add custom class to the list of classes
+		$classes = empty($item->classes) ? array() : (array) $item->classes;
+		if ($custom_class) {
+			$classes[] = $custom_class;
+		}
+		$class_names = join(' ', apply_filters('nav_menu_css_class', array_filter($classes), $item, $args));
+		$class_names = ' class="' . esc_attr($class_names) . '"';
 
-			$output .= apply_filters('walker_nav_menu_start_el', $item_output, $item, $depth, $args);
+		// Output the list item
+		$output .= $indent . '<li' . $class_names .'>';
+
+		$attributes  = !empty($item->attr_title) ? ' title="'  . esc_attr($item->attr_title) .'"' : '';
+		$attributes .= !empty($item->target)     ? ' target="' . esc_attr($item->target) .'"' : '';
+		$attributes .= !empty($item->xfn)        ? ' rel="'    . esc_attr($item->xfn) .'"' : '';
+		$attributes .= !empty($item->url)        ? ' href="'   . esc_attr($item->url) .'"' : '';
+
+		$item_output = $args->before;
+
+		// Output the image if it exists
+		if ($custom_image) {
+			$item_output .= '<img src="' . esc_url($custom_image['url']) . '" alt="' . esc_attr($custom_image['alt']) . '" class="menu-item-image">';
+		}
+
+		$item_output .= '<a'. $attributes .'>';
+		$item_output .= $args->link_before . apply_filters('the_title', $item->title, $item->ID) . $args->link_after;
+		$item_output .= '</a>';
+		$item_output .= $args->after;
+
+		$output .= apply_filters('walker_nav_menu_start_el', $item_output, $item, $depth, $args);
 	}
 
 	// End element (after each </li> part)
 	function end_el(&$output, $item, $depth = 0, $args = array()) {
-			$output .= "</li>\n";
+		$output .= "</li>\n";
 	}
 }
