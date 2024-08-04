@@ -186,16 +186,17 @@ if ( defined( 'JETPACK__VERSION' ) ) {
 	require get_template_directory() . '/inc/jetpack.php';
 }
 
-// deactivate new block editor
+/**
+ * deactivate new block editor
+ */
 function phi_theme_support() {
   remove_theme_support( 'widgets-block-editor' );
 }
 add_action( 'after_setup_theme', 'phi_theme_support' );
 
-
-
-
-
+/**
+ * Add provisions for classes and images in menu items.
+ */
 class Social_Media_Walker extends Walker_Nav_Menu {
     
 	// Start level (before the <ul> part)
