@@ -8,7 +8,7 @@
  * @author SoliloquyWP Team <support@soliloquywp.com>
  */
 
- // Exit if accessed directly.
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -63,7 +63,6 @@ class Soliloquy_Common_Admin {
 		// Ensure slider display is correct when trashing/untrashing sliders.
 		add_action( 'wp_trash_post', array( $this, 'trash_slider' ) );
 		add_action( 'untrash_post', array( $this, 'untrash_slider' ) );
-
 	}
 
 	/**
@@ -90,7 +89,6 @@ class Soliloquy_Common_Admin {
 			<p><?php printf( __( 'Soliloquy is now rocking v2! <strong>You need to upgrade your legacy v1 sliders and pre-official release v2 sliders to the official v2 slider architecture.</strong> <a href="%s">Click here to begin the upgrade process.</a>', 'soliloquy' ), esc_url( add_query_arg( 'page', 'soliloquy-settings#!soliloquy-tab-upgrade', admin_url( 'edit.php?post_type=soliloquy' ) ) ) ); ?></p>
 		</div>
 		<?php
-
 	}
 
 	/**
@@ -110,7 +108,6 @@ class Soliloquy_Common_Admin {
 			<p><strong><?php esc_html_e( 'Congratulations! You have upgraded your sliders successfully!', 'soliloquy' ); ?></strong></p>
 		</div>
 		<?php
-
 	}
 
 	/**
@@ -150,7 +147,6 @@ class Soliloquy_Common_Admin {
 				Soliloquy_Common::get_instance()->flush_slider_caches( $post_id, ( ! empty( $slider_data['config']['slug'] ) ? $slider_data['config']['slug'] : '' ) );
 			}
 		}
-
 	}
 
 	/**
@@ -191,7 +187,6 @@ class Soliloquy_Common_Admin {
 				@unlink( $file );
 			}
 		}
-
 	}
 
 	/**
@@ -222,7 +217,6 @@ class Soliloquy_Common_Admin {
 
 		$slider_data['status'] = 'inactive';
 		update_post_meta( $id, '_sol_slider_data', $slider_data );
-
 	}
 
 	/**
@@ -256,7 +250,6 @@ class Soliloquy_Common_Admin {
 		}
 
 		update_post_meta( $id, '_sol_slider_data', $slider_data );
-
 	}
 
 	/**
@@ -280,7 +273,6 @@ class Soliloquy_Common_Admin {
 		);
 
 		return apply_filters( 'soliloquy_slide_positions', $positions );
-
 	}
 
 	/**
@@ -352,7 +344,6 @@ class Soliloquy_Common_Admin {
 		}
 
 		return $data;
-
 	}
 
 	/**
@@ -369,9 +360,7 @@ class Soliloquy_Common_Admin {
 		}
 
 		return self::$instance;
-
 	}
-
 }
 
 // Load the common admin class.

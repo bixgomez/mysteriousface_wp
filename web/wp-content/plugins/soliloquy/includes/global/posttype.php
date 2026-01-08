@@ -5,7 +5,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-if ( !class_exists('Soliloquy_Posttype' ) ) {
+if ( ! class_exists( 'Soliloquy_Posttype' ) ) {
 
 	/**
 	 * Posttype class.
@@ -72,26 +72,35 @@ if ( !class_exists('Soliloquy_Posttype' ) ) {
 			$labels = apply_filters( 'soliloquy_post_type_labels', $labels );
 
 			// Build out the post type arguments.
-			$args = array(
-				'labels'              => $labels,
-				'public'              => false,
-				'exclude_from_search' => true,
-				'show_ui'             => true,
-				'show_in_admin_bar'   => false,
-				'rewrite'             => false,
-				'query_var'           => false,
-				'show_in_rest'       => true,
-				'rest_base'          => 'soliloquy',
-				'menu_position'       => apply_filters( 'soliloquy_post_type_menu_position', 248 ),
-				'menu_icon'           => plugins_url( 'assets/css/images/menu-icon@2x.png', $this->base->file ),
-				'supports'            => array( 'title' ),
+			$args = apply_filters(
+				'soliloquy_post_type_args',
+				[
+					'labels'              => $labels,
+					'public'              => false,
+					'exclude_from_search' => true,
+					'publicly_queryable'  => true,
+					'show_ui'             => true,
+					'show_in_admin_bar'   => false,
+					'rewrite'             => false,
+					'query_var'           => false,
+					'show_in_rest'        => true,
+					'rest_base'           => 'soliloquy',
+					'capability_type'     => 'post',
+					'capabilities'        => array(
+						'read_post' => 'read', // Allow any logged-in user to read (filtered by map_meta_cap).
+					),
+					'menu_position'       => apply_filters( 'soliloquy_post_type_menu_position', 248 ),
+					'menu_icon'           => plugins_url( 'assets/css/images/menu-icon@2x.png', $this->base->file ),
+					'supports'            => [ 'title', 'author' ],
+				]
 			);
-			$args = apply_filters( 'soliloquy_post_type_args', $args );
 
 			// Register the post type with WordPress.
 			register_post_type( 'soliloquy', $args );
 			add_filter( 'rest_prepare_soliloquy', array( $this, 'prepare_meta' ), 10, 3 );
 
+			// Map meta capabilities for proper ownership checks.
+			add_filter( 'map_meta_cap', array( $this, 'map_meta_cap' ), 10, 4 );
 		}
 
 		/**
@@ -106,11 +115,63 @@ if ( !class_exists('Soliloquy_Posttype' ) ) {
 
 			$slider_data = get_post_meta( $post->ID, '_sol_slider_data', true );
 
-			if( $slider_data ) {
+			if ( $slider_data ) {
 				$data->data['slider_data'] = $slider_data;
 			}
 
 			return $data;
+		}
+
+		/**
+		 * Map meta capabilities for Soliloquy post type.
+		 *
+		 * @since 2.5.0
+		 * @param array  $caps    Required capabilities.
+		 * @param string $cap     Capability being checked.
+		 * @param int    $user_id User ID.
+		 * @param array  $args    Additional arguments (post ID).
+		 * @return array Modified capabilities.
+		 */
+		public function map_meta_cap( $caps, $cap, $user_id, $args ) {
+			if ( ! in_array( $cap, array( 'edit_post', 'delete_post', 'read_post' ), true ) ) {
+				return $caps;
+			}
+
+			$post_id = isset( $args[0] ) ? (int) $args[0] : 0;
+			if ( ! $post_id ) {
+				return $caps;
+			}
+
+			$post = get_post( $post_id );
+			if ( ! $post || 'soliloquy' !== $post->post_type ) {
+				return $caps;
+			}
+
+			$user = get_userdata( $user_id );
+			if ( ! $user ) {
+				return $caps;
+			}
+
+			$post_author = (int) $post->post_author;
+
+			// Block authors from accessing sliders they don't own.
+			if ( in_array( 'author', $user->roles, true ) && $user_id !== $post_author ) {
+				return array( 'do_not_allow' );
+			}
+
+			if ( 'edit_post' === $cap ) {
+				$caps = ( $user_id === $post_author ) ? array( 'edit_posts' ) : array( 'edit_others_posts' );
+			}
+
+			if ( 'delete_post' === $cap ) {
+				$caps = ( $user_id === $post_author ) ? array( 'delete_posts' ) : array( 'delete_others_posts' );
+			}
+
+			if ( 'read_post' === $cap ) {
+				$caps = ( 'private' === $post->post_status ) ? array( 'read_private_posts' ) : array( 'read' );
+			}
+
+			return $caps;
 		}
 
 		/**
@@ -127,13 +188,10 @@ if ( !class_exists('Soliloquy_Posttype' ) ) {
 			}
 
 			return self::$instance;
-
 		}
-
 	}
 
 }
 
 // Load the posttype class.
 $soliloquy_posttype = Soliloquy_Posttype::get_instance();
-

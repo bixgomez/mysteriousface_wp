@@ -8,7 +8,7 @@
  * @author SoliloquyWP Team <support@soliloquywp.com>
  */
 
- // Exit if accessed directly.
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -63,7 +63,6 @@ class Soliloquy_Editor {
 
 		// Add a custom media button to the editor.
 		add_filter( 'media_buttons', array( $this, 'media_button' ), 98 );
-
 	}
 
 	/**
@@ -96,7 +95,6 @@ class Soliloquy_Editor {
 
 		// Append the button.
 		echo apply_filters( 'soliloquy_media_button', $button );
-
 	}
 
 	/**
@@ -107,7 +105,6 @@ class Soliloquy_Editor {
 	public function slider_selection_modal() {
 
 		echo $this->get_slider_selection_modal();
-
 	}
 
 	/**
@@ -133,6 +130,11 @@ class Soliloquy_Editor {
 		// Get sliders
 		$sliders = $this->base->get_sliders();
 
+		// Return early if no sliders are found.
+		if ( empty( $sliders ) ) {
+			return '';
+		}
+
 		ob_start();
 		?>
 		<div class="soliloquy-default-ui-wrapper" style="display: none;">
@@ -150,7 +152,8 @@ class Soliloquy_Editor {
 									<ul class="soliloquy-meta attachments" style="padding-left: 8px; top: 1em;">
 										<?php
 										foreach ( (array) $sliders as $slider ) {
-											if ( isset( $post->ID ) && $post->ID == $slider['id'] ) {
+											// Return early if no slider ID.
+											if ( ! isset( $slider['id'] ) || ( isset( $post->ID ) && $post->ID === $slider['id'] ) ) {
 												continue;
 											}
 											?>
@@ -218,7 +221,6 @@ class Soliloquy_Editor {
 		</div><!-- end #soliloquy-default-ui-wrapper -->
 		<?php
 		return ob_get_clean();
-
 	}
 
 	/**
@@ -235,9 +237,7 @@ class Soliloquy_Editor {
 		}
 
 		return self::$instance;
-
 	}
-
 }
 
 // Load the editor class.

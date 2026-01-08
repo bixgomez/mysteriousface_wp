@@ -1,3 +1,15 @@
+<?php
+/**
+ * Slider Type Metabox Partial.
+ *
+ * @package Soliloquy
+ */
+
+// Exit if accessed directly.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+?>
 <div id="soliloquy-uploader">
 
 	<div id="soliloquy-slider-type-tabs">
@@ -32,7 +44,7 @@
 			<!--<span class="spinner soliloquy-spinner"></span>    -->
 			<h2 class="soliloquy-type-label"><span><?php esc_html_e( 'Select Your Slider Type', 'soliloquy' ); ?></span></h2>
 
-			   <ul id="soliloquy-types-nav" class="soliloquy-clear">
+				<ul id="soliloquy-types-nav" class="soliloquy-clear">
 
 					<?php
 					$i = 0; foreach ( (array) $data['types']  as $id => $title ) :
@@ -53,7 +65,7 @@
 				</li>
 
 						<?php
-						$i++;
+						++$i;
 endforeach;
 					?>
 

@@ -8,7 +8,7 @@
  * @author SoliloquyWP Team <support@soliloquywp.com>
  */
 
- // Exit if accessed directly.
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -75,7 +75,7 @@ class Soliloquy_Posttype_Admin {
 
 		add_action( 'all_admin_notices', array( $this, 'admin_header_html' ) );
 
-		  // Load CSS and JS.
+			// Load CSS and JS.
 		add_action( 'admin_enqueue_scripts', array( $this, 'styles' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'scripts' ) );
 
@@ -91,6 +91,7 @@ class Soliloquy_Posttype_Admin {
 		// Expand search with IDs in addition to WordPress default of post/gallery titles.
 		add_action( 'posts_where', array( $this, 'enable_search_by_gallery_id' ), 10 );
 
+		add_action( 'admin_init', array( $this, 'check_user_capability_on_edit' ) );
 	}
 	/**
 	 * Enables search by ID for galleries in table overview screen
@@ -127,7 +128,6 @@ class Soliloquy_Posttype_Admin {
 		}
 
 		return $where;
-
 	}
 	/**
 	 * admin_header_html function.
@@ -145,7 +145,6 @@ class Soliloquy_Posttype_Admin {
 			$this->base->load_admin_partial( '_header.php' );
 
 		}
-
 	}
 
 	/**
@@ -183,7 +182,6 @@ class Soliloquy_Posttype_Admin {
 
 		// Fire a hook to load in custom admin scripts.
 		do_action( 'soliloquy_admin_scripts' );
-
 	}
 
 	/**
@@ -213,7 +211,6 @@ class Soliloquy_Posttype_Admin {
 
 		// Fire a hook to load in custom admin styles.
 		do_action( 'soliloquy_table_styles' );
-
 	}
 
 	/**
@@ -247,7 +244,6 @@ class Soliloquy_Posttype_Admin {
 		// Return merged column set.  This allows plugins to output their columns (e.g. Yoast SEO),
 		// and column management plugins, such as Admin Columns, should play nicely.
 		return array_merge( $soliloquy_columns, $columns );
-
 	}
 	/**
 	 * Add data to the custom columns added to the soliloquy post type.
@@ -336,7 +332,6 @@ class Soliloquy_Posttype_Admin {
 				the_modified_date();
 				break;
 		}
-
 	}
 	/**
 	 * Adds soliloquy fields to the quick editing and bulk editing screens
@@ -405,9 +400,9 @@ class Soliloquy_Posttype_Admin {
 
 							<select name="_soliloquy[transition]">
 
-								  <?php foreach ( (array) $this->metabox->get_slider_transitions() as $i => $data ) : ?>
+									<?php foreach ( (array) $this->metabox->get_slider_transitions() as $i => $data ) : ?>
 
-									  <option value="<?php echo $data['value']; ?>"><?php echo $data['name']; ?></option>
+										<option value="<?php echo $data['value']; ?>"><?php echo $data['name']; ?></option>
 
 									<?php endforeach; ?>
 
@@ -423,7 +418,6 @@ class Soliloquy_Posttype_Admin {
 				break;
 
 		}
-
 	}
 
 	/**
@@ -495,7 +489,6 @@ class Soliloquy_Posttype_Admin {
 				<?php
 				break;
 		}
-
 	}
 
 	/**
@@ -560,7 +553,6 @@ class Soliloquy_Posttype_Admin {
 			$this->metabox->flush_slider_caches( $post_id, $settings['config']['slug'] );
 
 		}
-
 	}
 
 	/**
@@ -593,7 +585,6 @@ class Soliloquy_Posttype_Admin {
 		$messages['soliloquy'] = apply_filters( 'soliloquy_messages', $messagesArr );
 
 		return $messages;
-
 	}
 
 	/**
@@ -606,7 +597,6 @@ class Soliloquy_Posttype_Admin {
 		?>
 		<style type="text/css">#menu-posts-soliloquy .wp-menu-image img { width: 16px; height: 16px; } #menu-posts-soliloquy ul li:last-child a{color: rgb(255,55, 0); }</style>
 		<?php
-
 	}
 
 	/**
@@ -661,7 +651,7 @@ class Soliloquy_Posttype_Admin {
 			wp_update_post( $data );
 
 			// Increment count for notice
-			$fixedSliders++;
+			++$fixedSliders;
 		}
 
 		// Make sure this doesn't run again
@@ -671,7 +661,6 @@ class Soliloquy_Posttype_Admin {
 		if ( $fixedSliders > 0 ) {
 			add_action( 'admin_notices', array( $this, 'fixed_soliloquyv2_cpts' ) );
 		}
-
 	}
 
 	/**
@@ -688,8 +677,35 @@ class Soliloquy_Posttype_Admin {
 			<p><strong><?php echo $fixedSliders . esc_attr__( ' slider(s) fixed successfully. This is a one time operation, and you don\'t need to do anything else.', 'soliloquy' ); ?></strong></p>
 		</div>
 		<?php
-
 	}
+
+	/**
+	 * Check if the current user has the capability to edit the slider.
+	 *
+	 * @return void
+	 */
+	public function check_user_capability_on_edit() {
+		global $pagenow;
+		// phpcs:disable WordPress.Security.NonceVerification -- Not needed here.
+		// Check if we are on the post edit screen.
+		if ( 'post.php' === $pagenow && isset( $_GET['action'] ) && 'edit' === $_GET['action'] ) {
+
+			$post_id = isset( $_GET['post'] ) ? (int) $_GET['post'] : false;
+			// phpcs:enable WordPress.Security.NonceVerification
+			if ( $post_id ) {
+				$post = get_post( $post_id );
+
+				if ( 'soliloquy' !== get_post_type( $post ) ) {
+					return;
+				}
+
+				if ( ! current_user_can( 'edit_post', $post_id ) ) {
+					wp_die( esc_html__( 'You do not have permission to edit this slider.', 'soliloquy' ) );
+				}
+			}
+		}
+	}
+
 
 	/**
 	 * Returns the singleton instance of the class.
@@ -705,9 +721,7 @@ class Soliloquy_Posttype_Admin {
 		}
 
 		return self::$instance;
-
 	}
-
 }
 
 // Load the posttype admin class.

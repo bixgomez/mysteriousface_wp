@@ -7,6 +7,17 @@
  * @package envira
  * @author  Devin Vinson
  */
+
+// Exit if accessed directly.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+/**
+ * Review class.
+ *
+ * @since 1.1.4.5
+ */
 class Soliloquy_Review {
 
 	/**
@@ -67,7 +78,6 @@ class Soliloquy_Review {
 		add_action( 'admin_notices', array( $this, 'review' ) );
 		add_action( 'wp_ajax_soliloquy_dismiss_review', array( $this, 'dismiss_review' ) );
 		add_filter( 'admin_footer_text', array( $this, 'admin_footer' ), 1, 2 );
-
 	}
 
 	/**
@@ -153,7 +163,7 @@ class Soliloquy_Review {
 		?>
 		<div class="notice notice-info is-dismissible soliloquy-review-notice">
 			<p><?php _e( 'Hey, I noticed you created a slider with Soliloquy - that’s awesome! Could you please do me a BIG favor and give it a 5-star rating on WordPress to help us spread the word and boost our motivation.', 'soliloquy-gallery' ); ?></p>
-			<p><strong><?php _e( '~ Nathan Singh<br>CEO of Soliloquy', 'soliloquy' ); ?></strong></p>
+			<p><strong><?php _e( '~ Syed Balkhi<br>CEO of Soliloquy', 'soliloquy' ); ?></strong></p>
 			<p>
 				<a href="https://wordpress.org/support/plugin/soliloquy-lite/reviews/?filter=5#new-post" class="soliloquy-dismiss-review-notice soliloquy-review-out" target="_blank" rel="noopener"><?php _e( 'Ok, you deserve it', 'soliloquy-gallery' ); ?></a><br>
 				<a href="#" class="soliloquy-dismiss-review-notice" target="_blank" rel="noopener"><?php _e( 'Nope, maybe later', 'soliloquy' ); ?></a><br>
@@ -168,7 +178,8 @@ class Soliloquy_Review {
 					}
 
 					$.post( ajaxurl, {
-						action: 'soliloquy_dismiss_review'
+						action: 'soliloquy_dismiss_review',
+						nonce: '<?php echo wp_create_nonce( 'nonce_soliloquy_dismiss_review' ); ?>'
 					});
 
 					$('.soliloquy-review-notice').remove();
@@ -184,6 +195,15 @@ class Soliloquy_Review {
 	 * @since 1.1.6.1
 	 */
 	public function dismiss_review() {
+
+		if ( ! current_user_can( apply_filters( 'am_notifications_display', 'manage_options' ) ) ) {
+			return;
+		}
+
+		// check nonce.
+		if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], 'nonce_soliloquy_dismiss_review' ) ) {
+			return;
+		}
 
 		$review = get_option( 'soliloquy_review' );
 		if ( ! $review ) {
@@ -205,7 +225,6 @@ class Soliloquy_Review {
 		}
 
 		return self::$instance;
-
 	}
 }
 

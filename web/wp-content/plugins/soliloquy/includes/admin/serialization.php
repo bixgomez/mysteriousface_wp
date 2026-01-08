@@ -11,7 +11,7 @@
  * @author  Tim Carr
  */
 
- // Exit if accessed directly.
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -51,7 +51,6 @@ class Soliloquy_Serialization_Admin {
 	 * @since 2.3.9.6
 	 */
 	public function __construct() {
-
 	}
 
 	/**
@@ -68,16 +67,17 @@ class Soliloquy_Serialization_Admin {
 		if ( ! preg_match( '/^[aOs]:/', $string ) ) {
 			return $string;
 		}
-		if ( @unserialize( $string ) !== false ) {
-			return @unserialize( $string );
+
+		$unserialized_data = @unserialize( $string, [ 'allowed_classes' => false ] );
+		if ( $unserialized_data !== false ) {
+			return $unserialized_data;
 		}
 
 		// String needs fixing - fix it
 		$string = preg_replace_callback( '/\bs:(\d+):"(.*?)"/', array( $this, 'fix_str_length' ), $string );
 
 		// Return fixed unserialized data
-		return @unserialize( $string );
-
+		return @unserialize( $string, [ 'allowed_classes' => false ] );
 	}
 
 	/**
@@ -94,7 +94,6 @@ class Soliloquy_Serialization_Admin {
 		$string       = $matches[2];
 		$right_length = strlen( $string );
 		return 's:' . $right_length . ':"' . $string . '"';
-
 	}
 
 	/**
@@ -111,9 +110,7 @@ class Soliloquy_Serialization_Admin {
 		}
 
 		return self::$instance;
-
 	}
-
 }
 
 // Load the serialization admin class.

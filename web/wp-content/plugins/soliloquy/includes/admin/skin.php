@@ -8,7 +8,7 @@
  * @author SoliloquyWP Team <support@soliloquywp.com>
  */
 
- // Exit if accessed directly.
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -25,7 +25,6 @@ class Soliloquy_Skin extends WP_Upgrader_Skin {
 	public function __construct( $args = array() ) {
 
 		parent::__construct();
-
 	}
 
 	/**
@@ -40,7 +39,6 @@ class Soliloquy_Skin extends WP_Upgrader_Skin {
 		if ( is_object( $upgrader ) ) {
 			$this->upgrader =& $upgrader;
 		}
-
 	}
 
 	/**
@@ -53,7 +51,6 @@ class Soliloquy_Skin extends WP_Upgrader_Skin {
 	public function set_result( $result ) {
 
 		$this->result = $result;
-
 	}
 
 	/**
@@ -85,7 +82,6 @@ class Soliloquy_Skin extends WP_Upgrader_Skin {
 			echo json_encode( array( 'error' => esc_attr__( 'There was an error installing the addon. Please try again.', 'soliloquy' ) ) );
 			die;
 		}
-
 	}
 
 	/**
@@ -94,8 +90,8 @@ class Soliloquy_Skin extends WP_Upgrader_Skin {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $string The feedback string.
+	 * @param string $feedback Feedback message to display.
+	 * @param mixed  ...$args  Optional additional arguments to format the feedback message.
 	 */
-	function feedback( $string ) {}
-
+	function feedback( $feedback, ...$args ) {}
 }

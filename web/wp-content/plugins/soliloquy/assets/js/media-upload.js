@@ -7,6 +7,14 @@
 (function ($, window, document, soliloquy_media_uploader) {
 	$(function () {
 		if (typeof uploader !== 'undefined') {
+
+			function isHeicUploadable(file) {
+				if (file.name.toLowerCase().endsWith('.heic') && !soliloquy_media_uploader.is_imagick_enabled) {
+					return false
+				}
+				return true
+			}
+
 			//soliloquy_media_uploader.uploader_files_computer
 			$('input#plupload-browse-button').val(
 				soliloquy_media_uploader.uploader_files_computer,
@@ -27,7 +35,17 @@
 
 			// Files Added for Uploading
 			uploader.bind('FilesAdded', function (up, files) {
+				up.files = files;
 				$(soliloquy_bar).fadeIn();
+			});
+
+			uploader.bind('BeforeUpload', function(up, file) {
+				if (!isHeicUploadable(file)) {
+					$('#soliloquy-upload-error').html(
+						`<div class="error fade"><p>${soliloquy_media_uploader.heic_error_text}</p></div>`
+					);
+					return false
+				}
 			});
 
 			// File Uploading - show progress bar
@@ -91,10 +109,10 @@
 				// Show message
 				$('#soliloquy-upload-error').html(
 					'<div class="error fade"><p>' +
-						err.file.name +
-						': ' +
-						err.message +
-						'</p></div>',
+					err.file.name +
+					': ' +
+					err.message +
+					'</p></div>',
 				);
 				up.refresh();
 			});

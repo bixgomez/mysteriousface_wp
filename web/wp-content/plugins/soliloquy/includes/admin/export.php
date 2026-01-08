@@ -8,7 +8,7 @@
  * @author SoliloquyWP Team <support@soliloquywp.com>
  */
 
- // Exit if accessed directly.
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -54,7 +54,6 @@ class Soliloquy_Export {
 
 		// Export a slider.
 		$this->export_slider();
-
 	}
 
 	/**
@@ -96,7 +95,6 @@ class Soliloquy_Export {
 
 		// Make the settings downloadable to a JSON file and die.
 		die( json_encode( $data ) );
-
 	}
 
 	/**
@@ -109,7 +107,6 @@ class Soliloquy_Export {
 	public function has_exported_slider() {
 
 		return ! empty( $_POST['soliloquy_export'] );
-
 	}
 
 	/**
@@ -122,7 +119,6 @@ class Soliloquy_Export {
 	public function verify_exported_slider() {
 
 		return isset( $_POST['soliloquy-export'] ) && wp_verify_nonce( $_POST['soliloquy-export'], 'soliloquy-export' );
-
 	}
 
 	/**
@@ -135,7 +131,6 @@ class Soliloquy_Export {
 	public function can_export_slider() {
 
 		return apply_filters( 'soliloquy_export_cap', current_user_can( 'manage_options' ) );
-
 	}
 
 	/**
@@ -152,9 +147,7 @@ class Soliloquy_Export {
 		}
 
 		return self::$instance;
-
 	}
-
 }
 
 // Load the export class.

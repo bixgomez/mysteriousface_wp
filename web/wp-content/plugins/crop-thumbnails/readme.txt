@@ -3,9 +3,9 @@ Contributors: volkmar-kantor
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=volkmar%2ekantor%40gmx%2ede&lc=DE&item_name=Volkmar%20Kantor%20%2d%20totalmedial%2ede&item_number=crop%2dthumbnails&no_note=0&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest
 Tags: post-thumbnails, images, media library
 Requires at least: 5.0
-Tested up to: 6.4.2
+Tested up to: 6.8.2
 Requires PHP: 7.4.0
-Stable tag: 1.8.0
+Stable tag: 1.9.7
 License: GPL v3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -124,6 +124,43 @@ If you fork and planning to publish the forked plugin, please contact me.
 5. Quicktest on settings-page, to check if your system is correct setup.
 
 == Changelog ==
+= 1.9.7 =
+* fix the script loading in the backend if using wp_enqueue_script_module
+* Remove legacy filter with typo error: "crop_thumbnails_activat_on_adminpages"
+* update dependencies
+
+= 1.9.6 =
+* change the basesize for cropping from "large" to "full" to prevent that the wrong dimensions are created for the crop
+
+= 1.9.5 =
+* fix wrong filter parameter count for "image_editor_output_format"
+* add filter `crop_thumbnails_crop_data` to make the crop-area-background-image editable
+* make `crop_thumbnails_crop_data_image_sizes` deprecated in favor of `crop_thumbnails_crop_data`
+
+= 1.9.4 =
+* add wp-api script to wp-backend (seems that wp_enqueue_script_module to not do this on there own)
+
+= 1.9.3 =
+* use rename instead of copy-unlink to move the files from the temporary directory
+* improve logging
+
+= 1.9.2 =
+* hardend the crop solution by calculating the crop region in the frontend
+* lower the minimal wordpress version to 5.0 (add a fallback for wp_enqueue_script_module)
+
+= 1.9.1 =
+* remove of a debug message that was visible in the frontend
+* raise minimal wordpress version to 6.5 (because of usage of wp_enqueue_script_module)
+
+= 1.9.0 =
+* there was a contribution by Aaron Summer (https://github.com/aaronsummers) via Github to make the plugin more compatible with the Imagify plugin - Thank you Aaron!
+* recalculate the crop region on the server side to always use the original uploaded image for cropping (instead of the eventually scaled "full" image)
+* the settings screen > user settings do have a new option. You can set the a global "same ratio option" that is applied to all users.
+* add image/avif to allowed mime types
+* update frontend libraries
+* improve plugin test: add plugin list and copy to clipboard button
+* change all remaining ajax request to rest-api
+
 = 1.8.0 =
 * add to more filters for controlling what crop-sizes should be available (thanks to https://github.com/wijzijnweb)
 * update frontend libraries

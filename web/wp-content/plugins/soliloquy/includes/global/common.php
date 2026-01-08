@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-if ( !class_exists('Soliloquy_Common' ) ) {
+if ( ! class_exists( 'Soliloquy_Common' ) ) {
 
 	/**
 	 * Common class.
@@ -58,7 +58,6 @@ if ( !class_exists('Soliloquy_Common' ) ) {
 
 			// Load the base class object.
 			$this->base = Soliloquy::get_instance();
-
 		}
 
 		/**
@@ -116,7 +115,6 @@ if ( !class_exists('Soliloquy_Common' ) ) {
 			}
 
 			return apply_filters( 'soliloquy_slider_sizes', $sizes );
-
 		}
 
 		/**
@@ -142,7 +140,6 @@ if ( !class_exists('Soliloquy_Common' ) ) {
 			);
 
 			return apply_filters( 'soliloquy_slider_themes', $themes );
-
 		}
 
 		/**
@@ -174,7 +171,6 @@ if ( !class_exists('Soliloquy_Common' ) ) {
 			);
 
 			return apply_filters( 'soliloquy_slider_transitions', $transitions );
-
 		}
 
 		/**
@@ -206,7 +202,6 @@ if ( !class_exists('Soliloquy_Common' ) ) {
 			);
 
 			return apply_filters( 'soliloquy_slider_positions', $positions );
-
 		}
 		/**
 		 * Helper method for retrieving slider sort options.
@@ -241,7 +236,6 @@ if ( !class_exists('Soliloquy_Common' ) ) {
 			);
 
 			return apply_filters( 'soliloquy_slider_sort', $sort );
-
 		}
 		/**
 		 * Helper method for retrieving caption positions.
@@ -272,7 +266,6 @@ if ( !class_exists('Soliloquy_Common' ) ) {
 			);
 
 			return apply_filters( 'soliloquy_caption_positions', $positions );
-
 		}
 
 		/**
@@ -300,7 +293,6 @@ if ( !class_exists('Soliloquy_Common' ) ) {
 			);
 
 			return apply_filters( 'soliloquy_aria_live_values', $values );
-
 		}
 
 		/**
@@ -329,7 +321,6 @@ if ( !class_exists('Soliloquy_Common' ) ) {
 
 			// Return the key specified.
 			return isset( $defaults[ $key ] ) ? $defaults[ $key ] : false;
-
 		}
 
 		/**
@@ -387,7 +378,6 @@ if ( !class_exists('Soliloquy_Common' ) ) {
 
 			);
 			return apply_filters( 'soliloquy_defaults', $defaults, $post_id );
-
 		}
 
 		/**
@@ -402,7 +392,7 @@ if ( !class_exists('Soliloquy_Common' ) ) {
 			$supported_file_types = array(
 				array(
 					'title'      => esc_attr__( 'Image Files', 'soliloquy' ),
-					'extensions' => 'jpg,jpeg,jpe,gif,png,bmp,tif,tiff,JPG,JPEG,JPE,GIF,PNG,BMP,TIF,TIFF',
+					'extensions' => 'jpg,jpeg,jpe,gif,png,bmp,tif,tiff,JPG,JPEG,JPE,GIF,PNG,BMP,TIF,TIFF,webp,heic',
 				),
 			);
 
@@ -439,7 +429,6 @@ if ( !class_exists('Soliloquy_Common' ) ) {
 
 			// Return the key specified.
 			return isset( $defaults[ $key ] ) ? $defaults[ $key ] : false;
-
 		}
 
 		/**
@@ -465,7 +454,6 @@ if ( !class_exists('Soliloquy_Common' ) ) {
 
 			);
 			return apply_filters( 'soliloquy_meta_defaults', $defaults, $post_id, $attach_id );
-
 		}
 
 		/**
@@ -488,7 +476,6 @@ if ( !class_exists('Soliloquy_Common' ) ) {
 			$file_types = apply_filters( 'soliloquy_get_self_hosted_supported_filetypes', $file_types );
 
 			return $file_types;
-
 		}
 
 		/**
@@ -513,7 +500,6 @@ if ( !class_exists('Soliloquy_Common' ) ) {
 			}
 
 			return $file_types_str;
-
 		}
 
 		/**
@@ -631,7 +617,7 @@ if ( !class_exists('Soliloquy_Common' ) ) {
 						$md = $saved['width'] . 'x' . $saved['height'];
 
 						if ( $crop ) {
-							$md .= $align ? "_${align}" : '_c';
+							$md .= $align ? "_{$align}" : '_c';
 						}
 
 						$metadata['image_meta']['resized_images'][] = $md;
@@ -648,7 +634,6 @@ if ( !class_exists('Soliloquy_Common' ) ) {
 
 			// Return the resized image URL.
 			return $resized_url;
-
 		}
 
 		/**
@@ -722,15 +707,15 @@ if ( !class_exists('Soliloquy_Common' ) ) {
 			$name = wp_basename( $file_path, ".$ext" );
 
 			// Suffix applied to filename.
-			$suffix = "${dest_width}x${dest_height}";
+			$suffix = "{$dest_width}x{$dest_height}";
 
 			// Set alignment information on the file.
 			if ( $crop ) {
-				$suffix .= ( $align ) ? "_${align}" : '_c';
+				$suffix .= ( $align ) ? "_{$align}" : '_c';
 			}
 
 			// Get the destination file name.
-			$dest_file_name = "${dir}/${name}-${suffix}.${ext}";
+			$dest_file_name = "{$dir}/{$name}-{$suffix}.{$ext}";
 
 			// Return the info.
 			$image_info = array(
@@ -747,7 +732,6 @@ if ( !class_exists('Soliloquy_Common' ) ) {
 				'dest_file_name' => $dest_file_name,
 			);
 			return apply_filters( 'soliloquy_get_image_info', $image_info, $data );
-
 		}
 
 		/**
@@ -771,7 +755,6 @@ if ( !class_exists('Soliloquy_Common' ) ) {
 
 			// Run a hook for Addons to access.
 			do_action( 'soliloquy_flush_caches', $post_id, $slug );
-
 		}
 
 		/**
@@ -783,7 +766,6 @@ if ( !class_exists('Soliloquy_Common' ) ) {
 
 			$time = ini_get( 'max_execution_time' );
 			return ! $time || empty( $time ) ? (int) 0 : $time;
-
 		}
 
 
@@ -861,7 +843,6 @@ if ( !class_exists('Soliloquy_Common' ) ) {
 			$result = apply_filters( 'soliloquy_get_video_type', $result, $url, $item, $data );
 
 			return $result;
-
 		}
 
 		/**
@@ -889,7 +870,6 @@ if ( !class_exists('Soliloquy_Common' ) ) {
 			);
 
 			return apply_filters( 'soliloquy_youtube_args', $args, $data );
-
 		}
 
 		/**
@@ -913,7 +893,6 @@ if ( !class_exists('Soliloquy_Common' ) ) {
 			);
 
 			return apply_filters( 'soliloquy_vimeo_args', $args, $data );
-
 		}
 
 		/**
@@ -937,7 +916,6 @@ if ( !class_exists('Soliloquy_Common' ) ) {
 			);
 
 			return apply_filters( 'soliloquy_wistia_args', $args, $data );
-
 		}
 
 		/**
@@ -960,7 +938,6 @@ if ( !class_exists('Soliloquy_Common' ) ) {
 			);
 
 			return apply_filters( 'soliloquy_local_video_args', $args, $data );
-
 		}
 
 		/**
@@ -1029,7 +1006,7 @@ if ( !class_exists('Soliloquy_Common' ) ) {
 				case 'id':
 					if ( $sorting_direction === 'asc' ) {
 						ksort( $data['slider'] );
-					} else if ( $sorting_direction === 'desc' ) {
+					} elseif ( $sorting_direction === 'desc' ) {
 						krsort( $data['slider'] );
 					}
 					break;
@@ -1039,7 +1016,6 @@ if ( !class_exists('Soliloquy_Common' ) ) {
 			}
 
 			return $data;
-
 		}
 		/**
 		 * Returns the query args to be passed to embedded / self hosted videos
@@ -1057,7 +1033,6 @@ if ( !class_exists('Soliloquy_Common' ) ) {
 			);
 
 			return apply_filters( 'soliloquy_embed_args', $args, $data, $url );
-
 		}
 
 		/**
@@ -1074,9 +1049,7 @@ if ( !class_exists('Soliloquy_Common' ) ) {
 			}
 
 			return self::$instance;
-
 		}
-
 	}
 
 }
@@ -1085,7 +1058,7 @@ if ( !class_exists('Soliloquy_Common' ) ) {
 $soliloquy_common = Soliloquy_Common::get_instance();
 
 
-if ( !function_exists('soliloquy_is_mobile' ) ) {
+if ( ! function_exists( 'soliloquy_is_mobile' ) ) {
 
 	/**
 	 * Helper Method to check if is mobile.

@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-if ( !class_exists('Soliloquy_Widget' ) ) {
+if ( ! class_exists( 'Soliloquy_Widget' ) ) {
 
 	/**
 	 * Soliloquy Widget.
@@ -75,7 +75,6 @@ if ( !class_exists('Soliloquy_Widget' ) ) {
 			$control_ops = apply_filters( 'soliloquy_widget_control_ops', $control_ops );
 
 			parent::__construct( 'soliloquy', apply_filters( 'soliloquy_widget_name', esc_attr__( 'Soliloquy', 'soliloquy' ) ), $widget_ops, $control_ops );
-
 		}
 
 		/**
@@ -117,7 +116,6 @@ if ( !class_exists('Soliloquy_Widget' ) ) {
 			echo $after_widget;
 
 			do_action( 'soliloquy_widget_after_output', $args, $instance );
-
 		}
 
 		/**
@@ -138,7 +136,6 @@ if ( !class_exists('Soliloquy_Widget' ) ) {
 			$instance['soliloquy_id'] = absint( $new_instance['soliloquy_id'] );
 
 			return apply_filters( 'soliloquy_widget_update_instance', $instance, $new_instance );
-
 		}
 
 		/**
@@ -184,9 +181,7 @@ if ( !class_exists('Soliloquy_Widget' ) ) {
 			</p>
 			<?php
 			do_action( 'soliloquy_widget_after_form', $instance );
-
 		}
-
 	}
 
 }

@@ -1,4 +1,13 @@
 <?php
+/**
+ * @package ACF
+ * @author  WP Engine
+ *
+ * © 2025 Advanced Custom Fields (ACF®). All rights reserved.
+ * "ACF" is a trademark of WP Engine.
+ * Licensed under the GNU General Public License v2 or later.
+ * https://www.gnu.org/licenses/gpl-2.0.html
+ */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
@@ -24,8 +33,9 @@ if ( ! class_exists( 'ACF_Ajax_Query_Users' ) ) :
 				return new WP_Error( 'acf_invalid_args', __( 'Invalid request args.', 'acf' ), array( 'status' => 404 ) );
 			}
 
-			$nonce  = $request['nonce'];
-			$action = $request['field_key'];
+			$nonce        = $request['nonce'];
+			$action       = $request['field_key'];
+			$field_action = true;
 
 			if ( isset( $request['conditional_logic'] ) && true === (bool) $request['conditional_logic'] ) {
 				if ( ! acf_current_user_can_admin() ) {
@@ -33,11 +43,12 @@ if ( ! class_exists( 'ACF_Ajax_Query_Users' ) ) :
 				}
 
 				// Use the standard ACF admin nonce.
-				$nonce  = '';
-				$action = '';
+				$nonce        = '';
+				$action       = '';
+				$field_action = false;
 			}
 
-			if ( ! acf_verify_ajax( $nonce, $action ) ) {
+			if ( ! acf_verify_ajax( $nonce, $action, $field_action ) ) {
 				return new WP_Error( 'acf_invalid_nonce', __( 'Invalid nonce.', 'acf' ), array( 'status' => 404 ) );
 			}
 

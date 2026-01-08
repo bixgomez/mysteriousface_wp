@@ -25,7 +25,6 @@ if ( ! function_exists( 'soliloquy_slider' ) ) {
 
 		// If not by ID, it must be a slug, so return the slug.
 		return soliloquy( $id, 'slug', array(), $return );
-
 	}
 }
 
@@ -68,7 +67,6 @@ if ( ! class_exists( 'Tgmsp' ) ) {
 			// Make the license key piece backwards compat.
 			global $soliloquy_license;
 			$soliloquy_license = get_option( 'soliloquy_license_key' );
-
 		}
 
 		/**
@@ -107,7 +105,6 @@ if ( ! class_exists( 'Tgmsp' ) ) {
 		public static function get_instance() {
 
 			return self::$instance;
-
 		}
 
 		/**
@@ -118,7 +115,6 @@ if ( ! class_exists( 'Tgmsp' ) ) {
 		public static function get_key() {
 
 			return Soliloquy::get_instance()->get_license_key();
-
 		}
 
 		/**
@@ -129,7 +125,6 @@ if ( ! class_exists( 'Tgmsp' ) ) {
 		public static function get_file() {
 
 			return Soliloquy::get_instance()->file;
-
 		}
 
 		/**
@@ -140,7 +135,6 @@ if ( ! class_exists( 'Tgmsp' ) ) {
 		public static function get_sliders() {
 
 			return Soliloquy::get_instance()->get_sliders();
-
 		}
 
 		/**
@@ -151,7 +145,6 @@ if ( ! class_exists( 'Tgmsp' ) ) {
 		public static function is_soliloquy_screen() {
 
 			return Soliloquy::is_soliloquy_screen();
-
 		}
 
 		/**
@@ -162,9 +155,7 @@ if ( ! class_exists( 'Tgmsp' ) ) {
 		public static function is_soliloquy_add_edit_screen() {
 
 			return Soliloquy::is_soliloquy_add_edit_screen();
-
 		}
-
 	}
 
 	// Initialize the legacy class so addons can be updated and used.
@@ -201,7 +192,6 @@ if ( ! class_exists( 'Tgmsp_Strings' ) ) {
 		public function __construct() {
 
 			self::$instance = $this;
-
 		}
 
 		/**
@@ -212,9 +202,7 @@ if ( ! class_exists( 'Tgmsp_Strings' ) ) {
 		public static function get_instance() {
 
 			return self::$instance;
-
 		}
-
 	}
 
 	// Initialize the legacy class to prevent fatal errors.
@@ -326,8 +314,6 @@ if ( ! class_exists( 'Tgmsp_Updater' ) ) {
 			if ( class_exists( 'Soliloquy_Updater' ) ) {
 				return new Soliloquy_Updater( $config );
 			}
-
 		}
-
 	}
 }

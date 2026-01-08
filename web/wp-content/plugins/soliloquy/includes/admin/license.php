@@ -8,7 +8,7 @@
  * @author SoliloquyWP Team <support@soliloquywp.com>
  */
 
- // Exit if accessed directly.
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -110,7 +110,6 @@ class Soliloquy_License {
 		$this->maybe_validate_key();
 		$this->maybe_deactivate_key();
 		$this->maybe_refresh_key();
-
 	}
 
 	/**
@@ -131,7 +130,6 @@ class Soliloquy_License {
 		}
 
 		$this->verify_key();
-
 	}
 
 	/**
@@ -165,7 +163,6 @@ class Soliloquy_License {
 		$option['is_invalid']  = false;
 		$this->success[]       = isset( $verify->success ) ? $verify->success : esc_attr__( 'Congratulations! This site is now receiving automatic updates.', 'soliloquy' );
 		update_option( 'soliloquy', $option );
-
 	}
 
 	/**
@@ -178,7 +175,6 @@ class Soliloquy_License {
 	public function is_verifying_key() {
 
 		return isset( $_POST['soliloquy-license-key'] ) && isset( $_POST['soliloquy-verify-submit'] );
-
 	}
 
 	/**
@@ -191,7 +187,6 @@ class Soliloquy_License {
 	public function verify_key_action() {
 
 		return isset( $_POST['soliloquy-verify-submit'] ) && wp_verify_nonce( $_POST['soliloquy-key-nonce'], 'soliloquy-key-nonce' );
-
 	}
 
 	/**
@@ -218,7 +213,6 @@ class Soliloquy_License {
 				$this->validate_key();
 			}
 		}
-
 	}
 
 	/**
@@ -284,7 +278,6 @@ class Soliloquy_License {
 		$option['is_disabled'] = false;
 		$option['is_invalid']  = false;
 		update_option( 'soliloquy', $option );
-
 	}
 
 	/**
@@ -305,7 +298,6 @@ class Soliloquy_License {
 		}
 
 		$this->deactivate_key();
-
 	}
 
 	/**
@@ -333,7 +325,6 @@ class Soliloquy_License {
 		// Otherwise, our request has been done successfully. Reset the option and set the success message.
 		$this->success[] = isset( $deactivate->success ) ? $deactivate->success : esc_attr__( 'Congratulations! You have deactivated the key from this site successfully.', 'soliloquy' );
 		update_option( 'soliloquy', Soliloquy::default_options() );
-
 	}
 
 	/**
@@ -346,7 +337,6 @@ class Soliloquy_License {
 	public function is_deactivating_key() {
 
 		return isset( $_POST['soliloquy-license-key'] ) && isset( $_POST['soliloquy-deactivate-submit'] );
-
 	}
 
 	/**
@@ -359,7 +349,6 @@ class Soliloquy_License {
 	public function deactivate_key_action() {
 
 		return isset( $_POST['soliloquy-deactivate-submit'] ) && wp_verify_nonce( $_POST['soliloquy-key-nonce'], 'soliloquy-key-nonce' );
-
 	}
 
 	/**
@@ -381,7 +370,6 @@ class Soliloquy_License {
 
 		// Refreshing is simply a word alias for validating a key. Force true to set contextual messages.
 		$this->validate_key( true );
-
 	}
 
 	/**
@@ -394,7 +382,6 @@ class Soliloquy_License {
 	public function is_refreshing_key() {
 
 		return isset( $_POST['soliloquy-license-key'] ) && isset( $_POST['soliloquy-refresh-submit'] );
-
 	}
 
 	/**
@@ -407,7 +394,6 @@ class Soliloquy_License {
 	public function refresh_key_action() {
 
 		return isset( $_POST['soliloquy-refresh-submit'] ) && wp_verify_nonce( $_POST['soliloquy-key-nonce'], 'soliloquy-key-nonce' );
-
 	}
 
 	/**
@@ -495,11 +481,10 @@ class Soliloquy_License {
 			endif;
 
 		}
-
 	}
 
 	/**
-	 * Queries the remote URL via wp_remote_post and returns a json decoded response.
+	 * Queries the remote URL via wp_safe_remote_post and returns a json decoded response.
 	 *
 	 * @since 1.0.0
 	 *
@@ -532,14 +517,14 @@ class Soliloquy_License {
 			)
 		);
 
-		// Setup variable for wp_remote_post.
+		// Setup variable for wp_safe_remote_post.
 		$post = array(
 			'headers' => $headers,
 			'body'    => $body,
 		);
 
 		// Perform the query and retrieve the response.
-		$response      = wp_remote_post( 'http://soliloquywp.com/', $post );
+		$response      = wp_safe_remote_post( 'http://soliloquywp.com/', $post );
 		$response_code = wp_remote_retrieve_response_code( $response );
 		$response_body = wp_remote_retrieve_body( $response );
 
@@ -550,7 +535,6 @@ class Soliloquy_License {
 
 		// Return the json decoded content.
 		return json_decode( $response_body );
-
 	}
 
 	/**
@@ -567,9 +551,7 @@ class Soliloquy_License {
 		}
 
 		return self::$instance;
-
 	}
-
 }
 
 // Load the license class.

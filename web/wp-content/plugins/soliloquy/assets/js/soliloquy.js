@@ -34,6 +34,10 @@ function soliloquyYouTubeVids(data, id, width, height, holder, $, $current) {
 		.css({ 'display': 'block', 'z-index': '1210' });
 	player = $current;
 
+	if (data.autoplay === 1) {
+		data.mute = 1
+	}
+
 	// Load a new video into the slider.
 	if (YT.Player) {
 		// Only init YouTube player if we haven't done so already for this video ID
@@ -50,6 +54,7 @@ function soliloquyYouTubeVids(data, id, width, height, holder, $, $current) {
 		}
 	}
 }
+
 function soliloquyYouTubeOnStateChange(event) {
 	var id = jQuery(event.target.getIframe()).data('soliloquy-slider-id');
 
@@ -94,6 +99,10 @@ function soliloquyVimeoVids(data, id, width, height, holder, $) {
 	attrs.src = '//player.vimeo.com/video/' + id + '?' + $.param(data);
 	attrs.frameborder = 0;
 
+	if (data.autoplay === 1) {
+		attrs.allow = 'autoplay';
+	}
+
 	// Convert the holder to the video.
 	$('#' + holder).replaceWith(function () {
 		return $('<iframe />', attrs).append($(this).contents());
@@ -103,6 +112,10 @@ function soliloquyVimeoVids(data, id, width, height, holder, $) {
 	soliloquy_vimeo[id] = new Vimeo.Player($('#' + holder)[0], {
 		transparent: false,
 	});
+
+	if (data.autoplay === 1) {
+		soliloquy_vimeo[id].setMuted(true);
+	}
 
 	var slider_id = $('#' + holder).data('soliloquy-slider-id');
 
@@ -193,7 +206,7 @@ function soliloquyWistiaVids(data, id, width, height, holder, $) {
 		});
 	}
 }
-function soliloquyLocalVids(data, id, width, height, holder, $) {
+function soliloquyLocalVids(data, id, width, height, holder, $, slider_id) {
 	// Immediately make the holder visible and increase z-index to overlay the player icon and caption.
 	$('#' + holder)
 		.show()
@@ -232,10 +245,34 @@ function soliloquyLocalVids(data, id, width, height, holder, $) {
 		features: features,
 		success: function (mediaElement, domObject, instance) {
 			if (data.autoplay == 1) {
+				if (!mediaElement.muted) {
+					mediaElement.setMuted(true);
+				}
 				mediaElement.play();
 			}
+			mediaElement.addEventListener('play', function () {
+				if (soliloquy_slider[slider_id]) {
+					soliloquy_slider[slider_id].stopAuto();
+				}
+			})
+			mediaElement.addEventListener('pause', function () {
+				if (soliloquy_slider[slider_id]) {
+					soliloquy_slider[slider_id].startAuto();
+				}
+			})
+			mediaElement.addEventListener('ended', function () {
+				if (soliloquy_slider[slider_id]) {
+					soliloquy_slider[slider_id].startAuto();
+				}
+			});
 		},
-		error: function (mediaElement, domObject, instance) {},
+		error: function (mediaElement, domObject, instance) {
+			console.log({
+				mediaElement,
+				domObject,
+				instance,
+			});
+		},
 	});
 }
 

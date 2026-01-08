@@ -1,10 +1,12 @@
 === Query Wrangler ===
 Contributors: daggerhart
 Donate link: https://www.daggerhart.com/
-Tags: query, pages, widget, admin, widgets, administration, manage, views, loop
-Requires at least: 4
-Tested up to: 6.2
+Tags: query, pages, widget, views, loops
+Requires at least: 5.0
+Tested up to: 6.8
 Stable tag: trunk
+License: GPLv2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 Query Wrangler provides an intuitive interface for creating complex WP queries as shortcodes and widgets. UI based on Drupal Views.
 
@@ -40,6 +42,10 @@ Some examples of how you would use this plugin include:
 
 == Frequently Asked Questions ==
 
+= How can I report security bugs? =
+
+You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities. [Report a security vulnerability.](https://patchstack.com/database/vdp/query-wrangler)
+
 = How do I use query shortcodes? =
 
 Easy, the code you're looking for is like this.   [query id=2] , where the number 2 is the query id. This can be found on the Query Wrangler page eside each query.
@@ -73,6 +79,22 @@ Select a category or multiple categories to override.   Save the query, then vis
 1. Drupal Views Editor Theme
 
 == Changelog ==
+
+= 1.5.57 =
+
+* Fix regression issue causing Queries to not be saved.
+
+= 1.5.56 =
+
+* Version bump for readme update.
+
+= 1.5.55 =
+
+* Extra security on admin routes using nonces.
+
+= 1.5.54 =
+
+* Security fixes update.
 
 = 1.5.53 =
 
@@ -397,4 +419,4 @@ Select a category or multiple categories to override.   Save the query, then vis
 
 == Upgrade Notice ==
 
-1.5.53 Bug fix on post type archive override page when dealing with multiple post types.
+1.5.57 Multiple bug fixes.

@@ -8,7 +8,7 @@
  * @author SoliloquyWP Team <support@soliloquywp.com>
  */
 
- // Exit if accessed directly.
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -149,7 +149,6 @@ class Soliloquy_Updater {
 		add_filter( 'pre_set_site_transient_update_plugins', array( $this, 'update_plugins_filter' ) );
 		add_filter( 'http_request_args', array( $this, 'http_request_args' ), 10, 2 );
 		add_filter( 'plugins_api', array( $this, 'plugins_api' ), 10, 3 );
-
 	}
 
 	/**
@@ -184,7 +183,6 @@ class Soliloquy_Updater {
 
 		// Return the update object.
 		return $value;
-
 	}
 
 	/**
@@ -204,7 +202,6 @@ class Soliloquy_Updater {
 		}
 
 		return $args;
-
 	}
 
 	/**
@@ -228,7 +225,6 @@ class Soliloquy_Updater {
 		} else {
 			return $api;
 		}
-
 	}
 
 	/**
@@ -266,11 +262,10 @@ class Soliloquy_Updater {
 
 		// Return the new API object with our custom data.
 		return $api;
-
 	}
 
 	/**
-	 * Queries the remote URL via wp_remote_post and returns a json decoded response.
+	 * Queries the remote URL via wp_safe_remote_post and returns a json decoded response.
 	 *
 	 * @since 2.0.0
 	 *
@@ -303,14 +298,14 @@ class Soliloquy_Updater {
 			)
 		);
 
-		// Setup variable for wp_remote_post.
+		// Setup variable for wp_safe_remote_post.
 		$post = array(
 			'headers' => $headers,
 			'body'    => $body,
 		);
 
 		// Perform the query and retrieve the response.
-		$response      = wp_remote_post( esc_url_raw( $this->remote_url ), $post );
+		$response      = wp_safe_remote_post( esc_url_raw( $this->remote_url ), $post );
 		$response_code = wp_remote_retrieve_response_code( $response );
 		$response_body = wp_remote_retrieve_body( $response );
 
@@ -321,7 +316,5 @@ class Soliloquy_Updater {
 
 		// Return the json decoded content.
 		return json_decode( $response_body );
-
 	}
-
 }

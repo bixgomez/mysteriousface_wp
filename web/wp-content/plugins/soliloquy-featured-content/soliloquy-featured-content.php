@@ -5,7 +5,7 @@
  * Description: Enables featured content sliders in Soliloquy.
  * Author:      Soliloquy Team
  * Author URI:  https://soliloquywp.com
- * Version:     2.4.6
+ * Version:     2.4.8
  * Text Domain: soliloquy-fc
  * Domain Path: languages
  *
@@ -29,6 +29,10 @@
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
+}
+
+if ( function_exists( 'soliloquy_license_checker' ) && false === soliloquy_license_checker() ) {
+	return false;
 }
 
 /**
@@ -57,7 +61,7 @@ class Soliloquy_Featured_Content {
 	 *
 	 * @var string
 	 */
-	public $version = '2.4.6';
+	public $version = '2.4.8';
 
 
 	/**
@@ -163,7 +167,7 @@ class Soliloquy_Featured_Content {
 			'version'     => $this->version,
 			'key'         => $key,
 		);
-		$this->soliloquy_featured_content_updater = new Soliloquy_Updater( $args );
+		$updater = new Soliloquy_Updater( $args );
 
 	}
 
@@ -175,7 +179,6 @@ class Soliloquy_Featured_Content {
 	public function require_global() {
 
 		require plugin_dir_path( __FILE__ ) . 'includes/global/common.php';
-		require plugin_dir_path( __FILE__ ) . 'includes/global/html.php';
 		require plugin_dir_path( __FILE__ ) . 'includes/global/shortcode.php';
 
 	}

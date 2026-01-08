@@ -49,11 +49,47 @@ class Soliloquy_Featured_Content_Shortcode {
 		add_filter( 'soliloquy_output_classes', array( $this, 'output_classes' ), 10, 2 );
 		add_filter( 'soliloquy_pre_data', array( $this, 'pre_data' ), 10, 2 );
 		add_filter( 'soliloquy_output_item_classes', array( $this, 'output_item_classes' ), 10, 4 );
+		add_filter( 'soliloquy_fc_post_excerpt', array( $this, 'soliloquy_fc_excerpt_ellipses' ), 10, 3 );
 
 		// Dynamic Addon Support.
 		add_filter( 'soliloquy_dynamic_get_dynamic_slider_types', array( $this, 'register_dynamic_slider_types' ) );
 		add_filter( 'soliloquy_dynamic_queried_data', array( $this, 'change_slider_type' ), 10, 3 );
+	}
 
+	/**
+	 * Add filter to change the excerpt ellipses.
+	 *
+	 * @since 2.4.7
+	 *
+	 * @param string $excerpt The excerpt.
+	 *
+	 * @param string $ellipses The ellipses.
+	 *
+	 * @return string The excerpt with ellipses.
+	 */
+	public function soliloquy_fc_excerpt_ellipses( string $excerpt, $post, $data ): string {
+		$instance = Soliloquy_Shortcode::get_instance();
+		$ellipses = $instance->get_config( 'fc_content_ellipses', $data );
+
+		// By default, WordPress adds [...] ellipses to post excerpt.
+		// Added some logic to remove ellipses if already present in the excerpt based on the ellipses setting.
+
+		$pos = strrpos( $excerpt, '[' );
+		// if ellipses are enabled, and already found in the excerpt, return the excerpt as is.
+		if ( $pos !== false && $ellipses == 1 ) {
+			return $excerpt;
+		}
+		// if ellipses are disabled, and already found in the excerpt, remove them.
+		if ( $pos !== false && $ellipses == 0 ) {
+			return rtrim( substr( $excerpt, 0, $pos ) );
+		}
+		// if ellipses are enabled, but not found in the excerpt, add them.
+		if ( $ellipses == 1 && $pos === false ) {
+			return $excerpt . '...';
+		}
+		// if ellipses are disabled, and not found in the excerpt, return the excerpt as is.
+		// Fallback.
+		return $excerpt;
 	}
 
 	/**
@@ -69,7 +105,6 @@ class Soliloquy_Featured_Content_Shortcode {
 		$types['soliloquy_dynamic_get_fc_images'] = '#^fc-#';
 
 		return $types;
-
 	}
 
 	/**
@@ -137,7 +172,6 @@ class Soliloquy_Featured_Content_Shortcode {
 		}
 
 		return $slider_data;
-
 	}
 
 	/**
@@ -160,20 +194,19 @@ class Soliloquy_Featured_Content_Shortcode {
 		// Add custom FC class.
 		$classes[] = 'soliloquy-fc-slider';
 		return $classes;
-
 	}
 
 	/**
-	* Adds Post and Taxonomy Term classes to each slider item
-	*
-	* @since 2.3.3
-	*
-	* @param array  $classes    CSS Classes
-	* @param array  $item       Slide Item
-	* @param int    $i          Index
-	* @param array  $data       Slider Config
-	* @return array             CSS Classes
-	*/
+	 * Adds Post and Taxonomy Term classes to each slider item
+	 *
+	 * @since 2.3.3
+	 *
+	 * @param array $classes    CSS Classes
+	 * @param array $item       Slide Item
+	 * @param int   $i          Index
+	 * @param array $data       Slider Config
+	 * @return array             CSS Classes
+	 */
 	function output_item_classes( $classes, $item, $i, $data ) {
 
 		// Check if any classes are defined for the slider item.
@@ -185,7 +218,6 @@ class Soliloquy_Featured_Content_Shortcode {
 		$classes = array_merge( $classes, $item['classes'] );
 
 		return $classes;
-
 	}
 
 	/**
@@ -219,7 +251,6 @@ class Soliloquy_Featured_Content_Shortcode {
 
 		// Return the modified data.
 		return apply_filters( 'soliloquy_fc_data', $data, $id );
-
 	}
 
 	/**
@@ -281,7 +312,7 @@ class Soliloquy_Featured_Content_Shortcode {
 
 		if ( ! empty( $terms ) ) {
 			// Set our taxonomy relation parameter
-			$relation['relation'] = apply_filters('soliloquy_fc_relation', 'AND' );
+			$relation['relation'] = apply_filters( 'soliloquy_fc_relation', 'AND' );
 
 			// Loop through each term and parse out the data.
 			foreach ( $terms as $term ) {
@@ -315,7 +346,6 @@ class Soliloquy_Featured_Content_Shortcode {
 
 		// Filter and return the query args.
 		return apply_filters( 'soliloquy_fc_query_args', $query_args, $id, $data );
-
 	}
 
 	/**
@@ -356,7 +386,6 @@ class Soliloquy_Featured_Content_Shortcode {
 
 		// Return the slider data.
 		return maybe_unserialize( $fc_data );
-
 	}
 
 	/**
@@ -380,8 +409,7 @@ class Soliloquy_Featured_Content_Shortcode {
 		$instance        = Soliloquy_Shortcode::get_instance();
 		$sticky          = $instance->get_config( 'fc_sticky', $data );
 		$sticky_post_ids = get_option( 'sticky_posts' );
-		$inc_ex = $instance->get_config( 'fc_inc_ex', $data );
-
+		$inc_ex          = $instance->get_config( 'fc_inc_ex', $data );
 
 		if ( $sticky > 0 && is_array( $sticky_post_ids ) && count( $sticky_post_ids ) > 0 ) {
 			// Just get sticky posts, nothing else.
@@ -419,7 +447,6 @@ class Soliloquy_Featured_Content_Shortcode {
 
 		// Return the post data.
 		return apply_filters( 'soliloquy_fc_post_data', $posts, $query, $id, $data );
-
 	}
 
 	/**
@@ -473,7 +500,6 @@ class Soliloquy_Featured_Content_Shortcode {
 
 		// Return and allow filtering of final data.
 		return apply_filters( 'soliloquy_fc_slider_data', $data, $fc );
-
 	}
 
 	/**
@@ -523,7 +549,6 @@ class Soliloquy_Featured_Content_Shortcode {
 
 		// Return the image and allow filtering of the URL.
 		return apply_filters( 'soliloquy_fc_image_src', $src, $post, $data );
-
 	}
 
 	/**
@@ -595,27 +620,38 @@ class Soliloquy_Featured_Content_Shortcode {
 					preg_match_all( $pattern, $pcontent, $matches );
 					$images   = $matches[1];
 					$pcontent = preg_replace( $pattern, '', $pcontent );
+					$ellipses = 1 == $instance->get_config( 'fc_content_ellipses', $data );
+					// Truncate the content.
+					$html     = new Soliloquy_Html();
+					$pcontent = $html->truncateHtml( $pcontent, $instance->get_config( 'fc_content_length', $data ), $ellipses );
 
-					$pcontent = Soliloquy_Featured_Content_Truncate_HTML::truncateWords( $pcontent, $instance->get_config( 'fc_content_length', $data ), ( $instance->get_config( 'fc_content_ellipses', $data ) ? '...' : '' ) );
 				} else {
 					// Plain Text.
-					$pcontent = wp_trim_words( $pcontent, $instance->get_config( 'fc_content_length', $data ), ( $instance->get_config( 'fc_content_ellipses', $data ) ? '...' : '' ) );
+					$ellipses = ( 1 == $instance->get_config( 'fc_content_ellipses', $data ) ) ? '...' : '';
+					$pcontent = wp_trim_words( $pcontent, $instance->get_config( 'fc_content_length', $data ), $ellipses );
 				}
 
 				// Filter
 				$pcontent = apply_filters( 'soliloquy_fc_post_content', $pcontent, $post, $data );
 
-				$output .= '<div class="soliloquy-fc-content' . ( $title ? ' soliloquy-fc-title-above' : '' ) . '"><p>' . $pcontent;
+				$output .= '<div class="soliloquy-fc-content' . ( $title ? ' soliloquy-fc-title-above' : '' ) . '">';
+				// Append $pcontent.
+				if ( $instance->get_config( 'fc_content_html', $data ) ) {
+					$output .= $pcontent;
+				} else {
+					$output .= '<p>' . $pcontent . '</p>';
+				}
 				$output  = apply_filters( 'soliloquy_fc_after_caption', $output, $post, $data );
 			}
 		}
 
 		// Possibly display the read more link.
 		if ( $instance->get_config( 'fc_read_more', $data ) ) {
-			$output  = apply_filters( 'soliloquy_fc_before_read_more', $output, $post, $data );
-			$readmo  = apply_filters( 'soliloquy_fc_read_more', ' <a class="soliloquy-fc-read-more' . ( $above ? ' soliloquy-fc-content-above' : '' ) . '" href="' . get_permalink( $post->ID ) . '" title="' . esc_attr( $post->post_title ) . '">' . $instance->get_config( 'fc_read_more_text', $data ) . '</a>', $post, $data );
-			$output .= ( 'post_excerpt' == $content && ! empty( $post->post_excerpt ) || 'post_content' == $content && ! empty( $post->post_content ) ) ? $readmo . '</p>' : $readmo;
-			$output  = apply_filters( 'soliloquy_fc_after_read_more', $output, $post, $data );
+			$read_more_text = apply_filters( 'soliloquy_fc_read_more_text', $instance->get_config( 'fc_read_more_text', $data ), $data, $post );
+			$output         = apply_filters( 'soliloquy_fc_before_read_more', $output, $post, $data );
+			$readmo         = apply_filters( 'soliloquy_fc_read_more', ' <a class="soliloquy-fc-read-more' . ( $above ? ' soliloquy-fc-content-above' : '' ) . '" href="' . get_permalink( $post->ID ) . '" title="' . esc_attr( $post->post_title ) . '">' . $read_more_text . '</a>', $post, $data );
+			$output        .= ( 'post_excerpt' == $content && ! empty( $post->post_excerpt ) || 'post_content' == $content && ! empty( $post->post_content ) ) ? $readmo . '</p>' : $readmo;
+			$output         = apply_filters( 'soliloquy_fc_after_read_more', $output, $post, $data );
 		}
 
 		// If the output is not empty, wrap it in our caption wrapper.
@@ -636,7 +672,6 @@ class Soliloquy_Featured_Content_Shortcode {
 
 		// Return and apply a filter to the caption.
 		return apply_filters( 'soliloquy_fc_caption', $output, $post, $data );
-
 	}
 
 
@@ -654,9 +689,7 @@ class Soliloquy_Featured_Content_Shortcode {
 		}
 
 		return self::$instance;
-
 	}
-
 }
 
 // Load the metabox class.

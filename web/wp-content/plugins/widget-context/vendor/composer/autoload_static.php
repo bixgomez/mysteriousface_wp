@@ -4,9 +4,10 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit6e573a37469c9353164f8e0a8d8c8254
+class ComposerStaticInitf07de36cf451d1ace69893b9a8cb524f
 {
     public static $classMap = array (
+        'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'Preseto\\WidgetContext\\Plugin' => __DIR__ . '/../..' . '/src/Plugin.php',
         'Preseto\\WidgetContext\\UriRuleMatcher' => __DIR__ . '/../..' . '/src/UriRuleMatcher.php',
         'Preseto\\WidgetContext\\UriRules' => __DIR__ . '/../..' . '/src/UriRules.php',
@@ -18,7 +19,7 @@ class ComposerStaticInit6e573a37469c9353164f8e0a8d8c8254
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->classMap = ComposerStaticInit6e573a37469c9353164f8e0a8d8c8254::$classMap;
+            $loader->classMap = ComposerStaticInitf07de36cf451d1ace69893b9a8cb524f::$classMap;
 
         }, null, ClassLoader::class);
     }

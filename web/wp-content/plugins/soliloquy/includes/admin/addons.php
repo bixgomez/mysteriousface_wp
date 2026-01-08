@@ -30,7 +30,6 @@ class Soliloquy_Addons {
 
 		// Add the custom settings submenu.
 		add_action( 'admin_menu', array( $this, 'admin_menu' ) );
-
 	}
 
 	public function admin_menu() {
@@ -50,7 +49,6 @@ class Soliloquy_Addons {
 			add_action( 'load-' . $this->hook, array( $this, 'maybe_refresh_addons' ) );
 			add_action( 'load-' . $this->hook, array( $this, 'addons_page_assets' ) );
 		}
-
 	}
 
 	/**
@@ -62,7 +60,6 @@ class Soliloquy_Addons {
 
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_styles' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_scripts' ) );
-
 	}
 
 	/**
@@ -150,7 +147,6 @@ class Soliloquy_Addons {
 		}
 
 		$this->get_addons_data( $this->base->get_license_key() );
-
 	}
 
 	public function addons_page() {
@@ -285,7 +281,7 @@ class Soliloquy_Addons {
 							}
 								echo '</div>';
 							echo '</div>';
-							$i++;
+							++$i;
 						}
 						?>
 					</div>
@@ -296,13 +292,13 @@ class Soliloquy_Addons {
 
 							<p><?php esc_html_e( 'There was an issue retrieving the addons for this site. Please click on the button below the refresh the addons data.', 'soliloquy' ); ?></p>
 
-							<?php wp_nonce_field( 'soliloquy-refresh-addons', 'soliloquy-refresh-addons' ); ?>
+										<?php wp_nonce_field( 'soliloquy-refresh-addons', 'soliloquy-refresh-addons' ); ?>
 
-							<?php submit_button( esc_html__( 'Refresh Addons', 'soliloquy' ), 'button-soliloquy', 'soliloquy-refresh-addons-submit', false ); ?>
+										<?php submit_button( esc_html__( 'Refresh Addons', 'soliloquy' ), 'button-soliloquy', 'soliloquy-refresh-addons-submit', false ); ?>
 
 						</form>
 
-					<?php
+										<?php
 					endif;
 
 				endif;
@@ -315,14 +311,14 @@ class Soliloquy_Addons {
 
 			<div class="error below-h2"><p><?php esc_html_e( 'In order to get access to Addons, you need to resolve your license key errors.', 'soliloquy' ); ?></p></div>
 
-		<?php
+			<?php
 
 		endif;
 
-if ( ! in_array( $type, array( 'developer', 'master' ), true ) ) :
+		if ( ! in_array( $type, array( 'developer', 'master' ), true ) ) :
 
-	$upgrade_addons = $this->get_all_addons();
-	?>
+			$upgrade_addons = $this->get_all_addons();
+			?>
 
 			<div class="soliloquy-clearfix"></div>
 
@@ -367,21 +363,20 @@ if ( ! in_array( $type, array( 'developer', 'master' ), true ) ) :
 						echo '</div>';
 					echo '</div>';
 					echo '</div>';
-					$i++;
+					++$i;
 				}
 
-			endif;
+					endif;
 			?>
 
 			</div>
 
 			<?php
 				endif;
-?>
+		?>
 		</div>
 
 		<?php
-
 	}
 
 	/**
@@ -473,7 +468,6 @@ if ( ! in_array( $type, array( 'developer', 'master' ), true ) ) :
 	public function is_refreshing_addons() {
 
 		return isset( $_POST['soliloquy-refresh-addons-submit'] );
-
 	}
 
 	/**
@@ -486,7 +480,6 @@ if ( ! in_array( $type, array( 'developer', 'master' ), true ) ) :
 	public function refresh_addons_action() {
 
 		return isset( $_POST['soliloquy-refresh-addons-submit'] ) && wp_verify_nonce( $_POST['soliloquy-refresh-addons'], 'soliloquy-refresh-addons' );
-
 	}
 
 	/**
@@ -508,7 +501,6 @@ if ( ! in_array( $type, array( 'developer', 'master' ), true ) ) :
 		}
 
 		return $slug;
-
 	}
 
 	/**
@@ -525,9 +517,7 @@ if ( ! in_array( $type, array( 'developer', 'master' ), true ) ) :
 		}
 
 		return self::$instance;
-
 	}
-
 }
 
 $soliloquy_addons = Soliloquy_Addons::get_instance();

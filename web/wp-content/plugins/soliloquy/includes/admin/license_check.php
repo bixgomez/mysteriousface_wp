@@ -8,9 +8,13 @@
  * @author  SoliloquyWP Team <help@soliloquywp.com>
  */
 
+// Exit if accessed directly.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
- * Undocumented class
+ * Soliloquy_LicenseCheck class
  */
 class Soliloquy_LicenseCheck {
 	public $core;
@@ -43,7 +47,6 @@ class Soliloquy_LicenseCheck {
 			add_filter( 'admin_footer_text', array( $this, 'admin_footer' ), 11, 1 );
 
 		}
-
 	}
 
 	/**
@@ -57,7 +60,6 @@ class Soliloquy_LicenseCheck {
 		// Load necessary metabox styles.
 		wp_register_style( SOLILOQUY_SLUG . '-license-style', plugins_url( 'assets/css/license.css', SOLILOQUY_FILE ), array(), SOLILOQUY_VERSION );
 		wp_enqueue_style( SOLILOQUY_SLUG . '-license-style' );
-
 	}
 
 	/**
@@ -103,7 +105,7 @@ class Soliloquy_LicenseCheck {
 	</div>
 
 </div>
-<?php
+		<?php
 
 		return true;
 	}
@@ -123,8 +125,7 @@ class Soliloquy_LicenseCheck {
 		}
 
 		return $content;
-
 	}
 }
 
-$licene_check = new Soliloquy_LicenseCheck;
+$licene_check = new Soliloquy_LicenseCheck();

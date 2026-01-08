@@ -12,6 +12,17 @@ if ( ! class_exists( 'AM_Notification' ) ) {
 	 * @copyright  Copyright (c) 2017, Retyp LLC
 	 * @version    1.0.0
 	 */
+
+	// Exit if accessed directly.
+	if ( ! defined( 'ABSPATH' ) ) {
+		exit;
+	}
+
+	/**
+	 * AM_Notification class.
+	 *
+	 * @version    1.0.0
+	 */
 	class AM_Notification {
 		/**
 		 * The api url we are calling.
@@ -123,7 +134,7 @@ if ( ! class_exists( 'AM_Notification' ) ) {
 				}
 
 				$response = wp_remote_retrieve_body(
-					wp_remote_post(
+					wp_safe_remote_post(
 						$this->api_url,
 						array(
 							'body' => array(
@@ -296,7 +307,8 @@ if ( ! class_exists( 'AM_Notification' ) ) {
 							$(document).on('click', '.am-notification-<?php echo $notification->ID; ?> button.notice-dismiss', function (event) {
 								$.post(ajaxurl, {
 									action: 'am_notification_dismiss',
-									notification_id: '<?php echo $notification->ID; ?>'
+									notification_id: '<?php echo $notification->ID; ?>',
+									nonce: '<?php echo wp_create_nonce( 'nonce_am_notification_dismiss' ); ?>'
 								});
 							});
 						});
@@ -509,6 +521,10 @@ if ( ! class_exists( 'AM_Notification' ) ) {
 		 * @since 1.0.0
 		 */
 		public function dismiss_notification() {
+			if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], 'nonce_am_notification_dismiss' ) ) {
+				die;
+			}
+
 			if ( ! current_user_can( apply_filters( 'am_notifications_display', 'manage_options' ) ) ) {
 				die;
 			}

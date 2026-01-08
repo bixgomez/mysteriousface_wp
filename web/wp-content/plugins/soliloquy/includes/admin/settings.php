@@ -8,7 +8,7 @@
  * @author SoliloquyWP Team <support@soliloquywp.com>
  */
 
- // Exit if accessed directly.
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -69,7 +69,7 @@ class Soliloquy_Settings {
 		add_action( 'soliloquy_tab_settings_addons', array( $this, 'settings_addons_tab' ) );
 
 		// Add the settings menu item to the Plugins table.
-		add_filter( 'plugin_action_links_' . plugin_basename( plugin_dir_path( dirname( dirname( __FILE__ ) ) ) . 'soliloquy.php' ), array( $this, 'settings_link' ) );
+		add_filter( 'plugin_action_links_' . plugin_basename( plugin_dir_path( dirname( __DIR__ ) ) . 'soliloquy.php' ), array( $this, 'settings_link' ) );
 
 		// Check if the soliloquy-publishing-default option is set. If not, default it to active
 		$publishing_default = get_option( 'soliloquy-publishing-default' );
@@ -96,7 +96,6 @@ class Soliloquy_Settings {
 		}
 
 		add_action( 'soliloquy_tab_settings_upgrade', array( $this, 'settings_upgrade_tab' ) );
-
 	}
 
 	/**
@@ -122,7 +121,6 @@ class Soliloquy_Settings {
 			add_action( 'load-' . $this->hook, array( $this, 'update_settings' ) );
 			add_action( 'load-' . $this->hook, array( $this, 'settings_page_assets' ) );
 		}
-
 	}
 
 	/**
@@ -190,14 +188,13 @@ class Soliloquy_Settings {
 				// Check we now have an array of unserialized data
 				if ( is_array( $slider_data ) ) {
 					update_post_meta( $slider->ID, '_sol_slider_data', $slider_data );
-					$fixedSliders++;
+					++$fixedSliders;
 				}
 			}
 		}
 
 		// Output an admin notice so the user knows what happened
 		add_action( 'admin_notices', array( $this, 'fixed_migration' ) );
-
 	}
 
 	/**
@@ -223,10 +220,10 @@ class Soliloquy_Settings {
 		update_option( 'soliloquy-publishing-default', $_POST['soliloquy-publishing-default'] );
 		update_option( 'soliloquy_slide_position', $_POST['soliloquy_slide_position'] );
 		update_option( 'soliloquy_slide_view', $_POST['soliloquy_slide_view'] );
+		update_option( 'soliloquy_lazy_loading', $_POST['soliloquy_lazy_loading'] );
 
 		// Show confirmation notice
 		add_action( 'admin_notices', array( $this, 'updated_settings' ) );
-
 	}
 
 	/**
@@ -243,21 +240,19 @@ class Soliloquy_Settings {
 			<p><strong><?php echo $fixedSliders . esc_html__( ' slider(s) fixed successfully.', 'soliloquy' ); ?></strong></p>
 		</div>
 		<?php
-
 	}
 
-	 /**
-	  * Outputs a WordPress style notification to tell the user their settings were saved
-	  *
-	  * @since 2.3.9.6
-	  */
+	/**
+	 * Outputs a WordPress style notification to tell the user their settings were saved
+	 *
+	 * @since 2.3.9.6
+	 */
 	public function updated_settings() {
 		?>
 		<div class="updated">
 			<p><?php esc_html_e( 'Settings updated.', 'soliloquy' ); ?></p>
 		</div>
 		<?php
-
 	}
 
 	/**
@@ -269,7 +264,6 @@ class Soliloquy_Settings {
 
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_styles' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_scripts' ) );
-
 	}
 
 	/**
@@ -284,7 +278,6 @@ class Soliloquy_Settings {
 
 		// Run a hook to load in custom styles.
 		do_action( 'soliloquy_settings_styles' );
-
 	}
 
 	/**
@@ -322,7 +315,6 @@ class Soliloquy_Settings {
 
 		// Run a hook to load in custom scripts.
 		do_action( 'soliloquy_settings_scripts' );
-
 	}
 
 	/**
@@ -344,7 +336,7 @@ class Soliloquy_Settings {
 		<a class="nav-tab <?php echo $class; ?>" href="#soliloquy-tab-<?php echo $id; ?>" title="<?php echo $title; ?>"><?php echo $title; ?></a>
 
 				<?php
-				$i++;
+				++$i;
 endforeach;
 		?>
 
@@ -371,7 +363,7 @@ endforeach;
 					</div>
 
 										<?php
-										$i++;
+										++$i;
 endforeach;
 					?>
 
@@ -382,7 +374,6 @@ endforeach;
 		</div>
 
 		<?php
-
 	}
 
 	/**
@@ -413,7 +404,6 @@ endforeach;
 		$tabs['upgrade'] = esc_attr__( 'Upgrade', 'soliloquy' );
 
 		return $tabs;
-
 	}
 
 	/**
@@ -581,6 +571,22 @@ endforeach;
 								<p class="description"><?php esc_html_e( 'Default view When adding slides to a Slider.', 'soliloquy' ); ?></p>
 							</td>
 						</tr>
+						<!-- Image Lazy Loading -->
+						<tr id="soliloquy-lazy-loading-box">
+							<th scope="row">
+								<label for="soliloquy-lazy-loading"><?php esc_html_e( 'Image Lazy Loading', 'soliloquy' ); ?></label>
+							</th>
+							<td>
+								<div class="soliloquy-select">
+								<select id="soliloquy-lazy-loading" name="soliloquy_lazy_loading" class="soliloquy-chosen" data-soliloquy-chosen-options='{ "disable_search":"true" }'>
+										<option value="auto"<?php selected( 'auto', get_option( 'soliloquy_lazy_loading', 'auto' ) ); ?>><?php esc_html_e( 'Auto', 'soliloquy' ); ?></option>
+										<option value="enable"<?php selected( 'enable', get_option( 'soliloquy_lazy_loading', 'auto' ) ); ?>><?php esc_html_e( 'Enable', 'soliloquy' ); ?></option>
+										<option value="disable"<?php selected( 'disable', get_option( 'soliloquy_lazy_loading', 'auto' ) ); ?>><?php esc_html_e( 'Disable', 'soliloquy' ); ?></option>
+								</select>
+								</div>
+								<p class="description"><?php esc_html_e( 'Control how images are lazy loaded in your sliders. Auto will use WordPress lazy loading settings.', 'soliloquy' ); ?></p>
+							</td>
+						</tr>
 						<!-- Submit -->
 						<tr class="soliloquy-no-border">
 							<th scope="row">
@@ -600,7 +606,6 @@ endforeach;
 			</form>
 		</div>
 		<?php
-
 	}
 
 	/**
@@ -616,7 +621,6 @@ endforeach;
 			<p><a class="button button-primary soliloquy-start-upgrade" href="#" title="<?php esc_attr_e( 'Click Here to Start the Upgrade Process', 'soliloquy' ); ?>"><?php esc_html_e( 'Click Here to Start the Upgrade Process', 'soliloquy' ); ?></a> <span class="spinner soliloquy-spinner"></span></p>
 		</div>
 		<?php
-
 	}
 
 	/**
@@ -638,7 +642,6 @@ endforeach;
 		}
 
 		return $slug;
-
 	}
 
 	/**
@@ -667,7 +670,6 @@ endforeach;
 		array_unshift( $links, $settings_link );
 
 		return $links;
-
 	}
 
 	/**
@@ -684,9 +686,7 @@ endforeach;
 		}
 
 		return self::$instance;
-
 	}
-
 }
 
 // Load the settings class.

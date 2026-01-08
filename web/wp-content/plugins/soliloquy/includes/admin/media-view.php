@@ -7,6 +7,12 @@
  * @package Soliloquy
  * @author  Chris Kelley
  */
+
+// Exit if accessed directly.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 class Soliloquy_Media_View {
 
 	/**
@@ -49,7 +55,6 @@ class Soliloquy_Media_View {
 		// Modals
 		add_filter( 'soliloquy_media_view_strings', array( $this, 'media_view_strings' ) );
 		add_action( 'print_media_templates', array( $this, 'print_media_templates' ) );
-
 	}
 
 	/**
@@ -63,7 +68,6 @@ class Soliloquy_Media_View {
 	public function media_view_strings( $strings ) {
 
 		return $strings;
-
 	}
 
 	/**
@@ -158,9 +162,9 @@ class Soliloquy_Media_View {
 								<label class="setting">
 									<span class="name"><?php esc_html_e( 'Status', 'soliloquy' ); ?></span>
 									<select id="soliloquy-status" class="soliloquy-status" name="status" size="1" data-soliloquy-meta="status">
-										  <option value="pending" <# if ( data.status == 'pending' ) { #> selected <# } #>><?php esc_html_e( 'Draft', 'soliloquy' ); ?></option>
-										  <option value="active" <# if ( data.status == 'active' ) { #> selected <# } #>><?php esc_html_e( 'Published', 'soliloquy' ); ?></option>
-									  </select>
+											<option value="pending" <# if ( data.status == 'pending' ) { #> selected <# } #>><?php esc_html_e( 'Draft', 'soliloquy' ); ?></option>
+											<option value="active" <# if ( data.status == 'active' ) { #> selected <# } #>><?php esc_html_e( 'Published', 'soliloquy' ); ?></option>
+										</select>
 									<span class="description"><?php esc_html_e( 'Controls whether this individual slide is Drafted or Published within the slider.', 'soliloquy' ); ?></span>
 								</label>
 
@@ -185,7 +189,7 @@ class Soliloquy_Media_View {
 							</div>
 
 							<!-- Alt Text -->
-							  <div class="soliloquy-meta">
+								<div class="soliloquy-meta">
 
 								<label class="setting">
 
@@ -379,14 +383,14 @@ class Soliloquy_Media_View {
 								<label class="setting">
 									<span class="name"><?php esc_html_e( 'Status', 'soliloquy' ); ?></span>
 									<select id="soliloquy-status" class="soliloquy-status" name="status" size="1" data-soliloquy-meta="status">
-										  <option value="active" <# if ( data.status == 'active' ) { #> selected <# } #>><?php esc_html_e( 'Published', 'soliloquy' ); ?></option>
-										  <option value="pending" <# if ( data.status == 'pending' ) { #> selected <# } #>><?php esc_html_e( 'Draft', 'soliloquy' ); ?></option>
-									  </select>
+											<option value="active" <# if ( data.status == 'active' ) { #> selected <# } #>><?php esc_html_e( 'Published', 'soliloquy' ); ?></option>
+											<option value="pending" <# if ( data.status == 'pending' ) { #> selected <# } #>><?php esc_html_e( 'Draft', 'soliloquy' ); ?></option>
+										</select>
 								</label>
 
 							</div>
 
-							 <# if ( data.type  === 'image' ) { #>
+							<# if ( data.type  === 'image' ) { #>
 							<div class="soliloquy-meta">
 								<label class="setting">
 									<span class="name"><?php esc_html_e( 'URL', 'soliloquy' ); ?></span>
@@ -415,7 +419,7 @@ class Soliloquy_Media_View {
 								</div>
 							<# } #>
 
-							 <# if ( data.type  === 'video' ) { #>
+							<# if ( data.type  === 'video' ) { #>
 
 							<div class="soliloquy-meta">
 								<!-- URL -->
@@ -427,7 +431,7 @@ class Soliloquy_Media_View {
 
 							<# } #>
 
-							 <# if ( data.type  === 'html' ) { #>
+							<# if ( data.type  === 'html' ) { #>
 							<div class="soliloquy-meta">
 								<!-- Link -->
 								<label class="code">
@@ -514,7 +518,7 @@ class Soliloquy_Media_View {
 					<h3><?php esc_html_e( 'Helpful Tips', 'soliloquy' ); ?></h3>
 					<strong><?php esc_html_e( 'Creating HTML Slides', 'soliloquy' ); ?></strong>
 					<p><?php esc_html_e( 'Each HTML slide should have its own unique name (for identification purposes) and code for outputting into the slider. The code will be inserted inside of the slide <code>&lt;li&gt;</code> tag and can be styled with custom CSS as you need.', 'soliloquy' ); ?></p>
-				 </div>
+				</div>
 			</div>
 		</script>
 		<?php
@@ -629,7 +633,7 @@ class Soliloquy_Media_View {
 						<span><?php bloginfo( 'url' ); ?>/path/to/video.webm</span>
 						<span><?php bloginfo( 'url' ); ?>/path/to/video.3gp</span>
 					</div>
-				 </div>
+				</div>
 			</div>
 		</script>
 
@@ -705,13 +709,13 @@ class Soliloquy_Media_View {
 							</div>
 							<div class="soliloquy-grid-2 soliloquy-media-button">
 
-								   <a href="#" class="button button-soliloquy-secondary soliloquy-insert-placeholder"><?php esc_html_e( 'Upload Media', 'soliloquy' ); ?></a>
+									<a href="#" class="button button-soliloquy-secondary soliloquy-insert-placeholder"><?php esc_html_e( 'Upload Media', 'soliloquy' ); ?></a>
 
 							</div>
 
 							<div class="soliloquy-clearfix"></div>
 						</div>
-					  <p class="description"><?php esc_html_e( 'Required if specifying a local video URL.', 'soliloquy' ); ?></p>
+						<p class="description"><?php esc_html_e( 'Required if specifying a local video URL.', 'soliloquy' ); ?></p>
 
 					</label>
 				</div>
@@ -770,9 +774,7 @@ class Soliloquy_Media_View {
 		}
 
 		return self::$instance;
-
 	}
-
 }
 
 // Load the media class.

@@ -1,10 +1,12 @@
 === Post Tags and Categories for Pages ===
 
-Contributors: Curtis McHale
+Contributors: curtismchale
 Tags: wp, tags, categories, pages
-Requires at least: 3.0
-Tested up to: 4.5.2
-Stable tag: 1.4.1
+Requires at least: 6.0
+Tested up to: 6.9
+Stable tag: 1.4.3
+License: GPL-2.0-or-later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 Adds the built in WordPress categories and tags to your pages.
 
@@ -27,6 +29,11 @@ folder.
 2. Activate the plugin.
 
 == Changelog ==
+
+= 1.4.2 =
+
+* updated tested version and PHP supports versions
+* ran plugin check and blocked direct file access
 
 = 1.4 =
 

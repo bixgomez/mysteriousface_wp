@@ -5,7 +5,7 @@
  * Description: Soliloquy is the best responsive WordPress slider plugin.
  * Author:      Soliloquy Team
  * Author URI:  https://soliloquywp.com
- * Version:     2.6.6
+ * Version:     2.7.2
  * Text Domain: soliloquy
  * Domain Path: languages
  *
@@ -56,7 +56,7 @@ class Soliloquy {
 	 *
 	 * @var string
 	 */
-	public $version = '2.6.6';
+	public $version = '2.7.2';
 
 	/**
 	 * The name of the plugin.
@@ -105,7 +105,6 @@ class Soliloquy {
 
 		// Load the plugin.
 		add_action( 'init', array( $this, 'init' ), 0 );
-
 	}
 
 	/**
@@ -116,7 +115,6 @@ class Soliloquy {
 	public function load_plugin_textdomain() {
 
 		load_plugin_textdomain( $this->plugin_slug, false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
-
 	}
 
 	/**
@@ -127,7 +125,6 @@ class Soliloquy {
 	public function widget() {
 
 		register_widget( 'Soliloquy_Widget' );
-
 	}
 
 	/**
@@ -149,7 +146,6 @@ class Soliloquy {
 
 		// Load global components.
 		$this->require_global();
-
 	}
 
 	public function is_soliloquy_page() {
@@ -187,10 +183,9 @@ class Soliloquy {
 		require plugin_dir_path( __FILE__ ) . 'includes/admin/settings.php';
 		require plugin_dir_path( __FILE__ ) . 'includes/admin/addons.php';
 		require plugin_dir_path( __FILE__ ) . 'includes/admin/vimeo.php';
-		require plugin_dir_path( __FILE__ ) . 'includes/admin/gutenberg.php';
+		require plugin_dir_path( __FILE__ ) . 'includes/admin/blocks.php';
 		require plugin_dir_path( __FILE__ ) . 'includes/admin/review.php';
 		require plugin_dir_path( __FILE__ ) . 'includes/admin/notifications.php';
-
 	}
 
 	/**
@@ -215,7 +210,6 @@ class Soliloquy {
 		}
 
 		return false;
-
 	}
 
 	/**
@@ -255,7 +249,6 @@ class Soliloquy {
 
 		// Fire a hook for Addons to register their updater since we know the key is present.
 		do_action( 'soliloquy_updater', $key );
-
 	}
 
 	/**
@@ -265,12 +258,15 @@ class Soliloquy {
 	 */
 	public function require_global() {
 
-		require plugin_dir_path( __FILE__ ) . 'includes/global/common.php';
-		require plugin_dir_path( __FILE__ ) . 'includes/global/legacy.php';
-		require plugin_dir_path( __FILE__ ) . 'includes/global/posttype.php';
-		require plugin_dir_path( __FILE__ ) . 'includes/global/shortcode.php';
-		require plugin_dir_path( __FILE__ ) . 'includes/global/widget.php';
+		require_once plugin_dir_path( __FILE__ ) . 'includes/global/common.php';
+		require_once plugin_dir_path( __FILE__ ) . 'includes/global/truncateHtml.php';
+		require_once plugin_dir_path( __FILE__ ) . 'includes/global/legacy.php';
+		require_once plugin_dir_path( __FILE__ ) . 'includes/global/posttype.php';
+		require_once plugin_dir_path( __FILE__ ) . 'includes/global/shortcode.php';
+		require_once plugin_dir_path( __FILE__ ) . 'includes/global/widget.php';
+		require_once plugin_dir_path( __FILE__ ) . 'includes/global/tracking.php';
 
+		( new Soliloquy_Tracking() )->hooks();
 	}
 
 	/**
@@ -297,15 +293,14 @@ class Soliloquy {
 
 		// Check status of slider.
 		if ( isset( $slider['status'] ) ) {
-			if ( 'draft' === $slider['status'] || 'pending' === $slider['status'] ) {
+			if ( in_array( $slider['status'], array( 'pending', 'draft', 'trash' ), true ) ) {
 				// Public site, slider is set to draft, so don't display it.
-				return;
+				return false;
 			}
 		}
 
 		// Return the slider data.
 		return $slider;
-
 	}
 
 	/**
@@ -321,8 +316,14 @@ class Soliloquy {
 	// @codingStandardsIgnoreStart
 	public function _get_slider( $id ) {
 	// @codingStandardsIgnoreEnd
-		return get_post_meta( $id, '_sol_slider_data', true );
+		// check if the current user can edit others posts if status is draft.
+		$slider = get_post( $id );
 
+		if ( in_array( $slider->post_status, array( 'pending', 'draft', 'trash' ), true ) && ! current_user_can( 'edit_others_posts' ) ) {
+			return false;
+		}
+
+		return get_post_meta( $id, '_sol_slider_data', true );
 	}
 
 	/**
@@ -355,7 +356,6 @@ class Soliloquy {
 
 		// Return the slider data.
 		return $slider;
-
 	}
 
 	/**
@@ -392,7 +392,6 @@ class Soliloquy {
 
 		// Return the slider data.
 		return $ret;
-
 	}
 
 	/**
@@ -418,7 +417,6 @@ class Soliloquy {
 
 		// Return the slider data.
 		return $sliders;
-
 	}
 
 	/**
@@ -463,11 +461,11 @@ class Soliloquy {
 
 			$content_sliders = $this->content_type_sliders();
 
-			if ( !class_exists('Soliloquy_Common' ) ) {
+			if ( ! class_exists( 'Soliloquy_Common' ) ) {
 				require plugin_dir_path( __FILE__ ) . 'includes/global/common.php';
 			}
 
-			if ( !class_exists('Soliloquy_Shortcode' ) ) {
+			if ( ! class_exists( 'Soliloquy_Shortcode' ) ) {
 				require plugin_dir_path( __FILE__ ) . 'includes/global/shortcode.php';
 			}
 
@@ -490,7 +488,6 @@ class Soliloquy {
 
 		// Return the slider data.
 		return $ret;
-
 	}
 
 	/**
@@ -530,7 +527,6 @@ class Soliloquy {
 		}
 
 		return apply_filters( 'soliloquy_license_key', $key );
-
 	}
 
 	/**
@@ -544,7 +540,6 @@ class Soliloquy {
 
 		$option = get_option( 'soliloquy' );
 		return $option['type'];
-
 	}
 
 	/**
@@ -558,7 +553,6 @@ class Soliloquy {
 
 		$option = get_option( 'soliloquy' );
 		return isset( $option['is_expired'] ) && $option['is_expired'] || isset( $option['is_disabled'] ) && $option['is_disabled'] || isset( $option['is_invalid'] ) && $option['is_invalid'];
-
 	}
 
 	/**
@@ -579,7 +573,6 @@ class Soliloquy {
 		);
 
 		return apply_filters( 'soliloquy_default_options', $ret );
-
 	}
 
 	/**
@@ -590,7 +583,6 @@ class Soliloquy {
 	public static function get_file() {
 
 		return self::$file;
-
 	}
 
 	/**
@@ -613,7 +605,6 @@ class Soliloquy {
 		}
 
 		return false;
-
 	}
 
 	/**
@@ -636,7 +627,6 @@ class Soliloquy {
 		}
 
 		return false;
-
 	}
 
 	/**
@@ -654,10 +644,9 @@ class Soliloquy {
 		$this->define( 'SOLILOQUY_FILE', $this->file );
 		$this->define( 'SOLILOQUY_DIR', plugin_dir_path( __FILE__ ) );
 		$this->define( 'SOLILOQUY_URL', plugin_dir_url( __FILE__ ) );
-
 	}
 	public function define( $name, $value ) {
-		if ( !defined( $name ) ) {
+		if ( ! defined( $name ) ) {
 			define( $name, $value );
 		}
 	}
@@ -675,9 +664,7 @@ class Soliloquy {
 		}
 
 		return self::$instance;
-
 	}
-
 }
 
 register_activation_hook( __FILE__, 'soliloquy_activation_hook' );
@@ -703,6 +690,17 @@ function soliloquy_activation_hook( $network_wide ) {
 
 	$instance = Soliloquy::get_instance();
 
+	$over_time = get_option( 'soliloquy_over_time', [] );
+	if ( empty( $over_time['installed_pro'] ) ) {
+		$over_time['installed_version'] = $instance->version;
+		$over_time['installed_date']    = wp_date( 'U' );
+		$over_time['installed_pro']     = $over_time['installed_date'];
+		if ( ! isset( $over_time['installed_lite'] ) ) {
+			$over_time['installed_lite'] = false;
+		}
+		update_option( 'soliloquy_over_time', $over_time );
+	}
+
 	if ( is_multisite() && $network_wide ) {
 		global $wpdb;
 		$site_list = $wpdb->get_results( "SELECT * FROM $wpdb->blogs ORDER BY blog_id" );
@@ -724,7 +722,6 @@ function soliloquy_activation_hook( $network_wide ) {
 			update_option( 'soliloquy', Soliloquy::default_options() );
 		}
 	}
-
 }
 
 register_uninstall_hook( __FILE__, 'soliloquy_uninstall_hook' );
@@ -750,7 +747,6 @@ function soliloquy_uninstall_hook() {
 	} else {
 		delete_option( 'soliloquy' );
 	}
-
 }
 
 // Load the main plugin class.
@@ -762,7 +758,7 @@ $soliloquy = Soliloquy::get_instance();
  * @return bool
  */
 function soliloquy_license_checker() {
-	$core = Soliloquy::get_instance();
+	$core   = Soliloquy::get_instance();
 	$key    = $core->get_license_key();
 	$option = get_option( 'soliloquy' );
 
@@ -771,7 +767,6 @@ function soliloquy_license_checker() {
 	}
 
 	return true;
-
 }
 
 // Conditionally load the template tag.
@@ -805,6 +800,5 @@ if ( ! function_exists( 'soliloquy' ) ) {
 		} else {
 			echo do_shortcode( $shortcode );
 		}
-
 	}
 }

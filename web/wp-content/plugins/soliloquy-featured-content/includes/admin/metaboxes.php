@@ -53,7 +53,6 @@ class Soliloquy_Featured_Content_Metaboxes {
 		add_filter( 'soliloquy_slider_types', array( $this, 'types' ) );
 		add_action( 'soliloquy_display_fc', array( $this, 'settings_screen' ) );
 		add_filter( 'soliloquy_save_settings', array( $this, 'save' ), 10, 2 );
-
 	}
 
 	/**
@@ -63,12 +62,13 @@ class Soliloquy_Featured_Content_Metaboxes {
 	 */
 	public function styles() {
 
+		wp_enqueue_style( $this->base->plugin_slug . '-chosen', plugins_url( 'assets/css/chosen.min.css', $this->base->file ), array(), $this->base->version );
+
 		// Register featured content styles.
 		wp_register_style( $this->base->plugin_slug . '-style', plugins_url( 'assets/css/admin.css', $this->base->file ), array( $this->base->plugin_slug . '-chosen' ), $this->base->version );
 
 		// Enqueue featured content styles.
 		wp_enqueue_style( $this->base->plugin_slug . '-style' );
-
 	}
 
 	/**
@@ -78,8 +78,10 @@ class Soliloquy_Featured_Content_Metaboxes {
 	 */
 	public function scripts() {
 
+		wp_enqueue_script( $this->base->plugin_slug . '-chosen', plugins_url( 'assets/js/chosen.jquery.min.js', $this->base->file ), array(), $this->base->version );
+
 		// Register featured content scripts.
-		wp_register_script( $this->base->plugin_slug . '-script', plugins_url( 'assets/js/fc.js', $this->base->file ), array( 'jquery', $this->base->plugin_slug . '-chosen' ), $this->base->plugin_slug, true );
+		wp_register_script( $this->base->plugin_slug . '-script', plugins_url( 'assets/js/fc.js', $this->base->file ), array( 'jquery', $this->base->plugin_slug . '-chosen' ), $this->base->version, true );
 
 		// Enqueue featured content scripts.
 		wp_enqueue_script( $this->base->plugin_slug . '-script' );
@@ -93,7 +95,6 @@ class Soliloquy_Featured_Content_Metaboxes {
 				'term_nonce'    => wp_create_nonce( 'soliloquy-fc-term-refresh' ),
 			)
 		);
-
 	}
 
 	/**
@@ -132,7 +133,6 @@ class Soliloquy_Featured_Content_Metaboxes {
 		$defaults['fc_no_cache']             = 0;
 		// $defaults['fc_ignore_current'] = 0;
 		return $defaults;
-
 	}
 
 	/**
@@ -147,7 +147,6 @@ class Soliloquy_Featured_Content_Metaboxes {
 
 		$types['fc'] = esc_attr__( 'Featured Content', 'soliloquy-featured-content' );
 		return $types;
-
 	}
 
 	/**
@@ -411,7 +410,7 @@ class Soliloquy_Featured_Content_Metaboxes {
 							<label for="soliloquy-config-fc-status"><?php esc_html_e( 'Post Status', 'soliloquy-featured-content' ); ?></label>
 						</th>
 						<td>
-						   <div class="soliloquy-select">
+							<div class="soliloquy-select">
 
 								<select id="soliloquy-config-fc-status" class="soliloquy-chosen" name="_soliloquy[fc_status]" data-soliloquy-chosen-options='{ "disable_search":"true", "width": "100%" }'>
 								<?php
@@ -574,7 +573,6 @@ class Soliloquy_Featured_Content_Metaboxes {
 			</table>
 		</div>
 		<?php
-
 	}
 
 	/**
@@ -627,7 +625,6 @@ class Soliloquy_Featured_Content_Metaboxes {
 		$settings = apply_filters( 'soliloquy_fc_save', $settings, $post_id );
 
 		return $settings;
-
 	}
 
 	/**
@@ -644,9 +641,7 @@ class Soliloquy_Featured_Content_Metaboxes {
 		}
 
 		return self::$instance;
-
 	}
-
 }
 
 // Load the metabox class.

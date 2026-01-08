@@ -49,7 +49,6 @@ class Soliloquy_Ajax {
 		add_action( 'wp_ajax_soliloquy_slider_view', array( $this, 'slider_view' ) );
 		add_action( 'wp_ajax_soliloquy_sort_publish', array( $this, 'sort_slides' ) );
 		add_action( 'wp_ajax_soliloquy_get_attachment_links', array( $this, 'get_attachment_links' ) );
-
 	}
 
 	/**
@@ -62,6 +61,11 @@ class Soliloquy_Ajax {
 		// Check nonce
 		check_admin_referer( 'soliloquy-save-meta', 'nonce' );
 
+		// Check permissions
+		if ( ! current_user_can( 'edit_others_posts' ) ) {
+			wp_send_json_error( [ 'message' => esc_html__( 'You are not allowed to edit sliders.', 'soliloquy' ) ] );
+		}
+
 		// Get required inputs
 		$attachment_id = absint( $_POST['attachment_id'] );
 
@@ -72,7 +76,6 @@ class Soliloquy_Ajax {
 				'attachment_page' => get_attachment_link( $attachment_id ),
 			)
 		);
-
 	}
 	/**
 	 * Upgrades sliders from v1 to v2. This also upgrades any current v2 users to the
@@ -86,6 +89,10 @@ class Soliloquy_Ajax {
 
 		// Run a security check first.
 		check_admin_referer( 'soliloquy-upgrade', 'nonce' );
+
+		if ( ! current_user_can( 'edit_others_posts' ) ) {
+			wp_send_json_error( [ 'message' => esc_html__( 'You are not allowed to edit sliders.', 'soliloquy' ) ] );
+		}
 
 		// Increase the time limit to account for large slider sets and suspend cache invalidations.
 		set_time_limit( Soliloquy_Common::get_instance()->get_max_execution_time() );
@@ -572,7 +579,6 @@ class Soliloquy_Ajax {
 		// Send back the response.
 		echo json_encode( true );
 		die;
-
 	}
 
 	/**
@@ -587,6 +593,10 @@ class Soliloquy_Ajax {
 
 		// Run a security check first.
 		check_admin_referer( 'soliloquy-is-hosted', 'nonce' );
+
+		if ( ! current_user_can( 'edit_posts' ) ) {
+			wp_send_json_error( [ 'message' => esc_html__( 'You are not allowed to edit sliders.', 'soliloquy' ) ] );
+		}
 
 		// Setup vars
 		$video_url = ( isset( $_POST['video_url'] ) ? sanitize_text_field( $_POST['video_url'] ) : '' );
@@ -625,7 +635,6 @@ class Soliloquy_Ajax {
 		// Return
 		wp_send_json_success( $is_hosted_video );
 		die();
-
 	}
 
 	/**
@@ -638,10 +647,19 @@ class Soliloquy_Ajax {
 		// Run a security check first.
 		check_admin_referer( 'soliloquy-change-type', 'nonce' );
 
+		$post_id = isset( $_POST['post_id'] ) ? absint( $_POST['post_id'] ) : null;
+
+		if ( null === $post_id ) {
+			wp_send_json_error( [ 'message' => esc_html__( 'Invalid Post ID.', 'soliloquy' ) ] );
+		}
+
+		if ( ! current_user_can( 'edit_post', $post_id ) ) {
+			wp_send_json_error( [ 'message' => esc_html__( 'You are not allowed to edit sliders.', 'soliloquy' ) ] );
+		}
+
 		// Prepare variables.
-		$post_id = absint( $_POST['post_id'] );
-		$post    = get_post( $post_id );
-		$type    = stripslashes( $_POST['type'] );
+		$post = get_post( $post_id );
+		$type = stripslashes( $_POST['type'] );
 
 		// Retrieve the data for the type selected.
 		ob_start();
@@ -657,7 +675,6 @@ class Soliloquy_Ajax {
 			)
 		);
 		die;
-
 	}
 
 	/**
@@ -673,6 +690,11 @@ class Soliloquy_Ajax {
 		// Prepare variables.
 		$id      = absint( $_POST['id'] );
 		$post_id = absint( $_POST['post_id'] );
+
+		// Check if the user can edit slider and the attached post.
+		if ( ! current_user_can( 'edit_post', $post_id ) || ! current_user_can( 'edit_post', $id ) ) {
+			wp_send_json_error( [ 'message' => esc_html__( 'You are not allowed to edit sliders.', 'soliloquy' ) ] );
+		}
 
 		// Set post meta to show that this image is attached to one or more Soliloquy sliders.
 		$has_slider = get_post_meta( $id, '_sol_has_slider', true );
@@ -718,7 +740,6 @@ class Soliloquy_Ajax {
 
 		echo json_encode( $html );
 		die;
-
 	}
 
 	/**
@@ -731,11 +752,20 @@ class Soliloquy_Ajax {
 		// Run a security check first.
 		check_ajax_referer( 'soliloquy-insert-images', 'nonce' );
 
+		$post_id = isset( $_POST['post_id'] ) ? absint( $_POST['post_id'] ) : null;
+
+		if ( null === $post_id ) {
+			wp_send_json_error( [ 'message' => esc_html__( 'Invalid Post ID.', 'soliloquy' ) ] );
+		}
+
+		if ( ! current_user_can( 'edit_post', $post_id ) ) {
+			wp_send_json_error( [ 'message' => esc_html__( 'You are not allowed to edit sliders.', 'soliloquy' ) ] );
+		}
+
 		// Prepare variables.
-		$images  = ! empty( $_POST['images'] ) ? json_decode( stripslashes( $_POST['images'] ), true ) : array();
-		$videos  = ! empty( $_POST['videos'] ) ? stripslashes_deep( (array) $_POST['videos'] ) : array();
-		$html    = ! empty( $_POST['html'] ) ? stripslashes_deep( (array) $_POST['html'] ) : array();
-		$post_id = absint( $_POST['post_id'] );
+		$images = ! empty( $_POST['images'] ) ? json_decode( stripslashes( $_POST['images'] ), true ) : array();
+		$videos = ! empty( $_POST['videos'] ) ? stripslashes_deep( (array) $_POST['videos'] ) : array();
+		$html   = ! empty( $_POST['html'] ) ? stripslashes_deep( (array) $_POST['html'] ) : array();
 
 		// Grab and update any slider data if necessary.
 		$in_slider = get_post_meta( $post_id, '_sol_in_slider', true );
@@ -822,7 +852,6 @@ class Soliloquy_Ajax {
 		}
 		echo wp_send_json_success( $html );
 		die;
-
 	}
 
 	/**
@@ -835,9 +864,14 @@ class Soliloquy_Ajax {
 		// Run a security check first.
 		check_admin_referer( 'soliloquy-sort', 'nonce' );
 
+		$post_id = isset( $_POST['post_id'] ) ? absint( $_POST['post_id'] ) : false;
+
+		if ( ! current_user_can( 'edit_post', $post_id ) ) {
+			wp_send_json_error( [ 'message' => esc_html__( 'You are not allowed to edit sliders.', 'soliloquy' ) ] );
+		}
+
 		// Prepare variables.
 		$order       = explode( ',', $_POST['order'] );
-		$post_id     = absint( $_POST['post_id'] );
 		$slider_data = get_post_meta( $post_id, '_sol_slider_data', true );
 
 		// Copy the slider config, removing the slides
@@ -858,7 +892,6 @@ class Soliloquy_Ajax {
 
 		echo json_encode( true );
 		die;
-
 	}
 
 	/**
@@ -871,8 +904,13 @@ class Soliloquy_Ajax {
 		// Run a security check first.
 		check_admin_referer( 'soliloquy-remove-slide', 'nonce' );
 
+		$post_id = isset( $_POST['post_id'] ) ? absint( wp_unslash( $_POST['post_id'] ) ) : false;
+
+		if ( ! current_user_can( 'edit_post', $post_id ) ) {
+			wp_send_json_error( [ 'message' => esc_html__( 'You are not allowed to edit sliders.', 'soliloquy' ) ] );
+		}
+
 		// Prepare variables.
-		$post_id     = absint( $_POST['post_id'] );
 		$attach_ids  = (array) $_POST['attachment_ids'];
 		$slider_data = get_post_meta( $post_id, '_sol_slider_data', true );
 		$in_slider   = get_post_meta( $post_id, '_sol_in_slider', true );
@@ -907,7 +945,6 @@ class Soliloquy_Ajax {
 
 		echo json_encode( true );
 		die;
-
 	}
 
 	/**
@@ -920,8 +957,17 @@ class Soliloquy_Ajax {
 		// Run a security check first.
 		check_admin_referer( 'soliloquy-remove-slide', 'nonce' );
 
+		$post_id = isset( $_POST['post_id'] ) ? absint( $_POST['post_id'] ) : null;
+
+		if ( null === $post_id ) {
+			wp_send_json_error( [ 'message' => esc_html__( 'Invalid Post ID.', 'soliloquy' ) ] );
+		}
+
+		if ( ! current_user_can( 'edit_post', $post_id ) ) {
+			wp_send_json_error( [ 'message' => esc_html__( 'You are not allowed to edit sliders.', 'soliloquy' ) ] );
+		}
+
 		// Prepare variables.
-		$post_id     = absint( $_POST['post_id'] );
 		$attach_id   = trim( $_POST['attachment_id'] );
 		$slider_data = get_post_meta( $post_id, '_sol_slider_data', true );
 		$in_slider   = get_post_meta( $post_id, '_sol_in_slider', true );
@@ -951,7 +997,6 @@ class Soliloquy_Ajax {
 
 		echo json_encode( true );
 		die;
-
 	}
 
 	/**
@@ -964,8 +1009,17 @@ class Soliloquy_Ajax {
 		// Run a security check first.
 		check_admin_referer( 'soliloquy-save-meta', 'nonce' );
 
+		$post_id = isset( $_POST['post_id'] ) ? absint( $_POST['post_id'] ) : null;
+
+		if ( null === $post_id ) {
+			wp_send_json_error( [ 'message' => esc_html__( 'Invalid Post ID.', 'soliloquy' ) ] );
+		}
+
+		if ( ! current_user_can( 'edit_post', $post_id ) ) {
+			wp_send_json_error( [ 'message' => esc_html__( 'You are not allowed to edit sliders.', 'soliloquy' ) ] );
+		}
+
 		// Prepare variables.
-		$post_id     = absint( $_POST['post_id'] );
 		$attach_id   = $_POST['attach_id'];
 		$meta        = $_POST['meta'];
 		$slider_data = get_post_meta( $post_id, '_sol_slider_data', true );
@@ -1026,7 +1080,6 @@ class Soliloquy_Ajax {
 		wp_send_json_success();
 
 		die;
-
 	}
 
 	public function bulk_save_meta() {
@@ -1034,8 +1087,17 @@ class Soliloquy_Ajax {
 		// Run a security check first.
 		check_admin_referer( 'soliloquy-save-meta', 'nonce' );
 
+		$post_id = isset( $_POST['post_id'] ) ? absint( $_POST['post_id'] ) : null;
+
+		if ( null === $post_id ) {
+			wp_send_json_error( [ 'message' => esc_html__( 'Invalid Post ID.', 'soliloquy' ) ] );
+		}
+
+		if ( ! current_user_can( 'edit_post', $post_id ) ) {
+			wp_send_json_error( [ 'message' => esc_html__( 'You are not allowed to edit sliders.', 'soliloquy' ) ] );
+		}
+
 		// Prepare variables.
-		$post_id   = absint( $_POST['post_id'] );
 		$attach_id = $_POST['image_ids'];
 		$meta      = $_POST['meta'];
 
@@ -1099,7 +1161,6 @@ class Soliloquy_Ajax {
 		// Done
 		wp_send_json_success();
 		die;
-
 	}
 	/**
 	 * Refreshes the DOM view for a slider.
@@ -1111,9 +1172,18 @@ class Soliloquy_Ajax {
 		// Run a security check first.
 		check_admin_referer( 'soliloquy-refresh', 'nonce' );
 
+		$post_id = isset( $_POST['post_id'] ) ? absint( $_POST['post_id'] ) : null;
+
+		if ( null === $post_id ) {
+			wp_send_json_error( [ 'message' => esc_html__( 'Invalid Post ID.', 'soliloquy' ) ] );
+		}
+
+		if ( ! current_user_can( 'edit_post', $post_id ) ) {
+			wp_send_json_error( [ 'message' => esc_html__( 'You are not allowed to edit sliders.', 'soliloquy' ) ] );
+		}
+
 		// Prepare variables.
-		$post_id = absint( $_POST['post_id'] );
-		$slider  = '';
+		$slider = '';
 
 		// Grab all slider data.
 		$slider_data = get_post_meta( $post_id, '_sol_slider_data', true );
@@ -1131,7 +1201,6 @@ class Soliloquy_Ajax {
 
 		echo json_encode( array( 'success' => $slider ) );
 		die;
-
 	}
 
 	/**
@@ -1141,14 +1210,20 @@ class Soliloquy_Ajax {
 	 */
 	public function load_slider_data() {
 
+		// Run a security check first.
+		check_admin_referer( 'soliloquy-load-slider', 'nonce' );
+
 		// Prepare variables and grab the slider data.
-		$slider_id   = absint( $_POST['post_id'] );
+		$slider_id   = isset( $_POST['post_id'] ) ? absint( $_POST['post_id'] ) : false;
 		$slider_data = get_post_meta( $slider_id, '_sol_slider_data', true );
 
-		// Send back the slider data.
-		echo json_encode( $slider_data );
+		// Send back publicly viewable slider data.
+		if ( is_post_publicly_viewable( $slider_id ) ) {
+			echo wp_json_encode( $slider_data );
+		} else {
+			echo wp_json_encode( '' );
+		}
 		die;
-
 	}
 
 	/**
@@ -1160,6 +1235,10 @@ class Soliloquy_Ajax {
 
 		// Run a security check first.
 		check_admin_referer( 'soliloquy-install', 'nonce' );
+
+		if ( ! current_user_can( 'install_plugins' ) ) {
+			wp_send_json_error( [ 'message' => esc_html__( 'You are not allowed to install plugins.', 'soliloquy' ) ] );
+		}
 
 		// Install the addon.
 		if ( isset( $_POST['plugin'] ) ) {
@@ -1216,7 +1295,6 @@ class Soliloquy_Ajax {
 		// Send back a response.
 		echo json_encode( true );
 		die;
-
 	}
 
 	/**
@@ -1228,6 +1306,10 @@ class Soliloquy_Ajax {
 
 		// Run a security check first.
 		check_admin_referer( 'soliloquy-activate', 'nonce' );
+
+		if ( ! current_user_can( 'install_plugins' ) ) {
+			wp_send_json_error( [ 'message' => esc_html__( 'You are not allowed to activate plugins.', 'soliloquy' ) ] );
+		}
 
 		// Activate the addon.
 		if ( isset( $_POST['plugin'] ) ) {
@@ -1241,7 +1323,6 @@ class Soliloquy_Ajax {
 
 		echo json_encode( true );
 		die;
-
 	}
 
 	/**
@@ -1254,6 +1335,10 @@ class Soliloquy_Ajax {
 		// Run a security check first.
 		check_admin_referer( 'soliloquy-deactivate', 'nonce' );
 
+		if ( ! current_user_can( 'install_plugins' ) ) {
+			wp_send_json_error( [ 'message' => esc_html__( 'You are not allowed to dectivate plugins.', 'soliloquy' ) ] );
+		}
+
 		// Deactivate the addon.
 		if ( isset( $_POST['plugin'] ) ) {
 			$deactivate = deactivate_plugins( $_POST['plugin'] );
@@ -1261,7 +1346,6 @@ class Soliloquy_Ajax {
 
 		echo json_encode( true );
 		die;
-
 	}
 
 	/**
@@ -1331,7 +1415,7 @@ class Soliloquy_Ajax {
 						$videoID = array_pop( $parts );
 
 						// Get image from API
-						$res = wp_remote_get( 'http://fast.wistia.net/oembed?url=' . urlencode( $item['url'] ) );
+						$res = wp_safe_remote_get( 'http://fast.wistia.net/oembed?url=' . urlencode( $item['url'] ) );
 						$bod = wp_remote_retrieve_body( $res );
 						$api = json_decode( $bod, true );
 						if ( ! empty( $api['thumbnail_url'] ) ) {
@@ -1409,7 +1493,6 @@ class Soliloquy_Ajax {
 		$slider_data = apply_filters( 'soliloquy_ajax_item_data', $slider_data, $id, $type );
 
 		return $slider_data;
-
 	}
 
 	/**
@@ -1431,7 +1514,7 @@ class Soliloquy_Ajax {
 		$sdURL   = $baseURL . '0.jpg'; // 480x360
 
 		// Get HD image from YouTube
-		$imageData = wp_remote_get(
+		$imageData = wp_safe_remote_get(
 			$hdURL,
 			array(
 				'timeout' => 10,
@@ -1469,7 +1552,6 @@ class Soliloquy_Ajax {
 
 		// Image is a valid YouTube HD thumbnail
 		return $hdURL;
-
 	}
 
 	/**
@@ -1531,15 +1613,24 @@ class Soliloquy_Ajax {
 		// Return thumbnail URL
 		unset( $vimeo );
 		return $thumbnail['link'];
-
 	}
 
 	public function slider_view() {
 
 		// Run a security check first.
 		check_admin_referer( 'soliloquy-save-meta', 'nonce' );
-		$post_id = absint( $_POST['post_id'] );
-		$view    = $_POST['view'];
+
+		$post_id = isset( $_POST['post_id'] ) ? absint( $_POST['post_id'] ) : null;
+
+		if ( null === $post_id ) {
+			wp_send_json_error( [ 'message' => esc_html__( 'Invalid Post ID.', 'soliloquy' ) ] );
+		}
+
+		if ( ! current_user_can( 'edit_post', $post_id ) ) {
+			wp_send_json_error( [ 'message' => esc_html__( 'You are not allowed to edit sliders.', 'soliloquy' ) ] );
+		}
+
+		$view = $_POST['view'];
 
 		$slider_data = get_post_meta( $post_id, '_sol_slider_data', true );
 		// Save the different types of default meta fields for images, videos and HTML slides.
@@ -1557,7 +1648,6 @@ class Soliloquy_Ajax {
 		Soliloquy_Common::get_instance()->flush_slider_caches( $post_id );
 
 		wp_send_json_success();
-
 	}
 
 	public function change_slide_status() {
@@ -1565,8 +1655,17 @@ class Soliloquy_Ajax {
 		// Run a security check first.
 		check_ajax_referer( 'soliloquy-save-meta', 'nonce' );
 
+		$post_id = isset( $_POST['post_id'] ) ? absint( $_POST['post_id'] ) : null;
+
+		if ( null === $post_id ) {
+			wp_send_json_error( [ 'message' => esc_html__( 'Invalid Post ID.', 'soliloquy' ) ] );
+		}
+
+		if ( ! current_user_can( 'edit_post', $post_id ) ) {
+			wp_send_json_error( [ 'message' => esc_html__( 'You are not allowed to edit sliders.', 'soliloquy' ) ] );
+		}
+
 		// Prepare variables.
-		$post_id     = absint( $_POST['post_id'] );
 		$attach_id   = $_POST['slide_id'];
 		$status      = $_POST['status'];
 		$slider_data = get_post_meta( $post_id, '_sol_slider_data', true );
@@ -1590,7 +1689,6 @@ class Soliloquy_Ajax {
 
 		wp_send_json_success();
 		die;
-
 	}
 
 	/**
@@ -1604,11 +1702,20 @@ class Soliloquy_Ajax {
 		// Run a security check first.
 		check_admin_referer( 'soliloquy-save-meta', 'nonce' );
 
+		$post_id = isset( $_POST['post_id'] ) ? absint( $_POST['post_id'] ) : null;
+
+		if ( null === $post_id ) {
+			wp_send_json_error( [ 'message' => esc_html__( 'Invalid Post ID.', 'soliloquy' ) ] );
+		}
+
+		if ( ! current_user_can( 'edit_post', $post_id ) ) {
+			wp_send_json_error( [ 'message' => esc_html__( 'You are not allowed to edit sliders.', 'soliloquy' ) ] );
+		}
+
 		$common = Soliloquy_Common_Admin::get_instance();
 
 		// Prepare variables.
-		$post_id = absint( $_POST['post_id'] );
-		$order   = $_POST['order'];
+		$order = $_POST['order'];
 
 		$slides = '';
 
@@ -1634,7 +1741,6 @@ class Soliloquy_Ajax {
 		echo wp_send_json_success( $html );
 
 		die;
-
 	}
 
 	/**
@@ -1689,7 +1795,6 @@ class Soliloquy_Ajax {
 		// Output JS
 		echo $js;
 		die();
-
 	}
 
 	/**
@@ -1721,9 +1826,7 @@ class Soliloquy_Ajax {
 		}
 
 		return self::$instance;
-
 	}
-
 }
 
 $soliloquy_ajax = Soliloquy_Ajax::get_instance();
