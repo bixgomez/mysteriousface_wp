@@ -1,0 +1,15 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "web/wp-content/themes/mysteriousface"
+		}
+	],
+	"settings": {
+		"intelephense.environment.phpVersion": "8.1",
+		"php.version": "8.1",
+		"workbench.colorTheme": "Darcula Storm"
+	}
+}
