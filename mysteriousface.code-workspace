@@ -1,9 +1,15 @@
 {
 	"folders": [
 		{
+			"name": "mysteriousface",
 			"path": "."
 		},
 		{
+			"name": "dev_notes",
+			"path": "dev_notes"
+		},
+		{
+			"name": "mysteriousface",
 			"path": "web/wp-content/themes/mysteriousface"
 		}
 	],
