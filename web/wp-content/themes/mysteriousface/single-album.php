@@ -10,8 +10,7 @@ get_header();
 
 $bandcamp_embed_code = get_post_meta(get_the_ID(), 'bandcamp_embed_code', true);
 $bandcamp_album_id = get_post_meta(get_the_ID(), 'bandcamp_album_id', true);
-$songs = get_field('songs');
-$song_ids = get_field('song_ids');
+$song_ids = mf_get_album_songs();
 $has_player = 1;
 $classes = 'layout layout--album';
 if ((strlen($bandcamp_embed_code) + strlen($bandcamp_album_id)) < 15) :

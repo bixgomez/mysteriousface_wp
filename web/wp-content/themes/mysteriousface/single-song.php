@@ -28,18 +28,17 @@ endif;
             <?php if ($author) :
                 echo 'By ' . $author;
             endif; ?>
-            <?php if (have_rows('personnel')): ?>
+            <?php if (mf_has_personnel()): ?>
                 <div class="personnel">
                     <ul>
                         <?php
-                        while (have_rows('personnel')) : the_row();
-                            $name = get_sub_field('name');
-                            $contribution = get_sub_field('contribution');
+                        $personnel = mf_get_personnel();
+                        foreach ($personnel as $person) :
                             echo '<li>';
-                            echo $name . ': ';
-                            echo $contribution;
+                            echo esc_html($person['name']) . ': ';
+                            echo esc_html($person['contribution']);
                             echo '</li>';
-                        endwhile;
+                        endforeach;
                         ?>
                     </ul>
                 </div>
@@ -105,7 +104,7 @@ endif;
                 echo '<h4 class="related-album-header">Appears on</h4><ul class="related-albums">';
                 while( $the_query->have_posts() ) : $the_query->the_post();
                     $album_id = get_the_ID();
-                    $song_ids = get_field('song_ids', $album_id);
+                    $song_ids = mf_get_album_songs($album_id);
                     // print_r (get_field('song_ids'));
                     echo '<li class="related-album ' . 'related-album--' . $album_id . '"><h5 class="related-album-title"><a href="' . get_permalink() . '">' . get_the_title() . '</a></h5>';
                     echo '<ul class="related-album-songs">';

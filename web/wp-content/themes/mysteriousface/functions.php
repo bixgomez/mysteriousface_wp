@@ -180,6 +180,18 @@ require get_template_directory() . '/inc/customizer.php';
 require get_template_directory() . '/inc/mysteriousface.php';
 
 /**
+ * Custom meta boxes for Songs and Albums
+ */
+require get_template_directory() . '/inc/meta-boxes/meta-box--song.php';
+require get_template_directory() . '/inc/meta-boxes/meta-box--album.php';
+require get_template_directory() . '/inc/meta-boxes/meta-box--menu.php';
+
+/**
+ * Meta helper functions
+ */
+require get_template_directory() . '/inc/helpers/meta-helpers.php';
+
+/**
  * Load Jetpack compatibility file.
  */
 if ( defined( 'JETPACK__VERSION' ) ) {
@@ -215,9 +227,9 @@ class Social_Media_Walker extends Walker_Nav_Menu {
 	function start_el(&$output, $item, $depth = 0, $args = array(), $id = 0) {
 		$indent = ($depth) ? str_repeat("\t", $depth) : '';
 
-		// Get custom ACF fields
-		$custom_class = get_field('menu_item_class', $item);
-		$custom_image = get_field('menu_item_image', $item);
+		// Get custom menu item fields
+		$custom_class = mf_get_menu_item_field('class', $item);
+		$custom_image = mf_get_menu_item_image($item);
 
 		// Initialize classes array
 		$classes = empty($item->classes) ? array() : (array) $item->classes;
