@@ -207,6 +207,21 @@ function phi_theme_support() {
 add_action( 'after_setup_theme', 'phi_theme_support' );
 
 /**
+ * Disable block editor for songs and albums post types.
+ * Falls back to the classic editor interface.
+ */
+function mysteriousface_disable_block_editor( $use_block_editor, $post_type ) {
+	$disabled_post_types = array( 'song', 'album' );
+
+	if ( in_array( $post_type, $disabled_post_types ) ) {
+		return false;
+	}
+
+	return $use_block_editor;
+}
+add_filter( 'use_block_editor_for_post_type', 'mysteriousface_disable_block_editor', 10, 2 );
+
+/**
  * Add provisions for classes and images in menu items.
  */
 class Social_Media_Walker extends Walker_Nav_Menu {

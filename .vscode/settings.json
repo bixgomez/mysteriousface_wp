@@ -1,4 +1,27 @@
 {
+  // Your current settings
   "intelephense.environment.phpVersion": "8.3",
-  "php.version": "8.3"
+  "php.version": "8.3",
+
+  // PHPCS integration (uses your local PHAR, not Homebrew 4.x)
+  "phpcs.enable": true,
+  "phpcs.executablePath": "${workspaceFolder}/tools/phpcs/phpcs.phar",
+  "phpcs.standard": "Drupal",
+  "phpcs.ignorePatterns": [
+    "**/vendor/**",
+    "**/node_modules/**"
+  ],
+
+  // Treat Drupal files as PHP so they’re linted/highlighted
+  "files.associations": {
+    "*.module": "php",
+    "*.inc": "php",
+    "*.install": "php",
+    "*.profile": "php",
+    "*.theme": "php"
+  },
+
+  // Optional: only run PHPCS on save (quiet while typing)
+  "phpcs.runOnSave": true,
+  "phpcs.showSources": true
 }
