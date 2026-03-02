@@ -1,0 +1,55 @@
+html {
+  font-size: 62.5%; /* Sets up the Base 10 stuff */
+}
+
+html,
+body {
+  line-height: $line-height--base;
+  font-family: $font-family--base;
+  font-size: $font-size--base;
+  font-weight: $font-weight--base;
+  color: $c--on-background--primary;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+p,
+ul {
+  font-size: $font-size--md;
+  margin:  0 0 $gap--default;
+  padding: 0;
+  line-height: $line-height--base;
+}
+
+h1, h2, h3, h4, h5,
+.h1, .h2, .h3, .h4, .h5,
+%h1, %h2, %h3, %h4, %h5 {
+  font-family: $font-family--heading;
+  font-weight: $font-weight--heading;
+  line-height: $line-height--heading;
+  margin: 0 0 $gap--xs;
+  padding: 0;
+  color: $c--on-background--primary;
+}
+
+h1, .h1, %h1 { font-size: $font-size--xxl; }
+
+h2, .h2, %h2 { font-size: $font-size--xl; }
+
+h3, .h3, %h3 { font-size: $font-size--lg; }
+
+h4, .h4, %h4 { font-size: $font-size--md; }
+
+h5, .h5, %h5 { font-size: $font-size--sm; }
+
+h6, .h6, %h6 { font-size: $font-size--xs; }
+
+a {
+  color: $c--link;
+  text-decoration: none;
+
+  &:hover {
+    color: $c--link--hover;
+    text-decoration: underline;
+  }
+}

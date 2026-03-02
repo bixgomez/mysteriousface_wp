@@ -1,0 +1,54 @@
+@mixin font-profile--base {
+  font-family: $font-family--base;
+  font-size: $font-size--md;
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+@mixin font-profile--heading {
+  font-family: $font-family--heading;
+  line-height: 1.25;
+  font-weight: 600;
+}
+
+@mixin clearfix {
+
+  &::before {
+    clear: both;
+    content: "";
+    display: table;
+  }
+
+  &::after {
+    clear: both;
+    content: "";
+    display: table;
+  }
+}
+
+@mixin menu-item-text {
+  color: $c--gray--dark-02;
+  font-size: 1.2em;
+  font-weight: 600;
+  font-style: normal;
+  line-height: 1.8;
+  text-transform: uppercase;
+  letter-spacing: .124em;
+  padding: 0 .55em;
+  margin: 0 .25em;
+
+  &:hover {
+    color: $c--black;
+    text-decoration: none;
+  }
+
+  .current-menu-item & {
+    color: $color-aqua--base;
+  }
+
+  @include breakpoint($sm) { letter-spacing: 0; }
+
+  @include breakpoint($md) { letter-spacing: .1em; }
+
+  @include breakpoint($lg) { letter-spacing: .124em; }
+}

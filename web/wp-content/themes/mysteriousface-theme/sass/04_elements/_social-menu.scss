@@ -1,0 +1,53 @@
+.menu-social-media-container {
+  max-width: 95%;
+  margin: 0 auto;
+  font-size: 19px;
+}
+
+ul#social-media-menu,
+ul#social-media-menu li {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+ul#social-media-menu {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  grid-gap: 1em;
+  margin: .5em 0;
+}
+
+li.social-link {
+   > a {
+     display: block;
+     text-indent: -999em;
+     background-color: $c--link;
+     height: 2em;
+     width: 2em;
+     mask-size: contain;
+     mask-position: center;
+     mask-repeat: no-repeat;
+
+     &:hover {
+       background-color: $c--link--hover;
+     }
+   }
+
+  &--bandcamp > a {
+    mask-image: url("images/social-icons/logo_bandcamp.svg");
+  }
+
+  &--facebook > a {
+    mask-image: url("images/social-icons/facebook-brands.svg");
+  }
+
+  &--instagram > a {
+    mask-image: url("images/social-icons/instagram-square-brands.svg");
+  }
+
+  &--twitter > a {
+    mask-image: url("images/social-icons/twitter-brands.svg");
+  }
+}

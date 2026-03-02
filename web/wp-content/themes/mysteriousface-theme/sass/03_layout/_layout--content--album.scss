@@ -1,0 +1,52 @@
+.layout--album {
+  grid-template-areas:
+  "player heading aside"
+  "player body aside";
+
+  grid-template-columns: 25% 1fr max-content;
+  grid-template-rows: min-content 1fr;
+
+  &.no-player {
+    grid-template-areas:
+    "heading aside"
+    "body aside";
+
+    grid-template-columns: 1fr max-content;
+    grid-template-rows: min-content 1fr;
+  }
+}
+
+.player {
+  grid-area: player;
+}
+
+aside {
+  grid-area: aside;
+}
+
+
+@include breakpoint($sm-down) {
+
+  .layout--album {
+    display: flex;
+    flex-direction: column;
+
+    .heading {
+      order: 1;
+    }
+
+    .player {
+      order: 2;
+      display: none;
+    }
+
+    .body {
+      order: 3;
+    }
+
+    aside {
+      order: 4;
+    }
+  }
+
+}

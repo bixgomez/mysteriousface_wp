@@ -1,0 +1,8 @@
+.bandcamp-embed {
+  display: flex;
+
+  iframe {
+    width: 100% !important;
+    max-height: 100% !important;
+  }
+}
