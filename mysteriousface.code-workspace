@@ -9,8 +9,7 @@
 			"path": "."
 		},
 		{
-			"name": "mysteriousface",
-			"path": "web/wp-content/themes/mysteriousface"
+			"path": "web/wp-content/themes/mysteriousface-theme"
 		}
 	],
 	"settings": {

@@ -4,7 +4,7 @@
 // $ npm install --global gulp-cli
 // $ npm install
 
-const PROJECT_URL   = 'http://paulmarcuswp.lndo.site';
+const PROJECT_URL   = 'http://mysteriousface.ddev.site';
 const ROOT          = './';
 const STYLES_MAIN   = './sass/style.scss';
 const STYLES_SOURCE = './sass/**/*.scss';
