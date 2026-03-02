@@ -28,8 +28,8 @@ $classes = 'layout layout--single';
 
                 the_post_navigation(
                     array(
-                        'prev_text' => '<span class="nav-subtitle">' . esc_html__( 'Previous:', 'mysteriousface' ) . '</span> <span class="nav-title">%title</span>',
-                        'next_text' => '<span class="nav-subtitle">' . esc_html__( 'Next:', 'mysteriousface' ) . '</span> <span class="nav-title">%title</span>',
+                        'prev_text' => '<span class="nav-subtitle">' . esc_html__( 'Previous:', 'mysteriousface-theme' ) . '</span> <span class="nav-title">%title</span>',
+                        'next_text' => '<span class="nav-subtitle">' . esc_html__( 'Next:', 'mysteriousface-theme' ) . '</span> <span class="nav-title">%title</span>',
                     )
                 );
 

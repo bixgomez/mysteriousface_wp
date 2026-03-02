@@ -27,7 +27,7 @@
     <div class="wrapper-inner">
         <nav class="container-site">
 
-            <a class="skip-link screen-reader-text" href="#primary"><?php esc_html_e('Skip to content', 'mysteriousface'); ?></a>
+            <a class="skip-link screen-reader-text" href="#primary"><?php esc_html_e('Skip to content', 'mysteriousface-theme'); ?></a>
 
             <header class="site-header">
                 <?php $blog_info = get_bloginfo('name'); ?>

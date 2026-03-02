@@ -16,20 +16,20 @@
 		<?php if ( 'post' === get_post_type() ) : ?>
 		<div class="entry-meta">
 			<?php
-			mysteriousface_posted_on();
-			mysteriousface_posted_by();
+			mysteriousface_theme_posted_on();
+			mysteriousface_theme_posted_by();
 			?>
 		</div><!-- .entry-meta -->
 		<?php endif; ?>
 	</header><!-- .entry-header -->
 
-	<?php mysteriousface_post_thumbnail(); ?>
+	<?php mysteriousface_theme_post_thumbnail(); ?>
 
 	<div class="entry-summary">
 		<?php the_excerpt(); ?>
 	</div><!-- .entry-summary -->
 
 	<footer class="entry-footer">
-		<?php mysteriousface_entry_footer(); ?>
+		<?php mysteriousface_theme_entry_footer(); ?>
 	</footer><!-- .entry-footer -->
 </article><!-- #post-<?php the_ID(); ?> -->
