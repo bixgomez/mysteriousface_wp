@@ -8,6 +8,7 @@
 jQuery(document).ready(function($) {
     var personnelWrapper = $('.mf-personnel-repeater');
     var addButton = $('.mf-add-personnel');
+    var albumSongList = $('.mf-song-checklist-list');
 
     // Add new personnel row
     addButton.on('click', function(e) {
@@ -51,5 +52,15 @@ jQuery(document).ready(function($) {
     // Initialize JSON on page load
     if (personnelWrapper.find('.mf-personnel-row').length > 0) {
         updatePersonnelJSON();
+    }
+
+    // Album song ordering: drag rows to set order.
+    if (albumSongList.length) {
+        albumSongList.sortable({
+            items: '> .mf-song-checklist-item',
+            handle: '.mf-song-drag-handle',
+            placeholder: 'mf-song-sort-placeholder',
+            tolerance: 'pointer'
+        });
     }
 });

@@ -316,7 +316,7 @@ function mf_save_song_meta($post_id, $post) {
 }
 
 /**
- * Enqueue Admin Assets for Song Meta Boxes
+ * Enqueue admin assets for song/album meta boxes.
  */
 add_action('admin_enqueue_scripts', 'mf_enqueue_song_admin_assets');
 
@@ -327,11 +327,11 @@ function mf_enqueue_song_admin_assets($hook) {
     }
 
     global $post_type;
-    if ('song' === $post_type) {
+    if ('song' === $post_type || 'album' === $post_type) {
         wp_enqueue_script(
             'mf-admin-meta-boxes',
             get_template_directory_uri() . '/js/admin-meta-boxes.js',
-            array('jquery'),
+            array('jquery', 'jquery-ui-sortable'),
             '1.0.0',
             true
         );

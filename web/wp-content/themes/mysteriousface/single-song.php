@@ -13,10 +13,15 @@ $lyrics = get_post_meta(get_the_ID(), 'lyrics', true);
 $bandcamp_embed_code = get_post_meta(get_the_ID(), 'bandcamp_embed_code', true);
 $bandcamp_track_id = get_post_meta(get_the_ID(), 'bandcamp_track_id', true);
 $bandcamp_album_id = get_post_meta(get_the_ID(), 'bandcamp_album_id', true);
-$has_player = 1;
+$has_player = (
+    strlen(trim((string) $bandcamp_embed_code)) > 10
+    || (
+        strlen(trim((string) $bandcamp_album_id)) > 5
+        && strlen(trim((string) $bandcamp_track_id)) > 5
+    )
+);
 $classes = 'layout layout--song';
-if ((strlen($bandcamp_embed_code) + strlen($bandcamp_album_id)) < 15) :
-    $has_player = 0;
+if (!$has_player) :
     $classes .= ' no-player ';
 endif;
 ?>

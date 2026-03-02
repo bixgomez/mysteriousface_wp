@@ -11,10 +11,12 @@ get_header();
 $bandcamp_embed_code = get_post_meta(get_the_ID(), 'bandcamp_embed_code', true);
 $bandcamp_album_id = get_post_meta(get_the_ID(), 'bandcamp_album_id', true);
 $song_ids = mf_get_album_songs();
-$has_player = 1;
+$has_player = (
+    strlen(trim((string) $bandcamp_embed_code)) > 10
+    || strlen(trim((string) $bandcamp_album_id)) > 5
+);
 $classes = 'layout layout--album';
-if ((strlen($bandcamp_embed_code) + strlen($bandcamp_album_id)) < 15) :
-    $has_player = 0;
+if (!$has_player) :
     $classes .= ' no-player ';
 else :
     $classes .= ' has-player ';
@@ -56,13 +58,11 @@ endif;
             <?php if ($song_ids): ?>
                 <nav role="navigation" aria-labelledby="songs-menu">
                     <h2 class="visually-hidden" id="songs-menu">Songs menu</h2>
-                    <!-- https://www.advancedcustomfields.com/resources/relationship/ -->
                     <ul>
                         <?php
                         foreach ($song_ids as $song_id):
                             $permalink = get_permalink($song_id);
                             $title = get_the_title($song_id);
-                            $custom_field = get_field('field_name', $song_id);
                             echo '<li><a href="' . esc_url($permalink) . '">' . esc_html($title) . '</a></li>';
                         endforeach;
                         ?>
