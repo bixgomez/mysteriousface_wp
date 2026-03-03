@@ -82,55 +82,53 @@ endif;
             </section>
         <?php endif; ?>
 
-        <aside>
-            <?php
+	        <aside>
+	            <?php
 
-            $this_postID = get_the_ID();
+	            $this_postID = get_the_ID();
 
-            // args
-            $args = array(
-                'post_type'	=> 'album',
-                'meta_query'	=> array(
-                    'relation'		=> 'AND',
-                    array(
-                        'key'	  	=> 'song_ids',
-                        'value'	  	=> '"' . $this_postID . '"',
-                        'compare' 	=> 'LIKE',
-                    ),
-                ),
-            );
+	            $album_ids = get_posts(
+	                array(
+	                    'post_type'      => 'album',
+	                    'post_status'    => 'publish',
+	                    'posts_per_page' => -1,
+	                    'orderby'        => 'title',
+	                    'order'          => 'ASC',
+	                    'fields'         => 'ids',
+	                )
+	            );
 
-            // query
-            $the_query = new WP_Query( $args );
+	            $related_albums = array();
+	            foreach ( $album_ids as $album_id ) {
+	                $song_ids = array_map( 'intval', mf_get_album_songs( $album_id ) );
+	                if ( in_array( (int) $this_postID, $song_ids, true ) ) {
+	                    $related_albums[ $album_id ] = $song_ids;
+	                }
+	            }
 
-            if( $the_query->have_posts() ):
-                echo '<div class="related-albums-block">';
-                echo '<h4 class="related-album-header">Appears on</h4><ul class="related-albums">';
-                while( $the_query->have_posts() ) : $the_query->the_post();
-                    $album_id = get_the_ID();
-                    $song_ids = mf_get_album_songs($album_id);
-                    // print_r (get_field('song_ids'));
-                    echo '<li class="related-album ' . 'related-album--' . $album_id . '"><h5 class="related-album-title"><a href="' . get_permalink() . '">' . get_the_title() . '</a></h5>';
-                    echo '<ul class="related-album-songs">';
-                        foreach ($song_ids as $song_id):
-                            $permalink = get_permalink($song_id);
-                            $title = get_the_title($song_id);
-                            if ( $song_id == $this_postID ) :
-                                echo '<li class="related-album-song related-album-song--' . $song_id . '">' . esc_html($title) . '</li>';
-                            else :
-                                echo '<li class="related-album-song related-album-song--' . $song_id . '"><a href="' . esc_url($permalink) . '">' . esc_html($title) . '</a></li>';
-                            endif;
-                        endforeach;
-                    echo '</ul></li>';
-                endwhile;
-                echo '</ul>';
-                echo '</div>';
-            endif;
+	            if ( ! empty( $related_albums ) ) :
+	                echo '<div class="related-albums-block">';
+	                echo '<h4 class="related-album-header">Appears on</h4><ul class="related-albums">';
+	                foreach ( $related_albums as $album_id => $song_ids ) :
+	                    echo '<li class="related-album related-album--' . $album_id . '"><h5 class="related-album-title"><a href="' . get_permalink( $album_id ) . '">' . get_the_title( $album_id ) . '</a></h5>';
+	                    echo '<ul class="related-album-songs">';
+	                        foreach ( $song_ids as $song_id ) :
+	                            $permalink = get_permalink( $song_id );
+	                            $title = get_the_title( $song_id );
+	                            if ( (int) $song_id === (int) $this_postID ) :
+	                                echo '<li class="related-album-song related-album-song--' . $song_id . '">' . esc_html($title) . '</li>';
+	                            else :
+	                                echo '<li class="related-album-song related-album-song--' . $song_id . '"><a href="' . esc_url($permalink) . '">' . esc_html($title) . '</a></li>';
+	                            endif;
+	                        endforeach;
+	                    echo '</ul></li>';
+	                endforeach;
+	                echo '</ul>';
+	                echo '</div>';
+	            endif;
 
-            wp_reset_query();
-
-            ?>
-        </aside>
+	            ?>
+	        </aside>
     </div>
 
 <?php
