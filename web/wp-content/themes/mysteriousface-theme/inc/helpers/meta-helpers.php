@@ -9,7 +9,7 @@
 
 // Prevent direct access
 if (!defined('ABSPATH')) {
-    exit;
+	exit;
 }
 
 /**
@@ -20,10 +20,10 @@ if (!defined('ABSPATH')) {
  * @return mixed The meta value
  */
 function mf_get_field($key, $post_id = null) {
-    if (!$post_id) {
-        $post_id = get_the_ID();
-    }
-    return get_post_meta($post_id, $key, true);
+	if (!$post_id) {
+		$post_id = get_the_ID();
+	}
+	return get_post_meta($post_id, $key, true);
 }
 
 /**
@@ -33,17 +33,17 @@ function mf_get_field($key, $post_id = null) {
  * @return array Array of personnel with 'name' and 'contribution' keys
  */
 function mf_get_personnel($post_id = null) {
-    if (!$post_id) {
-        $post_id = get_the_ID();
-    }
+	if (!$post_id) {
+		$post_id = get_the_ID();
+	}
 
-    $personnel_json = get_post_meta($post_id, 'personnel', true);
-    if (empty($personnel_json)) {
-        return array();
-    }
+	$personnel_json = get_post_meta($post_id, 'personnel', true);
+	if (empty($personnel_json)) {
+		return array();
+	}
 
-    $personnel = json_decode($personnel_json, true);
-    return is_array($personnel) ? $personnel : array();
+	$personnel = json_decode($personnel_json, true);
+	return is_array($personnel) ? $personnel : array();
 }
 
 /**
@@ -53,8 +53,8 @@ function mf_get_personnel($post_id = null) {
  * @return bool True if personnel exists
  */
 function mf_has_personnel($post_id = null) {
-    $personnel = mf_get_personnel($post_id);
-    return !empty($personnel);
+	$personnel = mf_get_personnel($post_id);
+	return !empty($personnel);
 }
 
 /**
@@ -64,10 +64,10 @@ function mf_has_personnel($post_id = null) {
  * @return array Array of song post IDs
  */
 function mf_get_album_songs($post_id = null) {
-    if (!$post_id) {
-        $post_id = get_the_ID();
-    }
+	if (!$post_id) {
+		$post_id = get_the_ID();
+	}
 
-    $song_ids = get_post_meta($post_id, 'song_ids', true);
-    return is_array($song_ids) ? $song_ids : array();
+	$song_ids = get_post_meta($post_id, 'song_ids', true);
+	return is_array($song_ids) ? $song_ids : array();
 }

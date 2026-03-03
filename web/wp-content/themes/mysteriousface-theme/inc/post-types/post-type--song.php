@@ -17,7 +17,7 @@ function post_type__song() {
 		'show_in_rest' => true,
 		'menu_position' => 20,
 		'menu_icon' => 'dashicons-tickets-alt',
-    'rewrite' => array('slug' => 'songs'),
+	'rewrite' => array('slug' => 'songs'),
 		'supports' => array( 'title', 'editor', 'custom-fields' )
 	));
 }

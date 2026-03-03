@@ -17,7 +17,7 @@ function post_type__album() {
 		'show_in_rest' => true,
 		'menu_position' => 20,
 		'menu_icon' => 'dashicons-tickets-alt',
-    'rewrite' => array('slug' => 'albums'),
+	'rewrite' => array('slug' => 'albums'),
 		'supports' => array( 'title', 'editor', 'custom-fields' )
 	));
 }
