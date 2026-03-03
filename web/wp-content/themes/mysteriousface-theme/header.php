@@ -1,71 +1,39 @@
 <?php
 /**
- * The header for our theme
- *
- * This is the template that displays all of the <head> section and everything up until <div id="content">
+ * The header for our theme.
  *
  * @link https://developer.wordpress.org/themes/basics/template-files/#template-partials
  *
  * @package Mysterious_Face
  */
-
 ?>
 <!doctype html>
 <html <?php language_attributes(); ?>>
 <head>
-    <meta charset="<?php bloginfo('charset'); ?>">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="profile" href="https://gmpg.org/xfn/11">
+	<meta charset="<?php bloginfo( 'charset' ); ?>">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="profile" href="https://gmpg.org/xfn/11">
 
-    <?php wp_head(); ?>
+	<?php wp_head(); ?>
 </head>
 
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
 
 <div class="wrapper">
-    <div class="wrapper-inner">
-        <div class="container-site">
+	<div class="wrapper-inner">
+		<div class="container-site">
 
-            <a class="skip-link screen-reader-text" href="#primary"><?php esc_html_e('Skip to content', 'mysteriousface-theme'); ?></a>
+			<a class="skip-link screen-reader-text" href="#primary"><?php esc_html_e( 'Skip to content', 'mysteriousface-theme' ); ?></a>
 
-            <?php if ( ! is_front_page() ) : ?>
-                <header class="site-header">
-                    <div class="header-top">
-                        <h1 class="site-title"><a href="<?php echo esc_url(home_url('/')); ?>" rel="home"><?php bloginfo('name'); ?></a></h1>
-                        <a class="toggle" href="#" role="button"><span></span></a>
-                    </div>
-                    <?php
-                    wp_nav_menu(
-                        array(
-                            'theme_location' => 'menu-2',
-                            'menu_id' => 'social-media-menu',
-                            'container' => 'nav', // Use 'div' or 'nav' as needed
-                            'container_class' => 'social-media-container', // Add a custom class to the container
-                            'items_wrap' => '<ul id="%1$s" class="%2$s">%3$s</ul>', // Modify the wrapping element for the menu items
-                            'menu_class' => 'social-media-items',
-                            'walker' => new Social_Media_Walker()
-                        )
-                    );
-                    ?>
-                </header>
-            <?php endif; ?>
+			<?php if ( function_exists( 'block_template_part' ) ) : ?>
+				<?php block_template_part( 'header' ); ?>
+			<?php endif; ?>
 
-            <?php if ( ! is_front_page() ) : ?>
-                <nav id="site-navigation" class="main-navigation">
-                    <?php
-                    wp_nav_menu(
-                        array(
-                            'theme_location' => 'menu-1',
-                            'menu_id' => 'primary-menu',
-                        )
-                    );
-                    ?>
-                </nav>
-            <?php endif; ?>
+			<?php if ( is_singular() && has_post_thumbnail() ) : ?>
+				<section class="featured-image">
+					<?php the_post_thumbnail( 'full' ); ?>
+				</section>
+			<?php endif; ?>
 
-            <section class="featured-image">
-                <?php the_post_thumbnail('full') ?>
-            </section>
-
-            <main id="primary" class="site-main">
+			<main id="primary" class="site-main">

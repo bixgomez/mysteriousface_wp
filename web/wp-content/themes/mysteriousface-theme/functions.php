@@ -101,6 +101,10 @@ if ( ! function_exists( 'mysteriousface_theme_setup' ) ) :
 				'flex-height' => true,
 			)
 		);
+
+		// Load the main theme stylesheet inside the block editor canvas.
+		add_theme_support( 'editor-styles' );
+		add_editor_style( 'style.css' );
 	}
 endif;
 add_action( 'after_setup_theme', 'mysteriousface_theme_setup' );
@@ -324,3 +328,31 @@ class Social_Media_Walker extends Walker_Nav_Menu {
 		$output .= "</li>\n";
 	}
 }
+
+/**
+ * Keep custom PHP single templates for legacy Song/Album rendering.
+ *
+ * Block templates are now enabled for this theme, but these post types still
+ * rely on custom PHP output (personnel, bandcamp, song relationships).
+ *
+ * @param string $template Resolved template path.
+ * @return string
+ */
+function mysteriousface_theme_legacy_templates( $template ) {
+	if ( is_singular( 'song' ) ) {
+		$legacy_template = get_theme_file_path( '/single-song.php' );
+		if ( is_file( $legacy_template ) ) {
+			return $legacy_template;
+		}
+	}
+
+	if ( is_singular( 'album' ) ) {
+		$legacy_template = get_theme_file_path( '/single-album.php' );
+		if ( is_file( $legacy_template ) ) {
+			return $legacy_template;
+		}
+	}
+
+	return $template;
+}
+add_filter( 'template_include', 'mysteriousface_theme_legacy_templates', 99 );

@@ -86,7 +86,6 @@ endif;
             <?php
 
             $this_postID = get_the_ID();
-            // echo 'This post\'s ID: ' . $this_postID . '<br>';
 
             // args
             $args = array(
