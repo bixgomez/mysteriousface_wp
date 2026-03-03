@@ -19,10 +19,6 @@ $classes = 'layout layout--home';
 
     <div class="<?php print $classes ?>">
 
-        <section class="heading">
-            <h1 class="node-title"><?php the_title(); ?></h1>
-        </section>
-
         <section class="body">
           <?php the_content(); ?>
         </section>

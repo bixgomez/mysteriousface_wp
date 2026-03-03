@@ -225,22 +225,52 @@ add_filter( 'use_block_editor_for_post_type', 'mysteriousface_theme_disable_bloc
  * Add provisions for classes and images in menu items.
  */
 class Social_Media_Walker extends Walker_Nav_Menu {
-    
+
+	/**
+	 * Normalize walker arguments so object-style access is always safe.
+	 *
+	 * @param mixed $args Walker arguments from WordPress.
+	 * @return object
+	 */
+	private function normalize_args( $args ) {
+		if ( is_array( $args ) && isset( $args[0] ) && is_object( $args[0] ) ) {
+			$args = $args[0];
+		}
+
+		if ( is_array( $args ) ) {
+			$args = (object) $args;
+		}
+
+		if ( ! is_object( $args ) ) {
+			$args = (object) array();
+		}
+
+		$defaults = array(
+			'before'      => '',
+			'after'       => '',
+			'link_before' => '',
+			'link_after'  => '',
+		);
+
+		return (object) wp_parse_args( (array) $args, $defaults );
+	}
+
 	// Start level (before the <ul> part)
-	function start_lvl(&$output, $depth = 0, $args = array()) {
+	public function start_lvl( &$output, $depth = 0, $args = null ) {
 		$indent = str_repeat("\t", $depth);
 		$output .= "\n$indent<ul class=\"sub-menu\">\n";
 	}
 
 	// End level (after the </ul> part)
-	function end_lvl(&$output, $depth = 0, $args = array()) {
+	public function end_lvl( &$output, $depth = 0, $args = null ) {
 		$indent = str_repeat("\t", $depth);
 		$output .= "$indent</ul>\n";
 	}
 
 	// Start element (before each <li> part)
-	function start_el(&$output, $item, $depth = 0, $args = array(), $id = 0) {
+	public function start_el( &$output, $item, $depth = 0, $args = null, $id = 0 ) {
 		$indent = ($depth) ? str_repeat("\t", $depth) : '';
+		$args   = $this->normalize_args( $args );
 
 		// Get custom menu item fields
 		$custom_class = mf_get_menu_item_field('class', $item);
@@ -290,7 +320,7 @@ class Social_Media_Walker extends Walker_Nav_Menu {
 	}
 
 	// End element (after each </li> part)
-	function end_el(&$output, $item, $depth = 0, $args = array()) {
+	public function end_el( &$output, $item, $depth = 0, $args = null ) {
 		$output .= "</li>\n";
 	}
 }

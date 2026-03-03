@@ -25,36 +25,39 @@
 
 <div class="wrapper">
     <div class="wrapper-inner">
-        <nav class="container-site">
+        <div class="container-site">
 
             <a class="skip-link screen-reader-text" href="#primary"><?php esc_html_e('Skip to content', 'mysteriousface-theme'); ?></a>
 
-            <header class="site-header">
-                <?php $blog_info = get_bloginfo('name'); ?>
-                <div class="header-top">
-                    <h1 class="site-title"><a href="<?php echo esc_url(home_url('/')); ?>" rel="home"><?php bloginfo('name'); ?></a></h1>
-                    <a class="toggle" href="#" role="button"><span></span></a>
-                </div>
-                <?php
-                wp_nav_menu(
-                    array(
-                        'theme_location' => 'menu-2',
-                        'menu_id' => 'social-media-menu',
-                    )
-                );
-                ?>
-            </header>
+            <?php if ( ! is_front_page() ) : ?>
+                <header class="site-header">
+                    <div class="header-top">
+                        <h1 class="site-title"><a href="<?php echo esc_url(home_url('/')); ?>" rel="home"><?php bloginfo('name'); ?></a></h1>
+                        <a class="toggle" href="#" role="button"><span></span></a>
+                    </div>
+                    <?php
+                    wp_nav_menu(
+                        array(
+                            'theme_location' => 'menu-2',
+                            'menu_id' => 'social-media-menu',
+                        )
+                    );
+                    ?>
+                </header>
+            <?php endif; ?>
 
-            <nav id="site-navigation" class="main-navigation">
-                <?php
-                wp_nav_menu(
-                    array(
-                        'theme_location' => 'menu-1',
-                        'menu_id' => 'primary-menu',
-                    )
-                );
-                ?>
-            </nav>
+            <?php if ( ! is_front_page() ) : ?>
+                <nav id="site-navigation" class="main-navigation">
+                    <?php
+                    wp_nav_menu(
+                        array(
+                            'theme_location' => 'menu-1',
+                            'menu_id' => 'primary-menu',
+                        )
+                    );
+                    ?>
+                </nav>
+            <?php endif; ?>
 
             <?php if (has_post_thumbnail($post->ID)): ?>
                 <section class="featured-image">
@@ -66,4 +69,4 @@
                 <?php dynamic_sidebar('home-page-slider'); ?>
             <?php endif; ?>
 
-            <main>
+            <main id="primary" class="site-main">
