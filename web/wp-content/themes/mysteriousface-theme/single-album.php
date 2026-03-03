@@ -23,7 +23,7 @@ else :
 endif;
 ?>
 
-    <div class="<?php print $classes ?>">
+    <div class="<?php echo esc_attr( trim( $classes ) ); ?>">
 
         <section class="heading">
             <h1 class="node-title"><?php single_post_title(); ?></h1>
@@ -42,12 +42,12 @@ endif;
                 <?php elseif (strlen($bandcamp_album_id) > 5): ?>
                     <article class="bandcamp-embed large">
                         <iframe style="border: 0; width: 350px; height: 786px;"
-                                src="https://bandcamp.com/EmbeddedPlayer/album=<?php echo $bandcamp_album_id ?>/size=large/bgcol=ffffff/linkcol=0687f5/transparent=true/"
+                                src="https://bandcamp.com/EmbeddedPlayer/album=<?php echo esc_attr($bandcamp_album_id); ?>/size=large/bgcol=ffffff/linkcol=0687f5/transparent=true/"
                                 seamless></iframe>
                     </article>
                     <article class="bandcamp-embed small">
                         <iframe style="border: 0; width: 100%; height: 120px;"
-                                src="https://bandcamp.com/EmbeddedPlayer/album=<?php echo $bandcamp_album_id ?>/size=large/bgcol=ffffff/linkcol=0687f5/tracklist=true/artwork=small/transparent=true/"
+                                src="https://bandcamp.com/EmbeddedPlayer/album=<?php echo esc_attr($bandcamp_album_id); ?>/size=large/bgcol=ffffff/linkcol=0687f5/tracklist=true/artwork=small/transparent=true/"
                                 seamless=""></iframe>
                     </article>
                 <?php endif; ?>

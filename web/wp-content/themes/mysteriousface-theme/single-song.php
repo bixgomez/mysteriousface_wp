@@ -26,12 +26,12 @@ if (!$has_player) :
 endif;
 ?>
 
-    <div class="<?php print $classes ?>">
+    <div class="<?php echo esc_attr( trim( $classes ) ); ?>">
 
         <section class="heading">
             <h1 class="node-title"><?php single_post_title(); ?></h1>
             <?php if ($author) :
-                echo 'By ' . $author;
+                echo 'By ' . esc_html($author);
             endif; ?>
             <?php if (mf_has_personnel()): ?>
                 <div class="personnel">
@@ -55,7 +55,7 @@ endif;
         </section>
 
         <section class="lyrics">
-            <?php echo wpautop($lyrics); ?>
+            <?php echo wp_kses_post( wpautop($lyrics) ); ?>
         </section>
 
         <?php if ($has_player) : ?>
@@ -67,14 +67,14 @@ endif;
                 <?php elseif (strlen($bandcamp_album_id) > 5): ?>
                     <article class="bandcamp-embed large">
                         <iframe style="border: 0; width: 350px; height: 470px;"
-                                src="https://bandcamp.com/EmbeddedPlayer/album=<?php echo $bandcamp_album_id ?>/size=large/bgcol=ffffff/linkcol=0687f5/tracklist=false/track=<?php echo $bandcamp_track_id ?>/transparent=true/"
+                                src="https://bandcamp.com/EmbeddedPlayer/album=<?php echo esc_attr($bandcamp_album_id); ?>/size=large/bgcol=ffffff/linkcol=0687f5/tracklist=false/track=<?php echo esc_attr($bandcamp_track_id); ?>/transparent=true/"
                                 seamless=""><a href="http://mysteriousface.bandcamp.com/album/mysterious-face">Mysterious
                                 Face by Mysterious Face</a>
                         </iframe>
                     </article>
                     <article class="bandcamp-embed small">
                         <iframe style="border: 0; width: 100%; height: 120px;"
-                                src="https://bandcamp.com/EmbeddedPlayer/album=<?php echo $bandcamp_album_id ?>/size=large/bgcol=ffffff/linkcol=0687f5/tracklist=false/artwork=small/track=<?php echo $bandcamp_track_id ?>/transparent=true/"
+                                src="https://bandcamp.com/EmbeddedPlayer/album=<?php echo esc_attr($bandcamp_album_id); ?>/size=large/bgcol=ffffff/linkcol=0687f5/tracklist=false/artwork=small/track=<?php echo esc_attr($bandcamp_track_id); ?>/transparent=true/"
                                 seamless=""><a href="http://mysteriousface.bandcamp.com/album/mysterious-face">Mysterious
                                 Face by Mysterious Face</a></iframe>
                     </article>
@@ -110,17 +110,17 @@ endif;
 	                echo '<div class="related-albums-block">';
 	                echo '<h4 class="related-album-header">Appears on</h4><ul class="related-albums">';
 	                foreach ( $related_albums as $album_id => $song_ids ) :
-	                    echo '<li class="related-album related-album--' . $album_id . '"><h5 class="related-album-title"><a href="' . get_permalink( $album_id ) . '">' . get_the_title( $album_id ) . '</a></h5>';
-	                    echo '<ul class="related-album-songs">';
-	                        foreach ( $song_ids as $song_id ) :
-	                            $permalink = get_permalink( $song_id );
-	                            $title = get_the_title( $song_id );
-	                            if ( (int) $song_id === (int) $this_postID ) :
-	                                echo '<li class="related-album-song related-album-song--' . $song_id . '">' . esc_html($title) . '</li>';
-	                            else :
-	                                echo '<li class="related-album-song related-album-song--' . $song_id . '"><a href="' . esc_url($permalink) . '">' . esc_html($title) . '</a></li>';
-	                            endif;
-	                        endforeach;
+                    echo '<li class="related-album ' . esc_attr( 'related-album--' . (int) $album_id ) . '"><h5 class="related-album-title"><a href="' . esc_url( get_permalink( $album_id ) ) . '">' . esc_html( get_the_title( $album_id ) ) . '</a></h5>';
+                    echo '<ul class="related-album-songs">';
+                        foreach ( $song_ids as $song_id ) :
+                            $permalink = get_permalink( $song_id );
+                            $title = get_the_title( $song_id );
+                            if ( (int) $song_id === (int) $this_postID ) :
+                                echo '<li class="related-album-song ' . esc_attr( 'related-album-song--' . (int) $song_id ) . '">' . esc_html($title) . '</li>';
+                            else :
+                                echo '<li class="related-album-song ' . esc_attr( 'related-album-song--' . (int) $song_id ) . '"><a href="' . esc_url($permalink) . '">' . esc_html($title) . '</a></li>';
+                            endif;
+                        endforeach;
 	                    echo '</ul></li>';
 	                endforeach;
 	                echo '</ul>';
