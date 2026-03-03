@@ -47,14 +47,6 @@ if ( ! function_exists( 'mysteriousface_theme_setup' ) ) :
 		 */
 		add_theme_support( 'post-thumbnails' );
 
-		// This theme uses wp_nav_menu() in one location.
-		register_nav_menus(
-			array(
-                'menu-1' => esc_html__( 'Primary', 'mysteriousface-theme' ),
-                'menu-2' => esc_html__( 'Social', 'mysteriousface-theme' ),
-			)
-		);
-
 		/*
 		 * Switch default core markup for search form, comment form, and comments
 		 * to output valid HTML5.
@@ -188,7 +180,6 @@ require get_template_directory() . '/inc/mysteriousface-theme.php';
  */
 require get_template_directory() . '/inc/meta-boxes/meta-box--song.php';
 require get_template_directory() . '/inc/meta-boxes/meta-box--album.php';
-require get_template_directory() . '/inc/meta-boxes/meta-box--menu.php';
 
 /**
  * Meta helper functions
@@ -224,110 +215,6 @@ function mysteriousface_theme_disable_block_editor( $use_block_editor, $post_typ
 	return $use_block_editor;
 }
 add_filter( 'use_block_editor_for_post_type', 'mysteriousface_theme_disable_block_editor', 10, 2 );
-
-/**
- * Add provisions for classes and images in menu items.
- */
-class Social_Media_Walker extends Walker_Nav_Menu {
-
-	/**
-	 * Normalize walker arguments so object-style access is always safe.
-	 *
-	 * @param mixed $args Walker arguments from WordPress.
-	 * @return object
-	 */
-	private function normalize_args( $args ) {
-		if ( is_array( $args ) && isset( $args[0] ) && is_object( $args[0] ) ) {
-			$args = $args[0];
-		}
-
-		if ( is_array( $args ) ) {
-			$args = (object) $args;
-		}
-
-		if ( ! is_object( $args ) ) {
-			$args = (object) array();
-		}
-
-		$defaults = array(
-			'before'      => '',
-			'after'       => '',
-			'link_before' => '',
-			'link_after'  => '',
-		);
-
-		return (object) wp_parse_args( (array) $args, $defaults );
-	}
-
-	// Start level (before the <ul> part)
-	public function start_lvl( &$output, $depth = 0, $args = null ) {
-		$indent = str_repeat("\t", $depth);
-		$output .= "\n$indent<ul class=\"sub-menu\">\n";
-	}
-
-	// End level (after the </ul> part)
-	public function end_lvl( &$output, $depth = 0, $args = null ) {
-		$indent = str_repeat("\t", $depth);
-		$output .= "$indent</ul>\n";
-	}
-
-	// Start element (before each <li> part)
-	public function start_el( &$output, $item, $depth = 0, $args = null, $id = 0 ) {
-		$indent = ($depth) ? str_repeat("\t", $depth) : '';
-		$args   = $this->normalize_args( $args );
-
-		// Get custom menu item fields
-		$custom_class = mf_get_menu_item_field('class', $item);
-		$custom_image = mf_get_menu_item_image($item);
-
-		// Initialize classes array
-		$classes = empty($item->classes) ? array() : (array) $item->classes;
-
-		// Check if custom class exists and add it
-		if (!empty($custom_class)) {
-				$classes[] = $custom_class;
-		}
-
-		// Combine classes into a string
-		$class_names = !empty($classes) ? ' class="' . esc_attr(join(' ', $classes)) . '"' : '';
-
-		// Output the list item
-		$output .= $indent . '<li' . $class_names .'>';
-
-		// Prepare attributes for the <a> tag
-		$attributes  = !empty($item->attr_title) ? ' title="'  . esc_attr($item->attr_title) .'"' : '';
-		$attributes .= !empty($item->target)     ? ' target="' . esc_attr($item->target) .'"' : '';
-		$attributes .= !empty($item->xfn)        ? ' rel="'    . esc_attr($item->xfn) .'"' : '';
-		$attributes .= !empty($item->url)        ? ' href="'   . esc_attr($item->url) .'"' : '';
-
-		// Start building the item output
-		$item_output = $args->before;
-
-		// Check if custom image exists and is valid
-		if (!empty($custom_image) && is_array($custom_image) && isset($custom_image['url'])) {
-			$item_output .= '<img src="' . esc_url($custom_image['url']) . '" alt="' . esc_attr($custom_image['alt'] ?? '') . '" class="menu-item-image">';
-		} else {
-			// Log if image is missing or invalid
-			error_log('Image not found or invalid for menu item ID ' . $item->ID);
-		}
-
-		// Add the link element
-		$item_output .= '<a'. $attributes .'>';
-		$item_output .= $args->link_before . apply_filters('the_title', $item->title, $item->ID) . $args->link_after;
-		$item_output .= '</a>';
-
-		// Add anything after the link
-		$item_output .= $args->after;
-
-		// Append the item output to the overall output
-		$output .= apply_filters('walker_nav_menu_start_el', $item_output, $item, $depth, $args);
-	}
-
-	// End element (after each </li> part)
-	public function end_el( &$output, $item, $depth = 0, $args = null ) {
-		$output .= "</li>\n";
-	}
-}
 
 /**
  * Keep custom PHP single templates for legacy Song/Album rendering.
