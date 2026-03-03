@@ -57,9 +57,20 @@ function mf_save_menu_item_custom_fields($menu_id, $menu_item_db_id) {
         return;
     }
 
+    // Verify request nonce from nav menu editor.
+    if (
+        !isset($_POST['update-nav-menu-nonce'])
+        || !wp_verify_nonce(
+            sanitize_text_field(wp_unslash($_POST['update-nav-menu-nonce'])),
+            'update-nav_menu'
+        )
+    ) {
+        return;
+    }
+
     // Save menu item class
     if (isset($_POST['menu_item_class'][$menu_item_db_id])) {
-        $class = sanitize_text_field($_POST['menu_item_class'][$menu_item_db_id]);
+        $class = sanitize_text_field(wp_unslash($_POST['menu_item_class'][$menu_item_db_id]));
         if (!empty($class)) {
             update_post_meta($menu_item_db_id, '_menu_item_class', $class);
         } else {
@@ -69,7 +80,7 @@ function mf_save_menu_item_custom_fields($menu_id, $menu_item_db_id) {
 
     // Save menu item image
     if (isset($_POST['menu_item_image'][$menu_item_db_id])) {
-        $image = esc_url_raw($_POST['menu_item_image'][$menu_item_db_id]);
+        $image = esc_url_raw(wp_unslash($_POST['menu_item_image'][$menu_item_db_id]));
         if (!empty($image)) {
             update_post_meta($menu_item_db_id, '_menu_item_image', $image);
         } else {
