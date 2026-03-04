@@ -13,11 +13,6 @@ header.site-header {
   display: flex;
   grid-gap: .5em;
   justify-content: space-between;
-  
-  .toggle.hc-nav-trigger {
-    position: relative;
-    top: auto;
-  }
 
   @include breakpoint($md) {
     justify-content: center;

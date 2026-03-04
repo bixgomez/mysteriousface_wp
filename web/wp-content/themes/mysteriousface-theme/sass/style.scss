@@ -22,22 +22,17 @@ Nicolas Gallagher and Jonathan Neal https://necolas.github.io/normalize.css/
 */
 
 // All config partials -- config, functions, mixins, etc.
-@import '01_config/config';
+// @import '01_config/config';
 
 // All base partials.
-@import '02_base/base';
+// @import '02_base/base';
 
 // High level layout-specific partials.
-@import '03_layout/layout';
+// @import '03_layout/layout';
 
 // Lower level (but still general) elements (such as blocks & menus).
-@import '04_elements/**/*.scss';
+// @import '04_elements/**/*.scss';
 
 // Sass specific to individual components.
-@import '05_components/**/*.scss';
+// @import '05_components/**/*.scss';
 
-// Sass specific to offcanvas nav.
-@import '06_hc-offcanvas-nav/core';
-@import '06_hc-offcanvas-nav/toggle';
-@import '06_hc-offcanvas-nav/theme-default';
-@import '06_hc-offcanvas-nav/custom';
