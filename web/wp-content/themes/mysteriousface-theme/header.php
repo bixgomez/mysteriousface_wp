@@ -20,20 +20,14 @@
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
 
-<div class="wrapper">
-	<div class="wrapper-inner">
-		<div class="container-site">
+<a class="skip-link screen-reader-text" id="wp-skip-link" href="#primary"><?php esc_html_e( 'Skip to content', 'mysteriousface-theme' ); ?></a>
 
-			<a class="skip-link screen-reader-text" href="#primary"><?php esc_html_e( 'Skip to content', 'mysteriousface-theme' ); ?></a>
-
-			<?php if ( function_exists( 'block_template_part' ) ) : ?>
-				<?php block_template_part( 'header' ); ?>
-			<?php endif; ?>
-
-			<?php if ( is_singular() && has_post_thumbnail() ) : ?>
-				<section class="featured-image">
-					<?php the_post_thumbnail( 'full' ); ?>
-				</section>
-			<?php endif; ?>
-
-			<main id="primary" class="site-main">
+<div class="wp-site-blocks">
+	<div class="wp-block-group wrapper is-layout-flow wp-block-group-is-layout-flow">
+		<div class="wp-block-group wrapper-inner is-layout-flow wp-block-group-is-layout-flow">
+			<div class="wp-block-group container-site is-layout-flow wp-block-group-is-layout-flow">
+				<?php if ( function_exists( 'do_blocks' ) ) : ?>
+					<?php echo do_blocks( '<!-- wp:template-part {"slug":"header","area":"header","tagName":"header"} /-->' ); ?>
+				<?php elseif ( function_exists( 'block_template_part' ) ) : ?>
+					<?php block_template_part( 'header' ); ?>
+				<?php endif; ?>

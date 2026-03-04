@@ -41,6 +41,7 @@ $allowed_bandcamp_embed = array(
 );
 ?>
 
+<main id="primary" class="wp-block-group site-main is-layout-constrained wp-block-group-is-layout-constrained">
 	<div class="<?php echo esc_attr( trim( $classes ) ); ?>">
 
 		<section class="heading">
@@ -89,6 +90,7 @@ $allowed_bandcamp_embed = array(
 			<?php endif; ?>
 		</aside>
 	</div>
+</main><!-- #primary -->
 
 <?php
 get_footer();

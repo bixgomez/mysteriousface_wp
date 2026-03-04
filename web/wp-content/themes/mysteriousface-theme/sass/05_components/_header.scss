@@ -1,4 +1,4 @@
-header.site-header {
+.site-header {
   position: relative;
   z-index: 1000;
   background-color: rgba($c--white, .5);
@@ -23,7 +23,7 @@ header.site-header {
   margin-top: 1em;
 }
 
-h1.site-title {
+h1.wp-block-site-title {
   @extend %h1;
 
   display: flex;

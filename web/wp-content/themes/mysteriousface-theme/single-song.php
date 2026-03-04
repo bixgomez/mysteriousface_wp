@@ -44,6 +44,7 @@ $allowed_bandcamp_embed = array(
 );
 ?>
 
+<main id="primary" class="wp-block-group site-main is-layout-constrained wp-block-group-is-layout-constrained">
 	<div class="<?php echo esc_attr( trim( $classes ) ); ?>">
 
 		<section class="heading">
@@ -100,54 +101,55 @@ $allowed_bandcamp_embed = array(
 			</section>
 		<?php endif; ?>
 
-	        <aside>
-	            <?php
+		<aside>
+			<?php
 
-	            $this_postID = get_the_ID();
+			$this_postID = get_the_ID();
 
-	            $album_ids = get_posts(
-	                array(
-	                    'post_type'      => 'album',
-	                    'post_status'    => 'publish',
-	                    'posts_per_page' => -1,
-	                    'orderby'        => 'title',
-	                    'order'          => 'ASC',
-	                    'fields'         => 'ids',
-	                )
-	            );
+			$album_ids = get_posts(
+				array(
+					'post_type'      => 'album',
+					'post_status'    => 'publish',
+					'posts_per_page' => -1,
+					'orderby'        => 'title',
+					'order'          => 'ASC',
+					'fields'         => 'ids',
+				)
+			);
 
-	            $related_albums = array();
-	            foreach ( $album_ids as $album_id ) {
-	                $song_ids = array_map( 'intval', mf_get_album_songs( $album_id ) );
-	                if ( in_array( (int) $this_postID, $song_ids, true ) ) {
-	                    $related_albums[ $album_id ] = $song_ids;
-	                }
-	            }
+			$related_albums = array();
+			foreach ( $album_ids as $album_id ) {
+				$song_ids = array_map( 'intval', mf_get_album_songs( $album_id ) );
+				if ( in_array( (int) $this_postID, $song_ids, true ) ) {
+					$related_albums[ $album_id ] = $song_ids;
+				}
+			}
 
-	            if ( ! empty( $related_albums ) ) :
-	                echo '<div class="related-albums-block">';
-	                echo '<h4 class="related-album-header">Appears on</h4><ul class="related-albums">';
-	                foreach ( $related_albums as $album_id => $song_ids ) :
-					echo '<li class="related-album ' . esc_attr( 'related-album--' . (int) $album_id ) . '"><h5 class="related-album-title"><a href="' . esc_url( get_permalink( $album_id ) ) . '">' . esc_html( get_the_title( $album_id ) ) . '</a></h5>';
-					echo '<ul class="related-album-songs">';
-						foreach ( $song_ids as $song_id ) :
-							$permalink = get_permalink( $song_id );
-							$title = get_the_title( $song_id );
-							if ( (int) $song_id === (int) $this_postID ) :
-								echo '<li class="related-album-song ' . esc_attr( 'related-album-song--' . (int) $song_id ) . '">' . esc_html($title) . '</li>';
-							else :
-								echo '<li class="related-album-song ' . esc_attr( 'related-album-song--' . (int) $song_id ) . '"><a href="' . esc_url($permalink) . '">' . esc_html($title) . '</a></li>';
-							endif;
-						endforeach;
-	                    echo '</ul></li>';
-	                endforeach;
-	                echo '</ul>';
-	                echo '</div>';
-	            endif;
+			if ( ! empty( $related_albums ) ) :
+				echo '<div class="related-albums-block">';
+				echo '<h4 class="related-album-header">Appears on</h4><ul class="related-albums">';
+				foreach ( $related_albums as $album_id => $song_ids ) :
+			echo '<li class="related-album ' . esc_attr( 'related-album--' . (int) $album_id ) . '"><h5 class="related-album-title"><a href="' . esc_url( get_permalink( $album_id ) ) . '">' . esc_html( get_the_title( $album_id ) ) . '</a></h5>';
+			echo '<ul class="related-album-songs">';
+				foreach ( $song_ids as $song_id ) :
+				$permalink = get_permalink( $song_id );
+				$title = get_the_title( $song_id );
+				if ( (int) $song_id === (int) $this_postID ) :
+					echo '<li class="related-album-song ' . esc_attr( 'related-album-song--' . (int) $song_id ) . '">' . esc_html($title) . '</li>';
+				else :
+					echo '<li class="related-album-song ' . esc_attr( 'related-album-song--' . (int) $song_id ) . '"><a href="' . esc_url($permalink) . '">' . esc_html($title) . '</a></li>';
+				endif;
+			endforeach;
+					echo '</ul></li>';
+				endforeach;
+				echo '</ul>';
+				echo '</div>';
+			endif;
 
-	            ?>
-	        </aside>
+			?>
+		</aside>
 	</div>
+</main><!-- #primary -->
 
 <?php
 get_footer();
