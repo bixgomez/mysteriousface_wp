@@ -134,9 +134,27 @@ function mysteriousface_theme_widgets_init() {
 add_action( 'widgets_init', 'mysteriousface_theme_widgets_init' );
 
 /**
+ * Get the Google Fonts stylesheet URL used by the theme.
+ *
+ * @return string
+ */
+function mysteriousface_theme_fonts_url() {
+	return 'https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Comfortaa:wght@300;500;700&display=swap';
+}
+
+/**
+ * Enqueue block editor font styles.
+ */
+function mysteriousface_theme_editor_fonts() {
+	wp_enqueue_style( 'mysteriousface-theme-editor-fonts', mysteriousface_theme_fonts_url(), array(), null );
+}
+add_action( 'enqueue_block_editor_assets', 'mysteriousface_theme_editor_fonts' );
+
+/**
  * Enqueue scripts and styles.
  */
 function mysteriousface_theme_scripts() {
+	wp_enqueue_style( 'mysteriousface-theme-fonts', mysteriousface_theme_fonts_url(), array(), null );
 	wp_enqueue_style( 'mysteriousface-theme-style', get_stylesheet_uri(), array(), _S_VERSION );
 	wp_style_add_data( 'mysteriousface-theme-style', 'rtl', 'replace' );
 
