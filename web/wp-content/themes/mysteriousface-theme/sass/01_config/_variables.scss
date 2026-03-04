@@ -9,18 +9,18 @@ $font-weight--base: 400;
 $font-weight--heading: 700;
 
 // Font sizing.
-$font-size--base: 16px;
-$font-size--base-value: 16;
-$line-height--base: 1.5;
+$font-size--base: 18px;
+$font-size--base-value: 18;
+$line-height--base: 1.6;
 $line-height--small: 1.2;
-$line-height--heading: .95;
+$line-height--heading: 1.2;
 
 $font-size--md: 1rem;
 $font-size--xxs: $font-size--md * .75;
 $font-size--xs:  $font-size--md * .85;
 $font-size--sm:  $font-size--md * .9;
-$font-size--lg:  $font-size--md * 1.125;
-$font-size--xl:  $font-size--md * 1.5;
+$font-size--lg:  $font-size--md * 1.33;
+$font-size--xl:  $font-size--md * 1.67;
 $font-size--xxl: $font-size--md * 2;
 $font-size--3xl: $font-size--md * 2.5;
 
@@ -28,7 +28,6 @@ $font-size--3xl: $font-size--md * 2.5;
 $gap--default: 1em;
 
 // Gaps (alternate).
-$gap--md: $gap--default;
 $gap--xxs: .125em;
 $gap--xs: .25em;
 $gap--sm: .5em;
@@ -41,18 +40,6 @@ $gap--3xl: 9em;
 // Colors.
 $c--white: #fff;
 $c--black: #000;
-
-$c--gray--light-05: mix($c--white, $c--black, 91.6%);
-$c--gray--light-04: mix($c--white, $c--black, 83.3%);
-$c--gray--light-03: mix($c--white, $c--black, 75%);
-$c--gray--light-02: mix($c--white, $c--black, 66.6%);
-$c--gray--light-01: mix($c--white, $c--black, 58.3%);
-$c--gray:           mix($c--white, $c--black, 50%);
-$c--gray--dark-01:  mix($c--white, $c--black, 41.6%);
-$c--gray--dark-02:  mix($c--white, $c--black, 33.3%);
-$c--gray--dark-03:  mix($c--white, $c--black, 25%);
-$c--gray--dark-04:  mix($c--white, $c--black, 16.6%);
-$c--gray--dark-05:  mix($c--white, $c--black, 8.3%);
 
 $c--gray--light-05: mix($c--white, $c--black, 95%);
 $c--gray--light-04: mix($c--white, $c--black, 83%);
@@ -95,22 +82,6 @@ $c--link: $c--brand--primary;
 $c--link--hover: $c--on-background-colors--primary;
 $c--link__main-menu: $c--on-background--primary;
 $c--link__main-menu--hover: $c--on-background--primary;
-
-// Font sizing.
-$font-size--base: 18px;
-$font-size--base-value: 18;
-$line-height--base: 1.6;
-$line-height--small: 1.2;
-$line-height--heading: 1.2;
-
-$font-size--md: 1rem;
-$font-size--xxs: $font-size--md * .75;
-$font-size--xs:  $font-size--md * .85;
-$font-size--sm:  $font-size--md * .9;
-$font-size--lg:  $font-size--md * 1.33;
-$font-size--xl:  $font-size--md * 1.67;
-$font-size--xxl: $font-size--md * 2;
-$font-size--3xl: $font-size--md * 2.5;
 
 // Miscellaneous.
 $bandcamp-width__small: 100%;

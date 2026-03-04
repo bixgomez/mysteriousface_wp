@@ -44,29 +44,3 @@ $lg-down: 0 ($xl - 1);
 
 $xl-only: $xl;
 $xl-up: $xl;
-
-// Used to display breakpoint info directly on the site.
-// Simply include a div or span with the 'breakpoint-info' class.
-// Sometimes useful!
-.breakpoint-info {
-  &::after {
-    @include breakpoint($xxs) {
-      content: 'breakpoint $xxs';
-    }
-    @include breakpoint($xs) {
-      content: 'breakpoint $xs';
-    }
-    @include breakpoint($sm) {
-      content: 'breakpoint $sm';
-    }
-    @include breakpoint($md) {
-      content: 'breakpoint $md';
-    }
-    @include breakpoint($lg) {
-      content: 'breakpoint $lg';
-    }
-    @include breakpoint($xl) {
-      content: 'breakpoint $xl';
-    }
-  }
-}
