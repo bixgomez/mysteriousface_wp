@@ -94,9 +94,14 @@ if ( ! function_exists( 'mysteriousface_theme_setup' ) ) :
 			)
 		);
 
-		// Load the main theme stylesheet inside the block editor canvas.
+		// Load frontend styles and fonts inside editor iframes (block + classic WYSIWYG).
 		add_theme_support( 'editor-styles' );
-		add_editor_style( 'style.css' );
+		add_editor_style(
+			array(
+				'style.css',
+				mysteriousface_theme_fonts_url(),
+			)
+		);
 	}
 endif;
 add_action( 'after_setup_theme', 'mysteriousface_theme_setup' );
@@ -141,14 +146,6 @@ add_action( 'widgets_init', 'mysteriousface_theme_widgets_init' );
 function mysteriousface_theme_fonts_url() {
 	return 'https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Comfortaa:wght@300;500;700&display=swap';
 }
-
-/**
- * Enqueue block editor font styles.
- */
-function mysteriousface_theme_editor_fonts() {
-	wp_enqueue_style( 'mysteriousface-theme-editor-fonts', mysteriousface_theme_fonts_url(), array(), null );
-}
-add_action( 'enqueue_block_editor_assets', 'mysteriousface_theme_editor_fonts' );
 
 /**
  * Enqueue scripts and styles.
