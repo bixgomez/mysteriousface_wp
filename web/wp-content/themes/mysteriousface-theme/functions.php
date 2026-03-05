@@ -211,11 +211,6 @@ require get_template_directory() . '/inc/editor/editor-support.php';
 require get_template_directory() . '/inc/editor/editor-album-meta-boxes.php';
 
 /**
- * Guardrails for template-part editing behavior.
- */
-require get_template_directory() . '/inc/editor/editor-template-part-protection.php';
-
-/**
  * Dynamic Album block rendering and registration.
  */
 require get_template_directory() . '/inc/blocks/blocks-album.php';
