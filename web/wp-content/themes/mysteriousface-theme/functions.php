@@ -215,9 +215,9 @@ require get_template_directory() . '/inc/editor/editor-album-meta-boxes.php';
 require get_template_directory() . '/inc/blocks/blocks-album.php';
 
 /**
- * Legacy template routing.
+ * Dynamic Song block rendering and registration.
  */
-require get_template_directory() . '/inc/template-routing.php';
+require get_template_directory() . '/inc/blocks/blocks-song.php';
 
 /**
  * Load Jetpack compatibility file.

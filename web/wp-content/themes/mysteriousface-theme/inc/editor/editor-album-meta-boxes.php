@@ -1,6 +1,6 @@
 <?php
 /**
- * Album block-editor UI behavior.
+ * Music post-type block-editor UI behavior.
  *
  * @package Mysterious_Face
  */
@@ -10,15 +10,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Keep Gutenberg meta boxes usable on Album edit screens.
+ * Keep Gutenberg meta boxes usable on Song and Album edit screens.
  *
  * The block editor remembers the meta-box panel height/state per user.
- * If it is collapsed, custom Album meta boxes can look like a tiny footer.
- * Force a practical default open state/height for Album editing UI.
+ * If it is collapsed, custom meta boxes can look like a tiny footer.
+ * Force a practical default open state/height for Song/Album editing UI.
  */
-function mysteriousface_theme_album_editor_meta_boxes_defaults() {
+function mysteriousface_theme_music_editor_meta_boxes_defaults() {
 	$screen = get_current_screen();
-	if ( ! $screen || 'album' !== $screen->post_type || ! method_exists( $screen, 'is_block_editor' ) || ! $screen->is_block_editor() ) {
+	if ( ! $screen || ! in_array( $screen->post_type, array( 'album', 'song' ), true ) || ! method_exists( $screen, 'is_block_editor' ) || ! $screen->is_block_editor() ) {
 		return;
 	}
 
@@ -64,4 +64,4 @@ JS;
 
 	wp_add_inline_script( 'wp-edit-post', $script, 'after' );
 }
-add_action( 'enqueue_block_editor_assets', 'mysteriousface_theme_album_editor_meta_boxes_defaults' );
+add_action( 'enqueue_block_editor_assets', 'mysteriousface_theme_music_editor_meta_boxes_defaults' );
