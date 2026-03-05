@@ -1,0 +1,15 @@
+.bandcamp-embed.large {
+  display: block;
+
+  @include breakpoint($sm-down) {
+    display: none;
+  }
+}
+
+.bandcamp-embed.small {
+  display: none;
+
+  @include breakpoint($sm-down) {
+    display: block;
+  }
+}

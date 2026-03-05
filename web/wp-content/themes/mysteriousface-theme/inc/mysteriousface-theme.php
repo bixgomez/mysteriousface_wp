@@ -1,8 +1,8 @@
 <?php
 
 // Custom post types.
-include('post-types/post-type--song.php');
-include('post-types/post-type--album.php');
+include('post-types/post-type-song.php');
+include('post-types/post-type-album.php');
 
 /**
  * If more than one page exists, return TRUE.

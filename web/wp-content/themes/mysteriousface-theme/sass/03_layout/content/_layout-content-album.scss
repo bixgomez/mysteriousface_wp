@@ -24,7 +24,6 @@ aside {
   grid-area: aside;
 }
 
-
 @include breakpoint($sm-down) {
 
   .layout--album {
@@ -37,7 +36,6 @@ aside {
 
     .player {
       order: 2;
-      display: none;
     }
 
     .body {

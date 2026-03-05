@@ -1,4 +1,4 @@
-.song.layout.wrapper {
+.layout.layout--song {
 
   .node-title {
     margin-bottom: .125em;
@@ -9,11 +9,19 @@
     margin-bottom: 0;
   }
 
-  .song-personnel {
+  .personnel {
     background-color: $c--gray--dark-03;
     color: white;
     padding: 1em;
     margin-bottom: 0;
+
+    ul {
+      margin: 0;
+    }
+
+    li {
+      list-style-type: none;
+    }
   }
 
   nav {
