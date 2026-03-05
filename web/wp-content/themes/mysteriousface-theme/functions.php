@@ -95,6 +95,7 @@ if ( ! function_exists( 'mysteriousface_theme_setup' ) ) :
 		);
 
 		// Load frontend styles and fonts inside editor iframes (block + classic WYSIWYG).
+		add_theme_support( 'block-template-parts' );
 		add_theme_support( 'editor-styles' );
 		add_editor_style(
 			array(
@@ -208,6 +209,11 @@ require get_template_directory() . '/inc/editor/editor-support.php';
  * Block editor admin behavior for Album edit screens.
  */
 require get_template_directory() . '/inc/editor/editor-album-meta-boxes.php';
+
+/**
+ * Guardrails for template-part editing behavior.
+ */
+require get_template_directory() . '/inc/editor/editor-template-part-protection.php';
 
 /**
  * Dynamic Album block rendering and registration.

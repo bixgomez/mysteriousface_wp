@@ -284,12 +284,15 @@ function mysteriousface_theme_register_song_blocks() {
 		return;
 	}
 
+	$music_blocks_asset_path = get_template_directory() . '/js/blocks-music.js';
+	$music_blocks_version    = file_exists( $music_blocks_asset_path ) ? (string) filemtime( $music_blocks_asset_path ) : _S_VERSION;
+
 	if ( ! wp_script_is( 'mysteriousface-theme-music-blocks', 'registered' ) ) {
 		wp_register_script(
 			'mysteriousface-theme-music-blocks',
 			get_template_directory_uri() . '/js/blocks-music.js',
 			array( 'wp-blocks', 'wp-element', 'wp-i18n', 'wp-block-editor', 'wp-server-side-render' ),
-			_S_VERSION,
+			$music_blocks_version,
 			true
 		);
 	}

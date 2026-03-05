@@ -17,30 +17,18 @@
 			{
 				tagName: 'section',
 				className: 'heading',
-				layout: { type: 'constrained' },
-				lock: { move: true, remove: true }
+				layout: { type: 'constrained' }
 			},
 			[
 				[
 					'core/post-title',
 					{
 						level: 1,
-						className: 'node-title',
-						lock: { move: true, remove: true }
+						className: 'node-title'
 					}
 				],
-				[
-					'mysteriousface/song-authors',
-					{
-						lock: { move: true, remove: true }
-					}
-				],
-				[
-					'mysteriousface/song-personnel',
-					{
-						lock: { move: true, remove: true }
-					}
-				]
+				[ 'mysteriousface/song-authors' ],
+				[ 'mysteriousface/song-personnel' ]
 			]
 		],
 		[
@@ -48,36 +36,15 @@
 			{
 				tagName: 'section',
 				className: 'body',
-				layout: { type: 'constrained' },
-				lock: { move: true, remove: true }
+				layout: { type: 'constrained' }
 			},
 			[
-				[
-					'core/post-content',
-					{
-						lock: { move: true, remove: true }
-					}
-				]
+				[ 'core/post-content' ]
 			]
 		],
-		[
-			'mysteriousface/song-lyrics',
-			{
-				lock: { move: true, remove: true }
-			}
-		],
-		[
-			'mysteriousface/song-player',
-			{
-				lock: { move: true, remove: true }
-			}
-		],
-		[
-			'mysteriousface/song-related-albums',
-			{
-				lock: { move: true, remove: true }
-			}
-		]
+		[ 'mysteriousface/song-lyrics' ],
+		[ 'mysteriousface/song-player' ],
+		[ 'mysteriousface/song-related-albums' ]
 	];
 
 	var ALBUM_TEMPLATE = [
@@ -86,16 +53,14 @@
 			{
 				tagName: 'section',
 				className: 'heading',
-				layout: { type: 'constrained' },
-				lock: { move: true, remove: true }
+				layout: { type: 'constrained' }
 			},
 			[
 				[
 					'core/post-title',
 					{
 						level: 1,
-						className: 'node-title',
-						lock: { move: true, remove: true }
+						className: 'node-title'
 					}
 				]
 			]
@@ -105,36 +70,20 @@
 			{
 				tagName: 'section',
 				className: 'body',
-				layout: { type: 'constrained' },
-				lock: { move: true, remove: true }
+				layout: { type: 'constrained' }
 			},
 			[
-				[
-					'core/post-content',
-					{
-						lock: { move: true, remove: true }
-					}
-				]
+				[ 'core/post-content' ]
 			]
 		],
-		[
-			'mysteriousface/album-player',
-			{
-				lock: { move: true, remove: true }
-			}
-		],
-		[
-			'mysteriousface/album-songs',
-			{
-				lock: { move: true, remove: true }
-			}
-		]
+		[ 'mysteriousface/album-player' ],
+		[ 'mysteriousface/album-songs' ]
 	];
 
 	registerBlockType( 'mysteriousface/song-shell', {
 		apiVersion: 3,
 		title: __( 'Song Layout', 'mysteriousface-theme' ),
-		description: __( 'Locked structural layout for single Song templates.', 'mysteriousface-theme' ),
+		description: __( 'Structural layout shell for single Song templates.', 'mysteriousface-theme' ),
 		icon: 'format-audio',
 		category: 'widgets',
 		supports: {
@@ -148,12 +97,12 @@
 				{ className: 'mysteriousface-song-shell-editor' },
 				createElement( InnerBlocks, {
 					template: SONG_TEMPLATE,
-					templateLock: 'all'
+					templateLock: false
 				} )
 			);
 		},
 		save: function () {
-			return null;
+			return createElement( InnerBlocks.Content );
 		}
 	} );
 
@@ -270,7 +219,7 @@
 	registerBlockType( 'mysteriousface/album-shell', {
 		apiVersion: 3,
 		title: __( 'Album Layout', 'mysteriousface-theme' ),
-		description: __( 'Locked structural layout for single Album templates.', 'mysteriousface-theme' ),
+		description: __( 'Structural layout shell for single Album templates.', 'mysteriousface-theme' ),
 		icon: 'cover-image',
 		category: 'widgets',
 		supports: {
@@ -284,12 +233,12 @@
 				{ className: 'mysteriousface-album-shell-editor' },
 				createElement( InnerBlocks, {
 					template: ALBUM_TEMPLATE,
-					templateLock: 'all'
+					templateLock: false
 				} )
 			);
 		},
 		save: function () {
-			return null;
+			return createElement( InnerBlocks.Content );
 		}
 	} );
 
@@ -301,7 +250,7 @@
 		category: 'widgets',
 		supports: {
 			html: false,
-			inserter: false,
+			inserter: true,
 			reusable: false
 		},
 		edit: function () {
@@ -323,7 +272,7 @@
 		category: 'widgets',
 		supports: {
 			html: false,
-			inserter: false,
+			inserter: true,
 			reusable: false
 		},
 		edit: function () {
