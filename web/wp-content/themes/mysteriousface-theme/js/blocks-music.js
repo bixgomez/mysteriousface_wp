@@ -114,7 +114,7 @@
 		category: 'widgets',
 		supports: {
 			html: false,
-			inserter: false,
+			inserter: true,
 			reusable: false
 		},
 		edit: function () {
@@ -136,7 +136,7 @@
 		category: 'widgets',
 		supports: {
 			html: false,
-			inserter: false,
+			inserter: true,
 			reusable: false
 		},
 		edit: function () {
@@ -158,7 +158,7 @@
 		category: 'widgets',
 		supports: {
 			html: false,
-			inserter: false,
+			inserter: true,
 			reusable: false
 		},
 		edit: function () {
@@ -180,7 +180,7 @@
 		category: 'widgets',
 		supports: {
 			html: false,
-			inserter: false,
+			inserter: true,
 			reusable: false
 		},
 		edit: function () {
@@ -202,7 +202,7 @@
 		category: 'widgets',
 		supports: {
 			html: false,
-			inserter: false,
+			inserter: true,
 			reusable: false
 		},
 		edit: function () {

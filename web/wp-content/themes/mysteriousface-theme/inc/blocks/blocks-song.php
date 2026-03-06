@@ -323,6 +323,11 @@ function mysteriousface_theme_register_song_blocks() {
 		array_merge(
 			$block_settings,
 			array(
+				'supports'        => array(
+					'html'     => false,
+					'inserter' => true,
+					'reusable' => false,
+				),
 				'render_callback' => 'mysteriousface_theme_render_song_authors_block',
 			)
 		)
@@ -333,6 +338,11 @@ function mysteriousface_theme_register_song_blocks() {
 		array_merge(
 			$block_settings,
 			array(
+				'supports'        => array(
+					'html'     => false,
+					'inserter' => true,
+					'reusable' => false,
+				),
 				'render_callback' => 'mysteriousface_theme_render_song_personnel_block',
 			)
 		)
@@ -343,6 +353,11 @@ function mysteriousface_theme_register_song_blocks() {
 		array_merge(
 			$block_settings,
 			array(
+				'supports'        => array(
+					'html'     => false,
+					'inserter' => true,
+					'reusable' => false,
+				),
 				'render_callback' => 'mysteriousface_theme_render_song_lyrics_block',
 			)
 		)
@@ -353,6 +368,11 @@ function mysteriousface_theme_register_song_blocks() {
 		array_merge(
 			$block_settings,
 			array(
+				'supports'        => array(
+					'html'     => false,
+					'inserter' => true,
+					'reusable' => false,
+				),
 				'render_callback' => 'mysteriousface_theme_render_song_player_block',
 			)
 		)
@@ -363,6 +383,11 @@ function mysteriousface_theme_register_song_blocks() {
 		array_merge(
 			$block_settings,
 			array(
+				'supports'        => array(
+					'html'     => false,
+					'inserter' => true,
+					'reusable' => false,
+				),
 				'render_callback' => 'mysteriousface_theme_render_song_related_albums_block',
 			)
 		)
