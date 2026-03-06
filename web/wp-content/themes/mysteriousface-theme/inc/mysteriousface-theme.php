@@ -22,7 +22,7 @@ function is_paginated() {
 function is_last_post($wp_query) {
 	$post_current = $wp_query->current_post + 1;
 	$post_count = $wp_query->post_count;
-	if ( $post_current == $post_count ) {
+	if ( $post_current === $post_count ) {
 		return true;
 	} else {
 		return false;

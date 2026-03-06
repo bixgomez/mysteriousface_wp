@@ -7,8 +7,8 @@
  * @package Mysterious_Face
  */
 
-// Prevent direct access
-if (!defined('ABSPATH')) {
+// Prevent direct access.
+if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
@@ -252,12 +252,13 @@ function mf_save_song_meta($post_id, $post) {
 
 	// Save Personnel
 	if (isset($_POST['mf_song_personnel_nonce_field']) && wp_verify_nonce($_POST['mf_song_personnel_nonce_field'], 'mf_song_personnel_nonce')) {
-		if (isset($_POST['personnel_name']) && isset($_POST['personnel_contribution'])) {
+		if ( isset( $_POST['personnel_name'] ) && isset( $_POST['personnel_contribution'] ) ) {
 			$names = $_POST['personnel_name'];
 			$contributions = $_POST['personnel_contribution'];
 			$personnel = array();
+			$names_count = count( $names );
 
-			for ($i = 0; $i < count($names); $i++) {
+			for ( $i = 0; $i < $names_count; $i++ ) {
 				$name = sanitize_text_field($names[$i]);
 				$contribution = sanitize_text_field($contributions[$i]);
 
