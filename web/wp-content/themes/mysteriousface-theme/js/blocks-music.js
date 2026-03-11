@@ -11,6 +11,49 @@
 	var InnerBlocks = blockEditor.InnerBlocks;
 	var ServerSideRender = serverSideRender;
 
+	/**
+	 * Create a placeholder component for empty block renders.
+	 *
+	 * @param {string} blockTitle The block title to display.
+	 * @param {string} icon       Dashicon name (without 'dashicons-' prefix).
+	 * @return {Function} A component function for EmptyResponsePlaceholder.
+	 */
+	function createEmptyPlaceholder( blockTitle, icon ) {
+		return function() {
+			return createElement(
+				'div',
+				{
+					className: 'mf-block-placeholder',
+					style: {
+						padding: '20px',
+						backgroundColor: '#f0f0f0',
+						border: '1px dashed #ccc',
+						textAlign: 'center',
+						color: '#666'
+					}
+				},
+				createElement(
+					'span',
+					{
+						className: 'dashicons dashicons-' + icon,
+						style: {
+							fontSize: '24px',
+							width: '24px',
+							height: '24px',
+							marginRight: '8px',
+							verticalAlign: 'middle'
+						}
+					}
+				),
+				createElement(
+					'span',
+					{ style: { verticalAlign: 'middle' } },
+					blockTitle
+				)
+			);
+		};
+	}
+
 	var SONG_TEMPLATE = [
 		[
 			'core/group',
@@ -120,7 +163,8 @@
 		edit: function () {
 			return createElement( ServerSideRender, {
 				block: 'mysteriousface/song-authors',
-				httpMethod: 'POST'
+				httpMethod: 'POST',
+				EmptyResponsePlaceholder: createEmptyPlaceholder( __( 'Song Authors', 'mysteriousface-theme' ), 'admin-users' )
 			} );
 		},
 		save: function () {
@@ -142,7 +186,8 @@
 		edit: function () {
 			return createElement( ServerSideRender, {
 				block: 'mysteriousface/song-personnel',
-				httpMethod: 'POST'
+				httpMethod: 'POST',
+				EmptyResponsePlaceholder: createEmptyPlaceholder( __( 'Song Personnel', 'mysteriousface-theme' ), 'groups' )
 			} );
 		},
 		save: function () {
@@ -164,7 +209,8 @@
 		edit: function () {
 			return createElement( ServerSideRender, {
 				block: 'mysteriousface/song-lyrics',
-				httpMethod: 'POST'
+				httpMethod: 'POST',
+				EmptyResponsePlaceholder: createEmptyPlaceholder( __( 'Song Lyrics', 'mysteriousface-theme' ), 'editor-paragraph' )
 			} );
 		},
 		save: function () {
@@ -186,7 +232,8 @@
 		edit: function () {
 			return createElement( ServerSideRender, {
 				block: 'mysteriousface/song-player',
-				httpMethod: 'POST'
+				httpMethod: 'POST',
+				EmptyResponsePlaceholder: createEmptyPlaceholder( __( 'Song Player', 'mysteriousface-theme' ), 'controls-play' )
 			} );
 		},
 		save: function () {
@@ -208,7 +255,8 @@
 		edit: function () {
 			return createElement( ServerSideRender, {
 				block: 'mysteriousface/song-related-albums',
-				httpMethod: 'POST'
+				httpMethod: 'POST',
+				EmptyResponsePlaceholder: createEmptyPlaceholder( __( 'Song Related Albums', 'mysteriousface-theme' ), 'playlist-audio' )
 			} );
 		},
 		save: function () {
@@ -256,7 +304,8 @@
 		edit: function () {
 			return createElement( ServerSideRender, {
 				block: 'mysteriousface/album-player',
-				httpMethod: 'POST'
+				httpMethod: 'POST',
+				EmptyResponsePlaceholder: createEmptyPlaceholder( __( 'Album Player', 'mysteriousface-theme' ), 'controls-play' )
 			} );
 		},
 		save: function () {
@@ -278,7 +327,8 @@
 		edit: function () {
 			return createElement( ServerSideRender, {
 				block: 'mysteriousface/album-songs',
-				httpMethod: 'POST'
+				httpMethod: 'POST',
+				EmptyResponsePlaceholder: createEmptyPlaceholder( __( 'Album Songs', 'mysteriousface-theme' ), 'playlist-audio' )
 			} );
 		},
 		save: function () {

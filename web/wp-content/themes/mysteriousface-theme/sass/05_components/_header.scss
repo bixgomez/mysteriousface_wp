@@ -3,20 +3,22 @@
   z-index: 1000;
   background-color: rgba($c--white, .5);
   padding: 1em 1.5em;
+  justify-content: space-between;
+  display: flex;
+  gap: .5rem;
 
-  @include breakpoint($md) {
-    justify-content: center;
+  @include breakpoint($sm) {
+    flex-direction: column;
   }
 }
 
 .header-top {
   display: flex;
   grid-gap: .5em;
-  justify-content: space-between;
-
-  @include breakpoint($md) {
-    justify-content: center;
-  }
+  justify-content: flex-start;
+  align-items: center;
+  margin: 0;
+  flex-grow: 1;
 }
 
 .menu-social-media-container {
@@ -27,10 +29,10 @@ h1.wp-block-site-title {
   @extend %h1;
 
   display: flex;
-  font-size: $font-size--3xl;
+  font-size: $font-size--lg;
   justify-content: center;
   margin: 0;
-  padding: .3em 0 .125em;
+  padding: 0;
   text-align: center;
   line-height: 1;
 
@@ -43,5 +45,13 @@ h1.wp-block-site-title {
       opacity: .8;
       text-decoration: none;
     }
+  }
+  
+  @include breakpoint($sm) {
+    font-size: $font-size--xl;
+  }
+  
+  @include breakpoint($md) {
+    font-size: $font-size--xxl;
   }
 }

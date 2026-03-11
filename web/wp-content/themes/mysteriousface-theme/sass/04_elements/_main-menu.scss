@@ -3,20 +3,14 @@
   font-size: 1em;
   background-color: transparent;
   width: max-content;
-  margin: 1.5em auto;
-
-  @include breakpoint($sm) { font-size: .7em; }
+  margin: 0;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
 
   @include breakpoint($md) {
     display: block;
-    font-size: .8em;
-  }
-
-  @include breakpoint($lg) { font-size: 1em; }
-
-  // Not using the menu toggle right now...
-  .menu-toggle {
-    display: none;
+    font-size: 1em;
   }
 }
 

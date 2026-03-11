@@ -1,15 +1,15 @@
-.bandcamp-embed.large {
+.bandcamp-embed.small {
   display: block;
 
-  @include breakpoint($sm-down) {
+  @include breakpoint($md) {
     display: none;
   }
 }
 
-.bandcamp-embed.small {
+.bandcamp-embed.large {
   display: none;
 
-  @include breakpoint($sm-down) {
+  @include breakpoint($md) {
     display: block;
   }
 }
