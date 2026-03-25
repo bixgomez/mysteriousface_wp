@@ -58,12 +58,12 @@
         {
           "name": "Body",
           "slug": "body",
-          "fontFamily": "\"Open Sans\", \"Helvetica Neue\", Helvetica, Arial, sans-serif"
+          "fontFamily": "\"Muli\", \"Helvetica Neue\", Helvetica, Arial, sans-serif"
         },
         {
           "name": "Display",
           "slug": "display",
-          "fontFamily": "\"Comfortaa\", \"Helvetica Neue\", Helvetica, Arial, sans-serif"
+          "fontFamily": "\"Josefin Sans\", \"Helvetica Neue\", Helvetica, Arial, sans-serif"
         }
       ],
       "fontSizes": [

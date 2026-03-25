@@ -145,7 +145,7 @@ add_action( 'widgets_init', 'mysteriousface_theme_widgets_init' );
  * @return string
  */
 function mysteriousface_theme_fonts_url() {
-	return 'https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Comfortaa:wght@300;500;700&display=swap';
+	return 'https://fonts.googleapis.com/css2?family=Muli:wght@400;600;700&family=Josefin+Sans:wght@400;600;700&display=swap';
 }
 
 /**
