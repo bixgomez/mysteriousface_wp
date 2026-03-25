@@ -1,14 +1,19 @@
 {
 	"folders": [
 		{
-			"name": "mysteriousface",
+			"name": "Site Notes",
 			"path": "../../../../home/bixgomez/dev_assets/site_notes/mysteriousface"
 		},
 		{
-			"name": "mysteriousface",
+			"name": "Site Root",
 			"path": "."
 		},
 		{
+			"name": "Custom Plugin",
+			"path": "web/wp-content/plugins/mysteriousface-plugin"
+		},
+		{
+			"name": "Custom Theme",
 			"path": "web/wp-content/themes/mysteriousface-theme"
 		}
 	],

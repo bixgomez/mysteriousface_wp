@@ -8,7 +8,7 @@
 
 /**
  * Move the snackbar notification to top-right area (near the Save button)
- * instead of the useless bottom-left corner.
+ * instead of the inconvenient bottom-left corner.
  */
 .components-snackbar-list {
 	bottom: auto !important;
