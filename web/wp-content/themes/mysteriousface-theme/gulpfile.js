@@ -25,8 +25,8 @@ const notify = require('gulp-notify');
 const beeper = require('beeper');
 const sassGlob = require('gulp-sass-glob');
 
-// Compile CSS from Sass.
-function buildStyles() {
+// Compile CSS from Sass for development.
+function buildStylesDev() {
   return src( STYLES_MAIN )
     .pipe(plumbError()) // Global error handler through all pipes.
     .pipe(sourcemaps.init())
@@ -37,17 +37,35 @@ function buildStyles() {
         './node_modules/@fortawesome/fontawesome-free/scss'
       ],
       errLogToConsole: true,
-      outputStyle: 'compressed'
+      outputStyle: 'expanded'
     }))
     .pipe(autoprefixer(['last 15 versions', '> 1%', 'ie 8', 'ie 7']))
-    .pipe(sourcemaps.write())
+    .pipe(sourcemaps.write('.'))
     // .pipe(stylesSassLint())
     .pipe(dest( STYLES_DEST ))
     .pipe(browsersync.reload({ stream: true }));
 }
 
+// Compile CSS from Sass for production-oriented builds.
+function buildStylesProd() {
+  return src( STYLES_MAIN )
+    .pipe(plumbError()) // Global error handler through all pipes.
+    .pipe(sassGlob())
+    .pipe(sass({
+      includePaths: [
+        './node_modules/breakpoint-sass/stylesheets/',
+        './node_modules/@fortawesome/fontawesome-free/scss'
+      ],
+      errLogToConsole: true,
+      outputStyle: 'compressed'
+    }))
+    .pipe(autoprefixer(['last 15 versions', '> 1%', 'ie 8', 'ie 7']))
+    // .pipe(stylesSassLint())
+    .pipe(dest( STYLES_DEST ));
+}
+
 function watchFiles() {
-  watch( STYLES_SOURCE, buildStyles );
+  watch( STYLES_SOURCE, buildStylesDev );
   // watch( JS_SOURCE, scriptsJS );
   watch( ALL_PHP, reload );
 }
@@ -120,6 +138,6 @@ function plumbError() {
 
 // Export commands.
 exports.default = parallel(browserSync, watchFiles); // $ gulp
-exports.sass = buildStyles; // $ gulp sass
+exports.sass = buildStylesDev; // $ gulp sass
 exports.watch = watchFiles; // $ gulp watch
-exports.build = series(buildStyles); // $ gulp build
+exports.build = series(buildStylesProd); // $ gulp build
