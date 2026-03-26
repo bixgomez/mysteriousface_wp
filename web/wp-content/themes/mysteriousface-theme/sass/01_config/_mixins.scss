@@ -42,10 +42,6 @@
     text-decoration: none;
   }
 
-  .current-menu-item & {
-    color: $color-aqua--base;
-  }
-
   @include breakpoint($sm) { letter-spacing: 0; }
 
   @include breakpoint($md) { letter-spacing: .1em; }
