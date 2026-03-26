@@ -1,16 +1,14 @@
 .layout--album {
   grid-template-areas:
-  "player heading aside"
-  "player body aside";
-
+    "player heading aside"
+    "player body aside";
   grid-template-columns: 25% 1fr max-content;
   grid-template-rows: min-content 1fr;
 
   &.no-player {
     grid-template-areas:
-    "heading aside"
-    "body aside";
-
+      "heading aside"
+      "body aside";
     grid-template-columns: 1fr max-content;
     grid-template-rows: min-content 1fr;
   }
@@ -46,5 +44,4 @@ aside {
       order: 4;
     }
   }
-
 }

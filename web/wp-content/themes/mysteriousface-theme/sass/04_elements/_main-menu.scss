@@ -1,80 +1,60 @@
-.site-header {
+.main-menu {
+  background-color: transparent;
+  font-size: 1.125rem;
+}
 
-  nav.main-navigation.wp-block-navigation {
-    background-color: transparent;
+.main-menu .wp-block-navigation__container {
+  gap: 0;
+  margin: 0 auto;
+  padding: 0;
+}
+
+.main-menu .wp-block-navigation-item {
+  position: relative;
+  display: block;
+  margin-bottom: 1em;
+  font-size: .7em;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  @include breakpoint($sm) {
     margin: 0;
   }
+}
 
-  .wp-block-navigation__container.main-navigation {
-    gap: 0;
-    margin: 0 auto;
-    padding: 0;
-  }
+.main-menu .wp-block-navigation-item__content {
+  @include menu-item-text;
 
-  .main-navigation .wp-block-navigation-item {
-    position: relative;
-    display: block;
-    margin-bottom: 1em;
-    font-size: .7em;
+  background-color: transparent;
+  border-radius: .25em;
+  display: block;
+  font-size: 1.25em;
+  text-align: center;
+  text-transform: uppercase;
 
-    &:last-child {
-      margin-bottom: 0;
-    }
-
-    @include breakpoint($sm) {
-      margin: 0;
-    }
-  }
-
-  .main-navigation .wp-block-navigation-item__content {
-    @include menu-item-text;
-
-    background-color: transparent;
-    border-radius: .25em;
-    display: block;
-    font-size: 1.25em;
-    text-align: center;
-    text-transform: uppercase;
-
-    &:hover,
-    &:focus-visible {
-      background-color: rgba($c--white, .25);
-      color: $c--black;
-      text-decoration: none;
-    }
-  }
-
-  .main-navigation .current-menu-item > .wp-block-navigation-item__content,
-  .main-navigation .current-menu-ancestor > .wp-block-navigation-item__content,
-  .main-navigation .wp-block-navigation-item__content[aria-current='page'] {
-    background-color: rgba($c--white, .55);
+  &:hover,
+  &:focus-visible {
+    background-color: rgba($c--white, .25);
     color: $c--black;
+    text-decoration: none;
   }
+}
 
-  .wp-block-navigation__container.main-navigation {
+.main-menu .current-menu-item > .wp-block-navigation-item__content,
+.main-menu .current-menu-ancestor > .wp-block-navigation-item__content,
+.main-menu .wp-block-navigation-item__content[aria-current='page'] {
+  background-color: rgba($c--white, .55);
+  color: $c--black;
+}
 
-    @include breakpoint($sm) {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-  }
+.main-menu .wp-block-navigation__container {
 
-  .main-navigation .wp-block-navigation__submenu-container {
-    background-color: $c--gray--light-05;
-    bottom: 0;
-    height: auto;
-    left: 0;
-    margin: 0;
-    padding: 0;
-    width: max-content;
-    z-index: 99999;
-  }
-
-  .main-navigation .wp-block-navigation__submenu-container .wp-block-navigation-item__content {
-    margin: 0;
-    padding: .25em .8em;
-    text-align: left;
+  @include breakpoint($sm) {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
   }
 }
 

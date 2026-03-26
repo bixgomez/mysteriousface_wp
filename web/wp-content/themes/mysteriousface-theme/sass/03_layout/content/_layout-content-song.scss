@@ -1,17 +1,15 @@
 .layout--song {
   grid-template-areas:
-  "player heading aside"
-  "player body aside"
-  "player lyrics aside";
-
+    "player heading aside"
+    "player body aside"
+    "player lyrics aside";
   grid-template-columns: 25% 1fr max-content;
 
   &.no-player {
     grid-template-areas:
-    "heading aside"
-    "body aside"
-    "lyrics aside";
-
+      "heading aside"
+      "body aside"
+      "lyrics aside";
     grid-template-columns: 1fr max-content;
   }
 }
@@ -54,5 +52,4 @@ aside {
       order: 5;
     }
   }
-
 }
