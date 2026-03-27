@@ -25,7 +25,6 @@
         grid-template-columns: 1fr .125fr;
         grid-template-rows: min-content min-content min-content;
         width: 100%;
-
         grid-template-areas: 
             "title menu"
             "image image"
@@ -45,6 +44,7 @@
             display: block;
             margin: 0;
             padding: 0;
+            line-height: 1;
         }
 
         .main-menu {

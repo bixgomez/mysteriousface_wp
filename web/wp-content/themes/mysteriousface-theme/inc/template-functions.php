@@ -35,3 +35,22 @@ function mysteriousface_theme_pingback_header() {
 	}
 }
 add_action( 'wp_head', 'mysteriousface_theme_pingback_header' );
+
+/**
+ * Override Navigation block responsive breakpoint from 600px to 781px.
+ */
+function mysteriousface_navigation_breakpoint_css() {
+	$css = '
+		/* Show hamburger menu up to 780px (override core 600px) */
+		@media (min-width: 600px) and (max-width: 780px) {
+			.wp-block-navigation__responsive-container-open {
+				display: flex !important;
+			}
+			.wp-block-navigation__responsive-container:not(.hidden-by-default):not(.is-menu-open) {
+				display: none !important;
+			}
+		}
+	';
+	wp_add_inline_style( 'wp-block-navigation', $css );
+}
+add_action( 'wp_enqueue_scripts', 'mysteriousface_navigation_breakpoint_css' );

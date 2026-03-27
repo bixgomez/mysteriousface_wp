@@ -2,8 +2,10 @@
   background-color: transparent;
   font-size: 1.125rem;
   display: flex;
+  width: max-content;
   justify-content: flex-end;
   align-items: center;
+  margin: 0;
 }
 
 .main-menu .wp-block-navigation__container {

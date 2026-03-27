@@ -1,7 +1,8 @@
 @import "layout-page";
 @import "layout-home-page";
-@import "content/layout-content-album";
-@import "content/layout-content-song";
+@import "layout-header";
+@import "layout-content-album";
+@import "layout-content-song";
 
 html {
   // background-color: $c--white;

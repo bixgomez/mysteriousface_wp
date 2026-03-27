@@ -259,7 +259,7 @@ main,
   position: relative;
   z-index: 100;
   margin: 0 auto;
-  padding: 0;
+  padding: 0 1.25rem;
   -webkit-box-flex: 1;
       -ms-flex: 1;
           flex: 1;
@@ -321,6 +321,7 @@ main,
   display: block;
   margin: 0;
   padding: 0;
+  line-height: 1;
 }
 .home .entry-content .main-menu {
   grid-area: menu;
@@ -379,6 +380,43 @@ main,
   opacity: 0.1;
   -o-object-fit: cover;
      object-fit: cover;
+}
+
+header {
+  background: url(/wp-content/themes/mysteriousface-theme/images/Final-Composite-NO-SIGNS-with-grain--blurred.jpg) no-repeat center center fixed;
+  background-size: cover;
+  color: white;
+  padding: 1.25rem;
+  margin: 0 0 1.5rem;
+}
+header .wp-block-site-title,
+header .wp-block-site-title a {
+  color: white;
+  line-height: 1;
+}
+header .wp-block-group.site-header {
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+header .wp-block-group.header-top {
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
 
 .layout--album {
@@ -513,12 +551,16 @@ body.admin-bar {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
   -webkit-box-pack: end;
       -ms-flex-pack: end;
           justify-content: flex-end;
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+  margin: 0;
 }
 
 .main-menu .wp-block-navigation__container {
