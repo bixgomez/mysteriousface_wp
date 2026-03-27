@@ -1,11 +1,29 @@
-.layout--home {
-    background-color: pink;
+.home {
+    background: url(/wp-content/themes/mysteriousface-theme/images/Final-Composite-NO-SIGNS-with-grain--blurred.jpg) no-repeat center center fixed;
+    background-size: cover;
+    color: white;
 
-    .wp-site-blocks {
-        background-color: rgba(#fff, .5);
+    .home-bg-video-wrap {
+        position: fixed;
+        inset: 0;
+        overflow: hidden;
+        pointer-events: none;
+        z-index: -100;
     }
 
-    @include breakpoint($md) {
-        background-color: orange;
+    .home-bg-video-wrap {
     }
+
+    .home-bg-video {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        min-width: 100%;
+        min-height: 100%;
+        width: 100cqw;
+        height: auto;
+        transform: translate(-50%, -50%);
+        opacity: 1;
+    }
+
 }

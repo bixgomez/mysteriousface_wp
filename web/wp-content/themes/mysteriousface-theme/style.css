@@ -238,50 +238,10 @@ iframe,
 
 .wp-site-blocks {
   display: block;
-  background-color: rgba(0, 0, 255, 0.25);
   container-type: size;
   min-height: 100vh;
   min-height: 100dvh;
   overflow-x: hidden;
-}
-
-.wrapper {
-  -webkit-box-flex: 1;
-      -ms-flex: 1;
-          flex: 1;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-}
-
-.wrapper-inner {
-  -webkit-box-flex: 1;
-      -ms-flex: 1;
-          flex: 1;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-}
-
-.container-site {
-  -webkit-box-flex: 1;
-      -ms-flex: 1;
-          flex: 1;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
 }
 
 nav.site-navigation {
@@ -310,16 +270,30 @@ main#primary,
   background-color: rgba(255, 255, 255, 0.25);
 }
 
-.layout--home {
-  background-color: pink;
+.home {
+  background: url(/wp-content/themes/mysteriousface-theme/images/Final-Composite-NO-SIGNS-with-grain--blurred.jpg) no-repeat center center fixed;
+  background-size: cover;
+  color: white;
 }
-.layout--home .wp-site-blocks {
-  background-color: rgba(255, 255, 255, 0.5);
+.home .home-bg-video-wrap {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: -100;
 }
-@media (min-width: 782px) {
-  .layout--home {
-    background-color: orange;
-  }
+.home .home-bg-video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  min-width: 100%;
+  min-height: 100%;
+  width: 100cqw;
+  height: auto;
+  -webkit-transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  opacity: 1;
 }
 
 .layout--album {
@@ -435,15 +409,6 @@ aside {
             order: 5;
   }
 }
-html {
-  background-color: #fff;
-}
-
-body,
-.editor-styles-wrapper {
-  background-color: rgba(0, 0, 0, 0.25);
-}
-
 body.admin-bar {
   min-height: calc(100vh - 46px);
   min-height: calc(100vh - var(--wp-admin--admin-bar--height, 46px));
@@ -455,13 +420,6 @@ body.admin-bar {
     min-height: calc(100vh - var(--wp-admin--admin-bar--height, 32px));
     min-height: calc(100dvh - var(--wp-admin--admin-bar--height, 32px));
   }
-}
-
-.layout {
-  width: 100cqw;
-  min-height: 100cqh;
-  background-color: rgba(255, 192, 203, 0.25);
-  overflow-x: hidden;
 }
 
 .main-menu {
