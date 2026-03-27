@@ -2,3 +2,32 @@
 @import "layout-home-page";
 @import "content/layout-content-album";
 @import "content/layout-content-song";
+
+html {
+  background-color: $c--white;
+}
+
+body,
+.editor-styles-wrapper {
+  background-color: rgba(black, .25);
+}
+
+// Frontend only: compensate for WordPress admin bar offset when logged in.
+body.admin-bar {
+  min-height: calc(100vh - 46px);
+  min-height: calc(100vh - var(--wp-admin--admin-bar--height, 46px));
+  min-height: calc(100dvh - var(--wp-admin--admin-bar--height, 46px));
+
+  @media screen and (min-width: 783px) {
+    min-height: calc(100vh - 32px);
+    min-height: calc(100vh - var(--wp-admin--admin-bar--height, 32px));
+    min-height: calc(100dvh - var(--wp-admin--admin-bar--height, 32px));
+  }
+}
+
+.layout {
+    width: 100cqw;
+    min-height: 100cqh;
+    background-color: rgba(pink, .25);
+    overflow-x: hidden;
+}

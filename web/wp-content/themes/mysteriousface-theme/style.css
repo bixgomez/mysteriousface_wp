@@ -236,35 +236,13 @@ iframe,
   vertical-align: top;
 }
 
-html {
-  background-color: #fff;
-}
-
-body,
-.editor-styles-wrapper {
+.wp-site-blocks {
+  display: block;
+  background-color: rgba(0, 0, 255, 0.25);
+  container-type: size;
   min-height: 100vh;
   min-height: 100dvh;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  background-color: #e6e6e6;
-}
-
-body.admin-bar {
-  min-height: calc(100vh - 46px);
-  min-height: calc(100vh - var(--wp-admin--admin-bar--height, 46px));
-  min-height: calc(100dvh - var(--wp-admin--admin-bar--height, 46px));
-}
-@media screen and (min-width: 783px) {
-  body.admin-bar {
-    min-height: calc(100vh - 32px);
-    min-height: calc(100vh - var(--wp-admin--admin-bar--height, 32px));
-    min-height: calc(100dvh - var(--wp-admin--admin-bar--height, 32px));
-  }
+  overflow-x: hidden;
 }
 
 .wrapper {
@@ -321,7 +299,7 @@ main#primary,
   position: relative;
   z-index: 100;
   margin: 0 auto;
-  padding: 2em 2em;
+  padding: 0;
   -webkit-box-flex: 1;
       -ms-flex: 1;
           flex: 1;
@@ -332,14 +310,14 @@ main#primary,
   background-color: rgba(255, 255, 255, 0.25);
 }
 
-body.home {
+.layout--home {
   background-color: pink;
 }
-body.home .wp-site-blocks {
+.layout--home .wp-site-blocks {
   background-color: rgba(255, 255, 255, 0.5);
 }
 @media (min-width: 782px) {
-  body.home {
+  .layout--home {
     background-color: orange;
   }
 }
@@ -457,6 +435,35 @@ aside {
             order: 5;
   }
 }
+html {
+  background-color: #fff;
+}
+
+body,
+.editor-styles-wrapper {
+  background-color: rgba(0, 0, 0, 0.25);
+}
+
+body.admin-bar {
+  min-height: calc(100vh - 46px);
+  min-height: calc(100vh - var(--wp-admin--admin-bar--height, 46px));
+  min-height: calc(100dvh - var(--wp-admin--admin-bar--height, 46px));
+}
+@media screen and (min-width: 783px) {
+  body.admin-bar {
+    min-height: calc(100vh - 32px);
+    min-height: calc(100vh - var(--wp-admin--admin-bar--height, 32px));
+    min-height: calc(100dvh - var(--wp-admin--admin-bar--height, 32px));
+  }
+}
+
+.layout {
+  width: 100cqw;
+  min-height: 100cqh;
+  background-color: rgba(255, 192, 203, 0.25);
+  overflow-x: hidden;
+}
+
 .main-menu {
   background-color: transparent;
   font-size: 1.125rem;
