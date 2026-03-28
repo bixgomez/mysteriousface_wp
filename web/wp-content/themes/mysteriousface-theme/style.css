@@ -420,6 +420,10 @@ header .wp-block-group.header-top {
 }
 
 .layout--album {
+  display: grid;
+  -webkit-column-gap: 1.25rem;
+     -moz-column-gap: 1.25rem;
+          column-gap: 1.25rem;
   grid-template-areas: "player heading aside" "player body aside";
   grid-template-columns: 25% 1fr -webkit-max-content;
   grid-template-columns: 25% 1fr max-content;
@@ -432,6 +436,9 @@ header .wp-block-group.header-top {
   grid-template-columns: 1fr max-content;
   grid-template-rows: -webkit-min-content 1fr;
   grid-template-rows: min-content 1fr;
+}
+.layout--album h1.node-title {
+  margin: 0 0 1rem;
 }
 
 .player {
@@ -474,6 +481,10 @@ aside {
   }
 }
 .layout--song {
+  display: grid;
+  -webkit-column-gap: 1.25rem;
+     -moz-column-gap: 1.25rem;
+          column-gap: 1.25rem;
   grid-template-areas: "player heading aside" "player body aside" "player lyrics aside";
   grid-template-columns: 25% 1fr -webkit-max-content;
   grid-template-columns: 25% 1fr max-content;
@@ -482,6 +493,9 @@ aside {
   grid-template-areas: "heading aside" "body aside" "lyrics aside";
   grid-template-columns: 1fr -webkit-max-content;
   grid-template-columns: 1fr max-content;
+}
+.layout--song h1.node-title {
+  margin: 0 0 1rem;
 }
 
 .lyrics {

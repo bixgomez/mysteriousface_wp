@@ -1,4 +1,6 @@
 .layout--album {
+  display: grid;
+  column-gap: 1.25rem;
   grid-template-areas:
     "player heading aside"
     "player body aside";
@@ -11,6 +13,10 @@
       "body aside";
     grid-template-columns: 1fr max-content;
     grid-template-rows: min-content 1fr;
+  }
+
+  h1.node-title {
+    margin: 0 0 1rem;
   }
 }
 
