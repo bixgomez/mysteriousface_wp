@@ -165,6 +165,20 @@ function mysteriousface_theme_scripts() {
 add_action( 'wp_enqueue_scripts', 'mysteriousface_theme_scripts' );
 
 /**
+ * Render the footer copyright line for block template parts.
+ *
+ * @return string
+ */
+function mysteriousface_theme_copyright_shortcode() {
+	return sprintf(
+		'<p class="has-text-align-center">Copyright &copy; %1$s %2$s</p>',
+		esc_html( wp_date( 'Y' ) ),
+		esc_html( get_bloginfo( 'name' ) )
+	);
+}
+add_shortcode( 'mysteriousface_copyright', 'mysteriousface_theme_copyright_shortcode' );
+
+/**
  * Implement the Custom Header feature.
  */
 require get_template_directory() . '/inc/custom-header.php';
