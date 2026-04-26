@@ -73,13 +73,13 @@
 
 .wp-block-navigation__responsive-container-close {
   top: 30px;
-  right: 64px;
+  right: 30px;
 }
 
 .wp-block-navigation__responsive-container.has-modal-open {
   .wp-block-navigation__responsive-dialog {
     .wp-block-navigation__responsive-container-content {
-      padding: 0 30px;
+      padding: 0;
       
       .wp-block-navigation__container {
         display: flex;
@@ -87,7 +87,7 @@
         gap: 10px;
         font-size: 1.5rem;
         width: 100%;
-        margin-top: 20px;
+        margin-top: 60px;
 
         .wp-block-navigation-item {
           margin: 0;
