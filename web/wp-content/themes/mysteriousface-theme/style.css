@@ -661,150 +661,46 @@ body.admin-bar {
   }
 }
 
-.site-main .comment-navigation,
-.site-main .posts-navigation,
-.site-main .post-navigation {
-  margin: 0 0 1.5em;
+.wp-block-navigation__responsive-container-close svg,
+.wp-block-navigation__responsive-container-open svg {
+  display: block;
+  width: 34px;
+  height: 34px;
 }
-.comment-navigation .nav-links,
-.posts-navigation .nav-links,
-.post-navigation .nav-links {
+
+.wp-block-navigation__responsive-container-close {
+  top: 30px;
+  right: 64px;
+}
+
+.wp-block-navigation__responsive-container.has-modal-open .wp-block-navigation__responsive-dialog .wp-block-navigation__responsive-container-content {
+  padding: 0 30px;
+}
+.wp-block-navigation__responsive-container.has-modal-open .wp-block-navigation__responsive-dialog .wp-block-navigation__responsive-container-content .wp-block-navigation__container {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-}
-.comment-navigation .nav-previous,
-.posts-navigation .nav-previous,
-.post-navigation .nav-previous {
-  -webkit-box-flex: 1;
-      -ms-flex: 1 0 50%;
-          flex: 1 0 50%;
-}
-.comment-navigation .nav-next,
-.posts-navigation .nav-next,
-.post-navigation .nav-next {
-  text-align: end;
-  -webkit-box-flex: 1;
-      -ms-flex: 1 0 50%;
-          flex: 1 0 50%;
-}
-
-.menu-platforms-container .menu-item {
-  float: none;
-  height: 2rem;
-  margin-top: 0;
-  line-height: 1;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  gap: 10px;
+  font-size: 1.5rem;
   width: 100%;
-  white-space: nowrap;
+  margin-top: 20px;
 }
-@media (min-width: 782px) {
-  .menu-platforms-container .menu-item {
-    height: 1.75vw;
-    margin-top: 0.8vw;
-  }
-}
-.menu-platforms-container .menu-item a {
-  display: block;
-  text-decoration: none;
-  font-size: 1.25em;
-  line-height: 1;
-  padding: 0 0 0 1.5em;
-  background-image: url(./images/social-icons/logo_itunes.png);
-  background-repeat: no-repeat;
-  background-size: 1.125em;
-}
-@media (min-width: 782px) {
-  .menu-platforms-container .menu-item a {
-    width: auto;
-    height: 1.75vw;
-    margin-right: 0.5vw;
-  }
-}
-@media (min-width: 782px) {
-  .menu-platforms-container .menu-item a {
-    font-size: 1.5vw;
-  }
-}
-.menu-platforms-container .menu-item.bandcamp a {
-  background-image: url(./images/social-icons/logo_bandcamp.png);
-}
-.menu-platforms-container .menu-item.spotify a {
-  background-image: url(./images/social-icons/logo_spotify.png);
-}
-.menu-platforms-container .menu-item.youtube a {
-  background-image: url(./images/social-icons/logo_youtube.png);
-}
-.menu-platforms-container .menu-item.itunes a {
-  background-image: url(./images/social-icons/logo_itunes.png);
-}
-.menu-platforms-container .menu-item.google {
-  display: none;
-}
-.menu-platforms-container .menu-item.google a {
-  background-image: url(./images/social-icons/logo_google.png);
-}
-.menu-platforms-container .menu-item.amazon a {
-  background-image: url(./images/social-icons/logo_amazon.png);
-}
-
-.menu-social-media-container {
-  max-width: 95%;
-  margin: 0 auto;
-  font-size: 19px;
-}
-
-ul#social-media-menu,
-ul#social-media-menu li {
-  list-style-type: none;
-  padding: 0;
+.wp-block-navigation__responsive-container.has-modal-open .wp-block-navigation__responsive-dialog .wp-block-navigation__responsive-container-content .wp-block-navigation__container .wp-block-navigation-item {
   margin: 0;
-}
-
-ul#social-media-menu {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  grid-gap: 1em;
-  margin: 0.5em 0;
-}
-
-li.social-link > a {
+  background: white;
   display: block;
-  text-indent: -999em;
-  background-color: #c25344;
-  height: 2em;
-  width: 2em;
-  -webkit-mask-size: contain;
-          mask-size: contain;
-  -webkit-mask-position: center;
-          mask-position: center;
-  -webkit-mask-repeat: no-repeat;
-          mask-repeat: no-repeat;
+  margin: 0;
+  width: 100%;
 }
-li.social-link > a:hover {
-  background-color: #c7362c;
-}
-li.social-link--bandcamp > a {
-  -webkit-mask-image: url("images/social-icons/logo_bandcamp.svg");
-          mask-image: url("images/social-icons/logo_bandcamp.svg");
-}
-li.social-link--facebook > a {
-  -webkit-mask-image: url("images/social-icons/facebook-brands.svg");
-          mask-image: url("images/social-icons/facebook-brands.svg");
-}
-li.social-link--instagram > a {
-  -webkit-mask-image: url("images/social-icons/instagram-square-brands.svg");
-          mask-image: url("images/social-icons/instagram-square-brands.svg");
-}
-li.social-link--twitter > a {
-  -webkit-mask-image: url("images/social-icons/twitter-brands.svg");
-          mask-image: url("images/social-icons/twitter-brands.svg");
+.wp-block-navigation__responsive-container.has-modal-open .wp-block-navigation__responsive-dialog .wp-block-navigation__responsive-container-content .wp-block-navigation__container .wp-block-navigation-item .wp-block-navigation-item__content {
+  display: block;
+  margin: 0;
+  width: 100%;
+  font-weight: bold;
 }
 
 .bandcamp-embed {
