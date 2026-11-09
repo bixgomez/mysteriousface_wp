@@ -1,11 +1,18 @@
 <?php
 namespace crop_thumbnails;
 
+defined( 'ABSPATH' ) || exit;
+
 /**
  * Contains all code inside the croping-window
  */
 
 class CPT_ForbiddenException extends \Exception {}
+
+/**
+ * The image file (i.e. the original of a scaled image) does not exist or is not readable.
+ */
+class CPT_ImageFileMissingException extends \Exception {}
 
 class CropPostThumbnailsEditor {
 
@@ -19,8 +26,15 @@ class CropPostThumbnailsEditor {
 			return new \WP_REST_Response(CropPostThumbnailsEditor::getErrorData('FAILURE while processing request: '.$e->getMessage()), 400);
 		} catch(CPT_ForbiddenException $e) {
 			return new \WP_REST_Response(CropPostThumbnailsEditor::getErrorData('ERROR not allowed.'), 403);
+		} catch(CPT_ImageFileMissingException $e) {
+			return new \WP_REST_Response(CropPostThumbnailsEditor::getErrorData('ERROR image file not found.'), 404);
 		} catch(\Exception $e) {
 			return new \WP_REST_Response(CropPostThumbnailsEditor::getErrorData('FAILURE while processing request.'), 400);
+		} catch(\Throwable $e) {
+			//i.e. DivisionByZeroError or TypeError (PHP 8) - these are no Exceptions and would end in an empty HTTP 500
+			// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- the server log is the only place for this information (the details should not be sent to the browser)
+			error_log('crop-thumbnails: '.get_class($e).': '.$e->getMessage().' in '.$e->getFile().':'.$e->getLine());
+			return new \WP_REST_Response(CropPostThumbnailsEditor::getErrorData('FAILURE while processing request.'), 500);
 		}
 	}
 
@@ -79,6 +93,12 @@ class CropPostThumbnailsEditor {
 			'script_connection_error' => self::fixJsLangStrings(__('The plugin can not correctly connect to the server.','crop-thumbnails')),
 			'noPermission' => self::fixJsLangStrings(__('You are not permitted to crop the thumbnails.','crop-thumbnails')),
 			'unknownError' => self::fixJsLangStrings(__('An unknown error occured.','crop-thumbnails')),
+			'originalMissingHeadline' => self::fixJsLangStrings(__('The original image is missing.','crop-thumbnails')),
+			'originalMissingText' => self::fixJsLangStrings(__('You can still crop from the smaller, scaled version of this image. The crops are then created from a source with a lower resolution, so they may be less sharp.','crop-thumbnails')),
+			'originalMissingResolution' => self::fixJsLangStrings(__('Resolution of the available source image:','crop-thumbnails')),
+			'originalMissingConfirm' => self::fixJsLangStrings(__('Crop from the smaller image','crop-thumbnails')),
+			'originalMissingActive' => self::fixJsLangStrings(__('The original image is missing. The crops are created from the smaller image:','crop-thumbnails')),
+			'imageFileMissing' => self::fixJsLangStrings(__('The image file could not be found (the original of this image is missing). Cropping is not possible.','crop-thumbnails')),
 			'infoNoImageSizesAvailable' => self::fixJsLangStrings(__('No image sizes for cropping available.','crop-thumbnails')),
 			'headline_selected_image_sizes' => self::fixJsLangStrings(__('Selected image sizes','crop-thumbnails')),
 		];
@@ -100,21 +120,23 @@ class CropPostThumbnailsEditor {
 			],
 			'cropBaseSize' => 'full',
 			'sourceImageMeta' => null,
+			'originalMissing' => false,
 			'postTypeFilter' => null,
 			'imageSizes' => array_values($GLOBALS['CROP_THUMBNAILS_HELPER']->getImageSizes()),
 			'lang' => self::getLangArray(),
 			'nonce' => wp_create_nonce($GLOBALS['CROP_THUMBNAILS_HELPER']->getNonceBase())
 		];
 
+		// phpcs:disable WordPress.Security.NonceVerification.Recommended -- REST read route, the REST nonce (X-WP-Nonce) is verified by WordPress core; access is checked below with isUserPermitted()
 		//simple validation
 		if(empty($_REQUEST['imageId'])) {
 			throw new \InvalidArgumentException('Missing Parameter "imageId".');
 		}
 
 
-		$imagePostObj = get_post(intval($_REQUEST['imageId']));
+		$imagePostObj = get_post(absint($_REQUEST['imageId']));
 		if(empty($imagePostObj) || $imagePostObj->post_type!=='attachment') {
-			throw new \InvalidArgumentException('Image with ID:'.intval($_REQUEST['imageId']).' could not be found');
+			throw new \InvalidArgumentException('Image with ID:'.absint($_REQUEST['imageId']).' could not be found');
 		}
 		$result['sourceImageId'] = $imagePostObj->ID;
 
@@ -122,11 +144,34 @@ class CropPostThumbnailsEditor {
 			throw new CPT_ForbiddenException();
 		}
 
-		if(!empty($_REQUEST['posttype']) && post_type_exists($_REQUEST['posttype'])) {
-			$result['postTypeFilter'] = $_REQUEST['posttype'];
+		if(!empty($_REQUEST['posttype']) && is_string($_REQUEST['posttype'])) {
+			$postTypeFilter = sanitize_key(wp_unslash($_REQUEST['posttype']));
+			if(post_type_exists($postTypeFilter)) {
+				$result['postTypeFilter'] = $postTypeFilter;
+			}
 		}
+		if(empty($result['postTypeFilter']) && !empty($_REQUEST['postId']) && is_scalar($_REQUEST['postId'])) {
+			// no explicit post-type (i.e. cropping from the media dialog inside the post-editor) - derive it from the edited post
+			$editedPostId = absint($_REQUEST['postId']);
+			if($editedPostId>0 && current_user_can('edit_post', $editedPostId)) {
+				$derivedPostType = get_post_type($editedPostId);
+				if(!empty($derivedPostType) && $derivedPostType!=='attachment' && post_type_exists($derivedPostType)) {
+					$result['postTypeFilter'] = $derivedPostType;
+				}
+			}
+		}
+		// phpcs:enable WordPress.Security.NonceVerification.Recommended
 
-		$result['sourceImage']['original_image'] = $this->getUncroppedImageData($imagePostObj->ID, 'original_image');
+		try {
+			$result['sourceImage']['original_image'] = $this->getUncroppedImageData($imagePostObj->ID, 'original_image');
+		} catch(CPT_ImageFileMissingException $e) {
+			if(!CptSaveThumbnail::isOriginalMissingButScaledImageAvailable($imagePostObj->ID)) {
+				throw $e;
+			}
+			//the original is missing, but the scaled image exists - the editor asks the user if the crop should be done from the smaller image
+			$result['originalMissing'] = true;
+			$result['sourceImage']['original_image'] = null;
+		}
 		$result['sourceImage']['full'] = $this->getUncroppedImageData($imagePostObj->ID, 'full');
 		$result['sourceImage']['large'] = $this->getUncroppedImageData($imagePostObj->ID, 'large');
 		$result['sourceImage']['medium_large'] = $this->getUncroppedImageData($imagePostObj->ID, 'medium_large');
@@ -199,8 +244,16 @@ class CropPostThumbnailsEditor {
 	protected function getUncroppedImageData($ID, $imageSize = 'full') {
 		$orig_img = wp_get_attachment_image_src($ID, $imageSize);
 		if($imageSize === 'original_image') {
-			$tmp = wp_getimagesize(wp_get_original_image_path($ID));
+			//the original of a scaled image may be missing on the disk (migration, cleanup, ...)
+			$originalPath = wp_get_original_image_path($ID);
+			$tmp = (!empty($originalPath) && is_readable($originalPath)) ? wp_getimagesize($originalPath) : false;
+			if(empty($tmp[0]) || empty($tmp[1])) {
+				throw new CPT_ImageFileMissingException('The original image of attachment '.absint($ID).' is missing or not readable.');
+			}
 			$orig_img = [ wp_get_original_image_url($ID), $tmp[0], $tmp[1], false ];
+		}
+		if(empty($orig_img) || empty($orig_img[1]) || empty($orig_img[2])) {
+			throw new CPT_ImageFileMissingException('The image size "'.esc_html($imageSize).'" of attachment '.absint($ID).' has no valid dimensions.');
 		}
 		$orig_ima_gcd = $this->gcd($orig_img[1], $orig_img[2]);
 		$result = [
@@ -272,6 +325,10 @@ class CropPostThumbnailsEditor {
 	 * Greatest cummon divisor
 	 */
 	protected function gcd($a, $b) {
+		//invalid dimensions: return 1 so that the ratio calculations never divide by zero
+		if(!is_numeric($a) || !is_numeric($b) || $a<=0 || $b<=0) {
+			return 1;
+		}
 		if(function_exists('gmp_gcd')) {
 			$gcd = gmp_strval(gmp_gcd($a,$b));
 			return ($gcd);
@@ -282,7 +339,9 @@ class CropPostThumbnailsEditor {
 	}
 
 	protected static function my_gcd($a, $b) {
-		$b = ( $a == 0 )? 0 : $b;
+		if($a == 0 || $b == 0) {//PHP >= 8 throws a DivisionByZeroError on modulo by zero
+			return 0;
+		}
 		return ( $a % $b )? self::my_gcd($b, abs($a - $b)) : $b;
 	}
 }

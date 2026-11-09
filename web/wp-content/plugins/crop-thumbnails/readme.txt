@@ -1,11 +1,11 @@
-=== Crop-Thumbnails ===
+=== Crop Thumbnails ===
 Contributors: volkmar-kantor
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=volkmar%2ekantor%40gmx%2ede&lc=DE&item_name=Volkmar%20Kantor%20%2d%20totalmedial%2ede&item_number=crop%2dthumbnails&no_note=0&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest
 Tags: post-thumbnails, images, media library
-Requires at least: 5.0
-Tested up to: 6.8.2
+Requires at least: 5.7
+Tested up to: 7.1
 Requires PHP: 7.4.0
-Stable tag: 1.9.7
+Stable tag: 1.10.0
 License: GPL v3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -124,6 +124,21 @@ If you fork and planning to publish the forked plugin, please contact me.
 5. Quicktest on settings-page, to check if your system is correct setup.
 
 == Changelog ==
+= 1.10.0 =
+* fix crop filename keeping the source extension (e.g. "photo.jpg-150x150.webp") if `image_editor_output_format` is used
+* fix deleting a file that is still used by another image size when re-cropping
+* if the original of a scaled image is missing the editor now asks the user to confirm cropping from the smaller scaled image and shows its resolution (filter `crop_thumbnails_allow_cropping_from_scaled_image` to disable it)
+* fix saving the settings "Sizes and Post Types" failed with a PHP error (TypeError) on some sites, i.e. with plain permalinks (thanks to rainersnookh)
+* if there is only one image size to crop it is selected automatically
+* the crop editor shows a checkerboard (like the WordPress default crop) instead of black behind transparent images
+* fix fatal error (HTTP 500, DivisionByZeroError on PHP 8) in the crop editor if the original of a scaled image is missing - the editor now shows a message instead (thanks to E1NSER)
+* fix: image sizes hidden for a post type (settings) are now also hidden when cropping from the media dialog inside the post editor (e.g. SCF/ACF image fields) - the post type is derived from the edited post
+* security: check if the user is allowed to edit the image before reading or cropping it (thanks to Pedro Pinho for reporting)
+* security: harden input handling of the settings endpoints
+* the plugin requires WordPress 5.7 or newer (it already used functions of that version)
+* code cleanup (escaping, direct file access protection, WordPress file functions)
+* filter `crop_thumbnails_user_permission_check`: the default value now also contains the permission to edit the specific image (see github readme)
+
 = 1.9.7 =
 * fix the script loading in the backend if using wp_enqueue_script_module
 * Remove legacy filter with typo error: "crop_thumbnails_activat_on_adminpages"
